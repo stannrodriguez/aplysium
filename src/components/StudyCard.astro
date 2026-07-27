@@ -2,6 +2,7 @@
 import Motif from './Motif.astro';
 import StatusDot from './StatusDot.astro';
 import type { Study } from '../data/types';
+import { withBase } from '../lib/url';
 
 interface Props {
   study: Study;
@@ -10,7 +11,7 @@ interface Props {
 const { study } = Astro.props;
 ---
 
-<a class="cell" href={`/studies/${study.slug}/`}>
+<a class="cell" href={withBase(`/studies/${study.slug}/`)}>
   <div class="motif-slot"><Motif type={study.motif} /></div>
   <div class="dot-slot"><StatusDot status={study.status} /></div>
   <span class="idea">{study.idea}</span>
