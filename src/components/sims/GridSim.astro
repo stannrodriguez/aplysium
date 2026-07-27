@@ -1,0 +1,75 @@
+---
+import '../../styles/sim.css';
+import '../../styles/sims/grid.css';
+
+interface Props {
+  label?: string;
+}
+
+const { label = 'One entorhinal cell · rat, freely moving' } = Astro.props;
+---
+
+<grid-sim class="sim">
+  <div class="sim-chrome">
+    <span class="sim-chrome-dot" aria-hidden="true"></span>
+    <span class="sim-chrome-label">{label}</span>
+    <span class="sim-chrome-status" data-sim-status aria-live="polite">cell 1 · large box</span>
+  </div>
+
+  <div class="sim-panels">
+    <section class="sim-panel">
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">The room, from above</h3>
+        <p class="sim-readout">firing <b data-sim-rate aria-live="polite">0 /s</b></p>
+      </div>
+
+      <div class="sim-stage grd-arena" data-sim-arena></div>
+
+      <p class="sim-note">
+        The same method as a place cell — spikes plotted where the animal was standing — and the same
+        room. The only thing that changes below is how much of it the animal can reach.
+      </p>
+    </section>
+
+    <section class="sim-panel">
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">How big a box it gets</h3>
+      </div>
+
+      <div class="sim-choices">
+        <button type="button" class="sim-choice" data-sim-box="large" aria-pressed="true">
+          <b>Large</b><em>room enough for the geometry to show</em>
+        </button>
+        <button type="button" class="sim-choice" data-sim-box="small" aria-pressed="false">
+          <b>Small</b><em>the arena these cells were first recorded in</em>
+        </button>
+      </div>
+
+      <div class="grd-counts">
+        <div class="sim-metric">
+          <p class="sim-metric-label">Patches fired in</p>
+          <p class="grd-count" data-sim-vertices aria-live="polite">0</p>
+        </div>
+        <div class="sim-metric">
+          <p class="sim-metric-label">Floor covered</p>
+          <p class="grd-count" data-sim-coverage>0%</p>
+        </div>
+      </div>
+
+      <p class="sim-verdict" data-sim-verdict>
+        Cover some floor first. One cell, and nothing to say about it until there are enough spikes
+        to have a shape.
+      </p>
+    </section>
+  </div>
+
+  <div class="sim-controls">
+    <button type="button" class="sim-btn sim-btn-primary" data-sim-run>▶ let it forage</button>
+    <button type="button" class="sim-btn sim-btn-outline" data-sim-next-cell>Next cell</button>
+    <button type="button" class="sim-btn sim-btn-quiet" data-sim-clear>Clear</button>
+  </div>
+</grid-sim>
+
+<script>
+  import '../../scripts/sims/grid';
+</script>

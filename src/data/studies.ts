@@ -323,6 +323,7 @@ export const studies: Study[] = [
     finding: 'An entorhinal cell fires at the vertices of a hexagonal lattice that tiles the entire environment.',
     why: 'Found a built-in hexagonal grid the brain uses to keep track of space.',
     method: 'Same recording method as place cells, but in a much larger box. In a small arena the lattice looks like a single place field; the geometry only appears when the animal has room.',
+    simulator: 'grid',
   },
   {
     id: 19,
