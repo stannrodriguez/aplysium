@@ -228,7 +228,7 @@ class SplitBrainSim extends SimElement {
     if (!this.askedWhy)
       return `The mouth reported ${this.pair.right} and the left hand took the ${this.pair.handCard}. The hemisphere that has to answer for that never saw the reason for it. Ask it anyway.`;
 
-    return 'It did not say “I don’t know.” It produced a reason, at once, with no sense of having invented one — which is the finding, and the uncomfortable part of it is that this is the half of the brain doing your explaining all the time.';
+    return 'It did not say “I don’t know.” It produced a reason at once, with no sense of having invented one. The uncomfortable part is that this is the same half of the brain that explains you to yourself all day.';
   }
 }
 

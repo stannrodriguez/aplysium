@@ -224,7 +224,7 @@ class RetinaSim extends SimElement {
     const last = this.last;
     if (!last) return 'Click anywhere on the retina to put the spot of light there and flash it.';
     if (last.diffuse)
-      return 'The whole retina lit at once, and the cell barely moved off its resting rate. Centre and surround cancel — which is the result.';
+      return 'The whole retina lit at once, and the cell barely moved off its resting rate. Centre and surround cancel almost exactly, so even bright uniform light is close to invisible to this cell.';
     const d = Math.hypot(last.x - CX, last.y - CY);
     if (last.r > 34)
       return 'A spot this wide covers centre and surround together, so most of what it excites it also suppresses.';

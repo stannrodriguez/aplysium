@@ -266,7 +266,7 @@ class RotationSim extends SimElement {
       0,
     )} ms for every extra degree — call it ${degPerSec.toFixed(
       0,
-    )}° a second. Shepard and Metzler's subjects came out near sixty. A straight line is the whole claim: something is being turned at a rate, not looked up.`;
+    )}° a second. Shepard and Metzler's subjects came out near sixty. A straight line means something is being turned at a rate rather than looked up — the wider the angle, the further it has to go.`;
   }
 }
 

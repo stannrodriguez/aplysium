@@ -16,6 +16,19 @@ export type MotifKey =
 /** Interactive component a study's entry embeds, if it has one. */
 export type SimulatorKey = 'aplysia' | 'cajal' | 'axon' | 'retina' | 'homunculus' | 'iconic' | 'orientation' | 'splitbrain' | 'placefield' | 'rotation' | 'replay' | 'dopamine' | 'gorilla' | 'grid';
 
+/**
+ * The long answer to "why does this matter". Rendered as one layer on the
+ * entry, so it is shaped like one: a line for the closed state, paragraphs for
+ * the open one. It should say what the field could not do before and what it
+ * could do after — not that the result was important.
+ */
+export interface Significance {
+  /** One line, shown under the layer title while it is closed. */
+  summary: string;
+  /** Two or three paragraphs. */
+  paras: string[];
+}
+
 export interface Study {
   /** Chronological position, 1–20. Stable id for the study. */
   id: number;
@@ -45,8 +58,13 @@ export interface Study {
   claim: string;
   /** What they found, in one sentence. */
   finding: string;
-  /** Why the result mattered. */
+  /**
+   * Why the result mattered, in two or three sentences. Leads the entry as the
+   * bridge under the claim; `significance` carries the long version.
+   */
   why: string;
+  /** The case for why it mattered, at length — the "Why it matters" layer. */
+  significance: Significance;
   /** How they actually did it — the method payload. */
   method: string;
   /** Which interactive island the entry embeds. Absent = prose only. */

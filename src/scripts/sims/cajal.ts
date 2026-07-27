@@ -188,7 +188,7 @@ class CajalSim extends SimElement {
       return 'A sparse stain is the useful one. With this few cells taken, every process you see belongs to a cell you can point at.';
     if (n >= 7)
       return 'Stain too many and the processes overlap. This is why the sparseness is the method, not a limitation of it.';
-    return 'The stain takes a random few cells and leaves the rest blank. That is the whole trick — one neuron, drawn whole, against nothing.';
+    return 'The stain takes a random few cells and leaves the rest blank, so a single neuron stands out entire — every branch of it traceable, with nothing overlapping to confuse the picture.';
   }
 
   private zoomSvg(): string {
@@ -232,7 +232,7 @@ class CajalSim extends SimElement {
     if (n === 0) return 'Trace an axon to its terminal to start the count.';
     if (n < 4)
       return `${n} terminal${n === 1 ? '' : 's'} traced, ${n === 1 ? 'none' : 'none of them'} continuous with the next cell. Keep going — a negative result is only worth something once there are enough of them.`;
-    return `${n} terminals traced across ${this.section + 1} section${this.section ? 's' : ''}, not one of them continuous. That is the argument: Cajal drew hundreds and never found the exception the reticular theory required.`;
+    return `${n} terminals traced across ${this.section + 1} section${this.section ? 's' : ''}, not one of them continuous. Cajal drew hundreds of these and never found the exception the reticular theory needed: a single place where one cell ran into the next without a break.`;
   }
 }
 

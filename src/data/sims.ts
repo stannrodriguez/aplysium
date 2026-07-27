@@ -14,13 +14,13 @@ export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
   retina:
     'Click anywhere on the retina to flash the spot there and read the rate. Then flood the whole patch evenly, and map the field to see the shape that explains it.',
   homunculus:
-    'Click along the strip. Each segment is as wide as the cortex that body part really occupies, so which parts you keep landing on is the finding before you read a word of it.',
+    'Click along the strip. Each segment is as wide as the cortex that body part really occupies, so where your clicks keep landing tells you the result before you read a word of it.',
   iconic:
     'This one runs on you. Twelve letters for fifty milliseconds, then either report the lot or report the one row the cue names. Compare the two scores, then push the cue later.',
   orientation:
-    'Hunt for the angle this cell wants, one bar at a time, and watch the tuning curve fill in. Try the spot of light too — that is what had been failing for months.',
+    'Hunt for the angle this cell wants, one bar at a time, and watch the tuning curve fill in. Try the spot of light too: months of spots was what had been failing to move these cells at all.',
   splitbrain:
-    'Flash the pair, then ask it both ways — out loud, and with the left hand. When the two answers disagree, ask why. That last answer is the study.',
+    'Flash the pair, then ask it both ways — out loud, and with the left hand. When the two answers disagree, ask why: the explanation you get back is a confident reason for a choice the talking half never made.',
   placefield:
     'Let the animal forage until the spikes pile up somewhere. Take another cell and it cares about somewhere else. Then turn the cue card and watch the field go with it.',
   rotation:
