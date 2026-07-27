@@ -1,0 +1,48 @@
+/* ── O'Keefe · the place field ────────────────────────────────────────────
+   The arena from above: where the animal went, and where it was standing each
+   time the cell fired. */
+
+.pf-arena {
+  height: auto;
+  aspect-ratio: 260 / 200;
+}
+
+.pf-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.pf-floor {
+  fill: var(--sim-well);
+  stroke: var(--sim-border);
+  stroke-width: 1;
+}
+
+/* the only landmark in the box */
+.pf-cue { fill: var(--sim-tissue); }
+
+.pf-path {
+  fill: none;
+  stroke: var(--meta-faint);
+  stroke-width: .8;
+  opacity: .55;
+}
+
+.pf-spike { fill: var(--sim-signal); opacity: .72; }
+
+.pf-rat {
+  fill: var(--ink);
+}
+
+.pf-rat-firing {
+  fill: none;
+  stroke: var(--sim-signal);
+  stroke-width: 1.6;
+}
+
+.pf-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+}

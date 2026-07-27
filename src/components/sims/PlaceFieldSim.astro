@@ -1,0 +1,69 @@
+---
+import '../../styles/sim.css';
+import '../../styles/sims/placefield.css';
+
+interface Props {
+  label?: string;
+}
+
+const { label = 'One hippocampal cell · rat, freely moving' } = Astro.props;
+---
+
+<placefield-sim class="sim">
+  <div class="sim-chrome">
+    <span class="sim-chrome-dot" aria-hidden="true"></span>
+    <span class="sim-chrome-label">{label}</span>
+    <span class="sim-chrome-status" data-sim-status aria-live="polite">cell 1 · 0 spikes</span>
+  </div>
+
+  <div class="sim-panels">
+    <section class="sim-panel">
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">The arena, from above</h3>
+        <p class="sim-readout">firing <b data-sim-rate aria-live="polite">0 /s</b></p>
+      </div>
+
+      <div class="sim-stage pf-arena" data-sim-arena></div>
+
+      <p class="sim-key pf-legend">
+        <span><i style="background:var(--sim-signal)"></i> a spike, where it happened</span>
+        <span><i style="background:var(--meta-faint)"></i> where the animal went</span>
+        <span><i style="background:var(--sim-tissue)"></i> cue card</span>
+      </p>
+
+      <p class="sim-note" data-sim-arena-note>
+        Click anywhere in the box to walk the animal there, or let it forage and cover the floor on
+        its own.
+      </p>
+    </section>
+
+    <section class="sim-panel">
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">Turn the only landmark</h3>
+        <p class="sim-readout">floor covered <b data-sim-coverage>0%</b></p>
+      </div>
+
+      <button type="button" class="sim-run" data-sim-rotate>Turn the cue card a quarter turn</button>
+
+      <p class="sim-note">
+        The box is featureless apart from the card on one wall. Turning it clears the map and starts
+        again — watch where the field lands the second time.
+      </p>
+
+      <p class="sim-verdict" data-sim-verdict>
+        A spike train alone is a list of times. Plotting each spike where the animal was standing is
+        what turns it into a map — so cover some ground first.
+      </p>
+    </section>
+  </div>
+
+  <div class="sim-controls">
+    <button type="button" class="sim-btn sim-btn-primary" data-sim-run>▶ let it forage</button>
+    <button type="button" class="sim-btn sim-btn-outline" data-sim-next-cell>Next cell</button>
+    <button type="button" class="sim-btn sim-btn-quiet" data-sim-clear>Clear</button>
+  </div>
+</placefield-sim>
+
+<script>
+  import '../../scripts/sims/placefield';
+</script>
