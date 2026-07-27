@@ -9,6 +9,8 @@ export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
     'Tap the siphon a few times, then shock the tail. Try the two training schedules at the bottom. The reading on the left explains whatever you just did.',
   cajal:
     'Stain a section, then follow a stained axon to the marked terminal at its end. The toggle draws the rival theory over the same contact, so you can see the two predictions differ.',
+  axon:
+    'Push the stimulus up until it fires, then keep pushing — every spike lands on the last. The blockers at the bottom take one ion channel out at a time.',
 };
 
 export const simCaption = (kind: SimulatorKey): string => SIM_CAPTIONS[kind];

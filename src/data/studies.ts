@@ -40,6 +40,7 @@ export const studies: Study[] = [
     finding: 'The action potential is sodium rushing in, then potassium leaving, and the timing of the two accounts for its shape.',
     why: 'Turned the nerve impulse from a mystery into an equation you can actually solve.',
     method: 'The squid axon is wide enough to thread a wire down. Holding voltage fixed and measuring the current needed to hold it, they separated the two ion currents and fitted equations that predicted the spike they had not yet used to fit them.',
+    simulator: 'axon',
   },
   {
     id: 3,

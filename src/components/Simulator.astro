@@ -8,6 +8,7 @@
  * caption in `src/data/sims.ts`.
  */
 import AplysiaSim from './sims/AplysiaSim.astro';
+import AxonSim from './sims/AxonSim.astro';
 import CajalSim from './sims/CajalSim.astro';
 import type { SimulatorKey } from '../data/types';
 
@@ -22,6 +23,7 @@ const { kind } = Astro.props;
 const SIMS: Record<SimulatorKey, any> = {
   aplysia: AplysiaSim,
   cajal: CajalSim,
+  axon: AxonSim,
 };
 
 const Sim = SIMS[kind];

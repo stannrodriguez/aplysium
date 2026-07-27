@@ -1,0 +1,80 @@
+/* ── Hodgkin & Huxley · the action potential ──────────────────────────────
+   Two plots on a shared time axis: membrane potential, and the two
+   conductances underneath it. Everything is computed at runtime, so all of it
+   is written by the script. */
+
+.hh-stage {
+  height: auto;
+  aspect-ratio: 320 / 148;
+}
+
+.hh-stage-g {
+  height: auto;
+  aspect-ratio: 320 / 104;
+}
+
+.hh-plot {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hh-grid {
+  stroke: var(--sim-border);
+  stroke-width: 1;
+}
+
+.hh-tick {
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: .06em;
+  fill: var(--meta);
+}
+
+/* the stimulus pulse itself, so its timing is never in doubt */
+.hh-pulse {
+  fill: var(--sim-signal);
+  opacity: .12;
+}
+
+.hh-line {
+  fill: none;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.hh-live { stroke: var(--sim-signal); }
+.hh-live.is-spike { stroke-width: 2; }
+
+/* earlier runs, kept so suprathreshold traces can be seen to superimpose */
+.hh-ghost {
+  stroke: var(--sim-signal);
+  stroke-width: 1.2;
+  opacity: .26;
+}
+
+.hh-na { stroke: var(--sim-signal); }
+.hh-k { stroke: var(--sim-kept); stroke-dasharray: 4 3; }
+
+/* Draw each new voltage trace left to right — the sweep of the oscilloscope it
+   came off. pathLength normalises the dash to 1000 whatever the polyline
+   measures. Only the voltage trace: the conductance plot needs its dash to
+   tell potassium from sodium, and a sweep would overwrite it. */
+.hh-plot:not([data-still]) .hh-live {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: hh-sweep .65s linear forwards;
+}
+
+@keyframes hh-sweep {
+  to { stroke-dashoffset: 0 }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hh-plot .hh-live {
+    animation: none;
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+  }
+}
