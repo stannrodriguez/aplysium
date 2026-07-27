@@ -59,7 +59,7 @@ export interface Layer {
   num: string;
   title: string;
   /** One line, always visible under the title. */
-  summary: string;
+  summary?: string;
   paras: string[];
   /** Optional nested disclosure for a control or aside. */
   subTitle?: string;
@@ -96,6 +96,13 @@ export const STATUS: Record<StatusKey, { word: string; dot: string; dotEntry: st
     dotEntry: 'var(--status-narrowed)',
     note: 'Reproduces, but the original claim now holds over less ground than it first appeared to.',
   },
+};
+
+/** The status line under an entry's claim. */
+export const ENTRY_STATUS_LINE: Record<StatusKey, string> = {
+  settled: 'holds up under replication',
+  debated: 'replicates; the reading is still debated',
+  narrowed: 'replicates, but narrower than it first looked',
 };
 
 /** Legend wording on the index, which shortens the last two. */

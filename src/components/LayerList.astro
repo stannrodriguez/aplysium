@@ -1,0 +1,192 @@
+---
+import type { Layer } from '../data/types';
+
+interface Props {
+  layers: Layer[];
+}
+
+const { layers } = Astro.props;
+---
+
+<div class="layers">
+  {layers.map((layer, i) => (
+    <details class="layer" open={i === 0}>
+      <summary class="layer-head">
+        <span class="layer-num">{layer.num}</span>
+        <span class="layer-text">
+          <span class="layer-title">{layer.title}</span>
+          {layer.summary && <span class="layer-summary">{layer.summary}</span>}
+        </span>
+        <span class="layer-chev" aria-hidden="true"></span>
+      </summary>
+      <div class="layer-body">
+        {layer.paras.map(para => <p>{para}</p>)}
+        {layer.subTitle && (
+          <details class="sub">
+            <summary class="sub-head">
+              <span class="sub-chev" aria-hidden="true"></span>{layer.subTitle}
+            </summary>
+            <p class="sub-body">{layer.subBody}</p>
+          </details>
+        )}
+      </div>
+    </details>
+  ))}
+</div>
+
+<script>
+  // expand all / collapse all — the only script the reading column needs.
+  const layers = Array.from(document.querySelectorAll<HTMLDetailsElement>('details.layer'));
+  const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-expand-all]'));
+
+  if (layers.length && buttons.length) {
+    const sync = () => {
+      const allOpen = layers.every(l => l.open);
+      buttons.forEach(b => {
+        b.textContent = allOpen ? 'collapse all' : 'expand all';
+        b.setAttribute('aria-expanded', String(allOpen));
+      });
+    };
+
+    buttons.forEach(button =>
+      button.addEventListener('click', () => {
+        const open = !layers.every(l => l.open);
+        layers.forEach(l => { l.open = open; });
+        sync();
+      }),
+    );
+
+    layers.forEach(l => l.addEventListener('toggle', sync));
+    sync();
+  }
+</script>
+
+<style>
+  .layer {
+    border-bottom: 1px solid var(--hairline-entry);
+  }
+
+  .layer-head {
+    display: grid;
+    grid-template-columns: 44px 1fr 34px;
+    gap: 16px;
+    align-items: baseline;
+    padding: 20px 6px 20px 0;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .layer-head::-webkit-details-marker { display: none; }
+  .layer-head:hover { background: var(--hover-row); }
+
+  .layer-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+  }
+
+  .layer-text {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .layer-title {
+    font-family: var(--serif);
+    font-size: 24px;
+    line-height: 1.18;
+    color: var(--ink);
+    text-wrap: pretty;
+  }
+
+  .layer-summary {
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+
+  .layer-chev {
+    font-family: var(--mono);
+    font-size: 17px;
+    color: var(--meta);
+    text-align: right;
+  }
+
+  .layer-chev::after { content: '+'; }
+  .layer[open] > .layer-head .layer-chev::after { content: '−'; }
+
+  .layer-body {
+    padding: 0 0 26px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+  }
+
+  .layer-body > p {
+    font-family: var(--serif);
+    font-size: 18.5px;
+    line-height: 1.62;
+    max-width: 60ch;
+    color: var(--ink);
+    text-wrap: pretty;
+  }
+
+  /* nested disclosure — the deeper control or aside */
+  .sub {
+    border-left: 2px solid var(--accent);
+    padding-left: 16px;
+  }
+
+  .sub-head {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 7px;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: 2px 0;
+  }
+
+  .sub-head::-webkit-details-marker { display: none; }
+  .sub-head:hover { color: var(--accent-hover); }
+  .sub-chev::after { content: '+'; }
+  .sub[open] > .sub-head .sub-chev::after { content: '−'; }
+
+  .sub-body {
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.6;
+    margin-top: 10px;
+    max-width: 58ch;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+
+  @media (max-width: 899px) {
+    .layer-head {
+      grid-template-columns: auto 1fr auto;
+      grid-template-areas:
+        'num title chev'
+        '.   sum   sum';
+      column-gap: 10px;
+      row-gap: 5px;
+      align-items: baseline;
+      padding: 16px 0;
+      min-height: 56px;
+    }
+
+    .layer-num { grid-area: num; font-size: 11px; }
+    .layer-text { display: contents; }
+    .layer-title { grid-area: title; font-size: 21px; line-height: 1.2; }
+    .layer-summary { grid-area: sum; font-size: 14px; line-height: 1.45; }
+    .layer-chev { grid-area: chev; font-size: 16px; }
+
+    .layer-body { padding: 0 0 22px; gap: 12px; }
+    .layer-body > p { font-size: 18px; line-height: 1.6; }
+  }
+</style>

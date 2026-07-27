@@ -1,0 +1,481 @@
+/* ── Aplysia simulator — dark instrument panel ────────────────────────────
+   Global rather than scoped: the trace bars and transmitter vesicles are
+   written by the behavior script at runtime, so they never carry Astro's
+   scope attribute. Everything here is namespaced under .sim-. */
+
+aplysia-sim {
+  display: block;
+}
+
+.sim {
+  background: var(--sim-bg);
+  border: 1px solid var(--sim-border);
+  color: var(--sim-text);
+  font-family: var(--sans);
+  display: flex;
+  flex-direction: column;
+}
+
+/* chrome ------------------------------------------------------------------ */
+.sim-chrome {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 14px;
+  background: var(--sim-chrome);
+  border-bottom: 1px solid var(--sim-border);
+}
+
+.sim-chrome-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--sim-green);
+  flex: none;
+}
+
+.sim-chrome-label,
+.sim-chrome-status {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.sim-chrome-label { color: var(--sim-label); }
+.sim-chrome-status { color: var(--sim-muted); margin-left: auto; letter-spacing: .08em; }
+
+/* panels ------------------------------------------------------------------ */
+.sim-panels {
+  display: flex;
+  flex-direction: column;
+}
+
+.sim-panel {
+  padding: 16px 14px;
+  border-bottom: 1px solid var(--sim-border-soft);
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sim-panel:last-child { border-bottom: 0; }
+
+.sim-panel-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sim-panel-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--sim-label);
+}
+
+.sim-readout {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .06em;
+  color: var(--sim-text);
+  white-space: nowrap;
+}
+
+.sim-readout b { font-weight: 600; color: var(--sim-green); }
+
+.sim-note {
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--sim-muted);
+  text-wrap: pretty;
+}
+
+/* the animal -------------------------------------------------------------- */
+.sim-stage {
+  position: relative;
+  height: 154px;
+  background: var(--sim-panel);
+  border: 1px solid var(--sim-border-soft);
+  overflow: hidden;
+}
+
+.sim-mantle {
+  position: absolute;
+  left: 16px;
+  top: 46px;
+  width: 118px;
+  height: 66px;
+  border-radius: 40px 20px 20px 40px;
+  background: #1B2226;
+  border: 1px solid #232B2F;
+}
+
+.sim-gill {
+  position: absolute;
+  left: 116px;
+  top: 42px;
+  transform-origin: left center;
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  transition: transform .38s ease;
+}
+
+.sim-gill span {
+  display: block;
+  width: 10px;
+  border-radius: 6px;
+  background: var(--sim-green);
+  opacity: .85;
+}
+
+.sim-stage-label {
+  position: absolute;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .1em;
+  color: var(--sim-label);
+}
+
+.sim-label-gill { left: 112px; top: 120px; }
+.sim-label-body { left: 40px; top: 72px; }
+
+.sim-siphon {
+  position: absolute;
+  right: 16px;
+  top: 50px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1.5px solid var(--sim-green);
+  background: transparent;
+  color: var(--sim-green);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.sim-siphon:hover { background: rgba(79, 209, 165, .12); }
+.sim-siphon.is-flash { background: var(--sim-green); color: var(--sim-bg); }
+
+/* the synapse ------------------------------------------------------------- */
+.sim-synapse {
+  position: relative;
+  height: 132px;
+  background: var(--sim-panel);
+  border: 1px solid var(--sim-border-soft);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 12px 14px;
+}
+
+.sim-neuron {
+  height: 26px;
+  background: #1B2226;
+  border: 1px solid #232B2F;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .08em;
+  color: var(--sim-label);
+}
+
+.sim-cleft {
+  position: relative;
+  height: 38px;
+  margin: 0 6px;
+}
+
+.sim-vesicle {
+  position: absolute;
+  top: 2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--sim-green);
+  animation: apl-drift 1.3s linear infinite;
+}
+
+@keyframes apl-drift {
+  0% { transform: translateY(0); opacity: 0 }
+  20% { opacity: 1 }
+  80% { opacity: 1 }
+  100% { transform: translateY(26px); opacity: 0 }
+}
+
+/* the trace --------------------------------------------------------------- */
+.sim-trace {
+  height: 76px;
+  background: var(--sim-panel);
+  border: 1px solid var(--sim-border-soft);
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  padding: 8px 10px;
+  overflow-x: auto;
+}
+
+.sim-trace-empty {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .06em;
+  color: var(--sim-label);
+  align-self: center;
+}
+
+.sim-bar {
+  width: 12px;
+  flex: none;
+  border-radius: 1px 1px 0 0;
+}
+
+.sim-bar-base { background: var(--sim-green); }
+.sim-bar-sens { background: var(--sim-amber); }
+.sim-bar-shock { background: var(--sim-orange); }
+.sim-bar-rest { background: #394044; }
+
+.sim-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .06em;
+  color: var(--sim-label);
+}
+
+.sim-key span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.sim-key i {
+  width: 7px;
+  height: 7px;
+  flex: none;
+}
+
+/* training ---------------------------------------------------------------- */
+.sim-choices {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sim-choice {
+  flex: 1 1 150px;
+  min-height: 52px;
+  padding: 8px 12px;
+  text-align: left;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--sim-border);
+  color: var(--sim-text);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sim-choice b { font-size: 13px; font-weight: 600; }
+.sim-choice em { font-style: normal; font-size: 11.5px; color: var(--sim-muted); }
+.sim-choice:hover { border-color: var(--sim-muted); }
+.sim-choice[aria-pressed='true'] { background: var(--sim-green); border-color: var(--sim-green); color: #06231A; }
+.sim-choice[aria-pressed='true'] em { color: #0C3527; }
+
+.sim-toggle {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.sim-toggle-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--sim-label);
+  flex: 1 1 100%;
+}
+
+.sim-pill {
+  min-height: 44px;
+  padding: 0 14px;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--sim-border);
+  color: var(--sim-muted);
+  font-size: 12.5px;
+}
+
+.sim-pill:hover { border-color: var(--sim-muted); color: var(--sim-text); }
+.sim-pill[aria-pressed='true'] { border-color: var(--sim-orange); color: var(--sim-orange); }
+.sim-pill[data-sim-protein='intact'][aria-pressed='true'] { border-color: var(--sim-green); color: var(--sim-green); }
+
+.sim-run {
+  min-height: 44px;
+  width: 100%;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--sim-amber);
+  color: var(--sim-amber);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.sim-run:hover { background: rgba(214, 168, 60, .12); }
+
+.sim-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sim-results[hidden] { display: none; }
+
+.sim-results-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.sim-metric {
+  background: var(--sim-panel);
+  border: 1px solid var(--sim-border-soft);
+  padding: 10px 12px;
+}
+
+.sim-metric-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--sim-label);
+}
+
+.sim-meter {
+  height: 10px;
+  background: #191F22;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.sim-meter i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--sim-green);
+  transition: width .4s ease;
+}
+
+.sim-metric-word {
+  font-size: 12.5px;
+  color: var(--sim-muted);
+  margin-top: 6px;
+}
+
+.sim-conn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--sim-panel);
+  border: 1px solid var(--sim-border-soft);
+  padding: 10px 12px;
+}
+
+.sim-conn-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 34px;
+  flex: none;
+}
+
+.sim-conn-bars i {
+  display: block;
+  width: 14px;
+  background: var(--sim-green);
+  transition: height .4s ease;
+}
+
+.sim-conn-bars i.is-new { background: var(--sim-amber); }
+
+.sim-verdict {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--sim-text);
+  border-left: 2px solid var(--sim-amber);
+  padding-left: 11px;
+  text-wrap: pretty;
+}
+
+/* controls — pinned to the foot of the panel, never scrolled away --------- */
+.sim-controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 14px;
+  background: var(--sim-chrome);
+  border-top: 1px solid var(--sim-border);
+}
+
+/* On desktop the panel scrolls inside its sticky column, so pin the controls
+   to its foot. On mobile the page itself scrolls and pinning would float them
+   over the panels. */
+@media (min-width: 900px) {
+  .sim-controls {
+    position: sticky;
+    bottom: 0;
+  }
+}
+
+.sim-btn {
+  flex: 1 1 120px;
+  min-height: 44px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  font-size: 13.5px;
+  font-weight: 600;
+  font-family: var(--sans);
+}
+
+.sim-btn-primary { background: var(--sim-green); color: #06231A; }
+.sim-btn-primary:hover { background: #6ADDB6; }
+
+.sim-btn-shock {
+  background: transparent;
+  border-color: var(--sim-orange);
+  color: var(--sim-orange);
+}
+.sim-btn-shock:hover { background: rgba(224, 113, 74, .14); }
+
+.sim-btn-rest {
+  flex: 0 1 92px;
+  background: transparent;
+  border-color: var(--sim-border);
+  color: var(--sim-muted);
+  font-weight: 400;
+}
+.sim-btn-rest:hover { border-color: var(--sim-muted); color: var(--sim-text); }
+
+.sim :focus-visible {
+  outline: 2px solid var(--sim-green);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sim-gill,
+  .sim-meter i,
+  .sim-conn-bars i { transition: none; }
+  .sim-vesicle { animation: none; opacity: 1; }
+}
