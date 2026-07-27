@@ -1,0 +1,62 @@
+/* ── Wilson & McNaughton · replay ─────────────────────────────────────────
+   A linear track above two rasters on different time scales — four seconds of
+   running, and two seconds of sleep with the same order inside it. */
+
+.rep-track-stage {
+  height: auto;
+  aspect-ratio: 320 / 76;
+}
+
+.rep-raster-stage {
+  height: auto;
+  aspect-ratio: 320 / 108;
+}
+
+.rep-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.rep-track {
+  stroke: var(--sim-tissue);
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+
+.rep-field {
+  fill: none;
+  stroke: var(--meta-faint);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+}
+
+.rep-field.is-on {
+  fill: var(--sim-signal-wash);
+  stroke: var(--sim-signal);
+  stroke-dasharray: none;
+}
+
+.rep-rat { fill: var(--ink); }
+
+.rep-cell-label {
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: .06em;
+  fill: var(--meta);
+}
+
+.rep-row {
+  stroke: var(--sim-border);
+  stroke-width: 1;
+}
+
+.rep-tick { stroke-width: 1.5; }
+.rep-tick-run { stroke: var(--sim-signal); }
+.rep-tick-sleep { stroke: var(--sim-kept); }
+
+.rep-scales {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}

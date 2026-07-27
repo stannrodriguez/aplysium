@@ -252,6 +252,7 @@ export const studies: Study[] = [
     finding: 'Place-cell sequences run during the maze re-run during later sleep, compressed roughly twentyfold.',
     why: 'Caught the sleeping brain replaying the day’s path at high speed.',
     method: 'Record many cells at once, learn which pairs fire together on the track, then look for that same order in sleep. It only works because the arrays got big enough to see sequence rather than single cells.',
+    simulator: 'replay',
   },
   {
     id: 15,

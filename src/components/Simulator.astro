@@ -17,6 +17,7 @@ import OrientationSim from './sims/OrientationSim.astro';
 import SplitBrainSim from './sims/SplitBrainSim.astro';
 import PlaceFieldSim from './sims/PlaceFieldSim.astro';
 import RotationSim from './sims/RotationSim.astro';
+import ReplaySim from './sims/ReplaySim.astro';
 import type { SimulatorKey } from '../data/types';
 
 interface Props {
@@ -38,6 +39,7 @@ const SIMS: Record<SimulatorKey, any> = {
   splitbrain: SplitBrainSim,
   placefield: PlaceFieldSim,
   rotation: RotationSim,
+  replay: ReplaySim,
 };
 
 const Sim = SIMS[kind];
