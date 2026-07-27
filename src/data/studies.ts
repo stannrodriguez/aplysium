@@ -22,6 +22,7 @@ export const studies: Study[] = [
     finding: 'Silver-stained tissue showed neurons ending in free terminals, not fused into a continuous net.',
     why: 'Settled a basic question — the brain is built from separate cells, not one continuous web. Everything since assumes it.',
     method: 'Golgi’s silver chromate stains a sparse random subset of cells, so a single neuron shows up whole against blank tissue. Cajal drew hundreds of them and never once found two cells continuous.',
+    simulator: 'cajal',
   },
   {
     id: 2,
