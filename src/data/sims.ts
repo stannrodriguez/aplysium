@@ -23,6 +23,8 @@ export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
     'Flash the pair, then ask it both ways — out loud, and with the left hand. When the two answers disagree, ask why. That last answer is the study.',
   placefield:
     'Let the animal forage until the spikes pile up somewhere. Take another cell and it cares about somewhere else. Then turn the cue card and watch the field go with it.',
+  rotation:
+    'Your own reaction times are the data here. Answer as fast as you are sure, across a dozen angles, and see whether the line through them comes out straight.',
 };
 
 export const simCaption = (kind: SimulatorKey): string => SIM_CAPTIONS[kind];
