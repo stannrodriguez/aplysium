@@ -24,9 +24,9 @@ const metaYear = dive.metaYear ?? study.year;
 const statusLine = ENTRY_STATUS_LINE[study.status];
 const sim = study.simulator;
 const caption = sim ? dive.simCaption ?? simCaption(sim) : null;
-// The right-hand column exists for the instrument, or for a note about the one
-// this study is still waiting on.
-const twoColumn = Boolean(sim) || study.hasDemo;
+// The right-hand column exists for the instrument. A study without one reads
+// as a single column of prose.
+const twoColumn = Boolean(sim);
 ---
 
 <Base title={`${study.claim} — ${study.author}`} description={dive.bridge}>
@@ -65,18 +65,6 @@ const twoColumn = Boolean(sim) || study.hasDemo;
         </aside>
       )}
 
-      {!sim && study.hasDemo && (
-        <aside class="sim-col">
-          <p class="sim-col-label">The experiment</p>
-          <div class="sim-pending">
-            <p>
-              Not built yet. The worked example is
-              <a href={withBase('/studies/kandel-aplysia/')}>Kandel's gill-withdrawal reflex</a>, where you can run
-              the training yourself.
-            </p>
-          </div>
-        </aside>
-      )}
     </div>
 
     <footer class="entry-foot">
@@ -212,15 +200,6 @@ const twoColumn = Boolean(sim) || study.hasDemo;
     line-height: 1.55;
     color: var(--muted);
     margin-top: 10px;
-  }
-
-  .sim-pending {
-    border: 1px solid var(--hairline-entry);
-    padding: 18px;
-    font-size: 14px;
-    line-height: 1.55;
-    color: var(--muted);
-    text-wrap: pretty;
   }
 
   .entry-foot {
