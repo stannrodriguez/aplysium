@@ -1,0 +1,83 @@
+---
+import '../../styles/sim.css';
+import '../../styles/sims/gorilla.css';
+
+interface Props {
+  label?: string;
+}
+
+const { label = 'One viewing · count the passes' } = Astro.props;
+---
+
+<gorilla-sim class="sim">
+  <div class="sim-chrome">
+    <span class="sim-chrome-dot" aria-hidden="true"></span>
+    <span class="sim-chrome-label">{label}</span>
+    <span class="sim-chrome-status" data-sim-status aria-live="polite">ready</span>
+  </div>
+
+  <div class="sim-panels">
+    <section class="sim-panel">
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">The task</h3>
+      </div>
+
+      <div class="sim-stage gor-stage" data-sim-court>
+        <p class="gor-brief">
+          Three players in white pass a ball between themselves, three in dark do the same.
+          <b>Count the passes made by the white team.</b> It runs for sixteen seconds and you get one
+          go at it.
+        </p>
+      </div>
+
+      <p class="sim-note" data-sim-task>One viewing. The count is what you are being asked for.</p>
+
+      <div class="gor-row" data-sim-count-row hidden>
+        <input
+          class="gor-input"
+          type="number"
+          min="0"
+          max="99"
+          inputmode="numeric"
+          data-sim-count
+          placeholder="passes"
+          aria-label="How many passes did the white team make?"
+        />
+        <button type="button" class="gor-btn" data-sim-submit>That is my count</button>
+      </div>
+
+      <div data-sim-saw-row hidden>
+        <p class="gor-question">Did you see anything other than the players and the ball?</p>
+        <div class="gor-row" style="margin-top:10px">
+          <button type="button" class="gor-btn" data-sim-saw="yes">Yes</button>
+          <button type="button" class="gor-btn" data-sim-saw="no">No</button>
+        </div>
+      </div>
+
+      <p class="gor-actual" data-sim-actual aria-live="polite"></p>
+    </section>
+
+    <section class="sim-panel" data-sim-result hidden>
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">What that was</h3>
+      </div>
+
+      <p class="sim-verdict" data-sim-verdict></p>
+
+      <p class="sim-note">
+        Simons and Chabris got about half. The design is spent after one trial per person, which is
+        why the sample size had to do the work — and why watching it a second time tells you nothing
+        about yourself.
+      </p>
+    </section>
+  </div>
+
+  <div class="sim-controls">
+    <button type="button" class="sim-btn sim-btn-primary" data-sim-start>Start the clip</button>
+    <button type="button" class="sim-btn sim-btn-quiet" data-sim-reset>Reset</button>
+  </div>
+</gorilla-sim>
+
+<script>
+  import '../../scripts/sims/gorilla';
+</script>
