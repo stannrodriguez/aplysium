@@ -33,7 +33,7 @@ src/lib/entry.ts               picks the authored deep dive, or falls back
 src/components/                Motif, StatusDot, StudyCard, LayerList, AplysiaSim
 src/scripts/aplysia-sim.ts     simulator behaviour model
 src/styles/global.css          design tokens, motif keyframes
-src/styles/sim.css             the dark instrument panel
+src/styles/sim.css             the simulator panel
 ```
 
 ## Adding a study
@@ -64,4 +64,6 @@ property if one is set — on tap, shock, rest and train.
   transmitter drift, and makes the gill and meters change state instantly.
 - Every simulator control is at least a 44px target.
 - Replication dots carry their status word as an accessible label.
+- The simulator's mono labels sit at `--muted` rather than `--meta`, which
+  keeps them above 4.5:1 on the warm ground.
 - The reading layers are native `<details>`, so they work with no JavaScript.

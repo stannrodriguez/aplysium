@@ -1,16 +1,17 @@
-/* ── Aplysia simulator — dark instrument panel ────────────────────────────
-   Global rather than scoped: the trace bars and transmitter vesicles are
-   written by the behavior script at runtime, so they never carry Astro's
-   scope attribute. Everything here is namespaced under .sim-. */
+/* ── Aplysia simulator ────────────────────────────────────────────────────
+   An instrument sitting on the same paper as the reading: warm ground, square
+   corners, rust for the live signal. Global rather than scoped — the trace
+   bars and transmitter vesicles are written by the behavior script at runtime,
+   so they never carry Astro's scope attribute. Namespaced under .sim-. */
 
 aplysia-sim {
   display: block;
 }
 
 .sim {
-  background: var(--sim-bg);
+  background: var(--sim-paper);
   border: 1px solid var(--sim-border);
-  color: var(--sim-text);
+  color: var(--ink);
   font-family: var(--sans);
   display: flex;
   flex-direction: column;
@@ -30,7 +31,7 @@ aplysia-sim {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--sim-green);
+  background: var(--sim-signal);
   flex: none;
 }
 
@@ -42,8 +43,8 @@ aplysia-sim {
   text-transform: uppercase;
 }
 
-.sim-chrome-label { color: var(--sim-label); }
-.sim-chrome-status { color: var(--sim-muted); margin-left: auto; letter-spacing: .08em; }
+.sim-chrome-label { color: var(--muted); }
+.sim-chrome-status { color: var(--muted); margin-left: auto; letter-spacing: .08em; }
 
 /* panels ------------------------------------------------------------------ */
 .sim-panels {
@@ -53,8 +54,7 @@ aplysia-sim {
 
 .sim-panel {
   padding: 16px 14px;
-  border-bottom: 1px solid var(--sim-border-soft);
-
+  border-bottom: 1px solid var(--sim-border);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -74,23 +74,23 @@ aplysia-sim {
   font-size: 10px;
   letter-spacing: .12em;
   text-transform: uppercase;
-  color: var(--sim-label);
+  color: var(--muted);
 }
 
 .sim-readout {
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: .06em;
-  color: var(--sim-text);
+  color: var(--muted);
   white-space: nowrap;
 }
 
-.sim-readout b { font-weight: 600; color: var(--sim-green); }
+.sim-readout b { font-weight: 600; color: var(--sim-signal); }
 
 .sim-note {
   font-size: 12.5px;
   line-height: 1.45;
-  color: var(--sim-muted);
+  color: var(--muted);
   text-wrap: pretty;
 }
 
@@ -98,8 +98,8 @@ aplysia-sim {
 .sim-stage {
   position: relative;
   height: 154px;
-  background: var(--sim-panel);
-  border: 1px solid var(--sim-border-soft);
+  background: var(--sim-well);
+  border: 1px solid var(--sim-border);
   overflow: hidden;
 }
 
@@ -110,8 +110,7 @@ aplysia-sim {
   width: 118px;
   height: 66px;
   border-radius: 40px 20px 20px 40px;
-  background: #1B2226;
-  border: 1px solid #232B2F;
+  background: var(--sim-tissue);
 }
 
 .sim-gill {
@@ -129,7 +128,7 @@ aplysia-sim {
   display: block;
   width: 10px;
   border-radius: 6px;
-  background: var(--sim-green);
+  background: var(--sim-signal);
   opacity: .85;
 }
 
@@ -138,7 +137,7 @@ aplysia-sim {
   font-family: var(--mono);
   font-size: 9px;
   letter-spacing: .1em;
-  color: var(--sim-label);
+  color: var(--muted);
 }
 
 .sim-label-gill { left: 112px; top: 120px; }
@@ -152,24 +151,24 @@ aplysia-sim {
   height: 54px;
   border-radius: 50%;
   cursor: pointer;
-  border: 1.5px solid var(--sim-green);
-  background: transparent;
-  color: var(--sim-green);
+  border: 1.5px solid var(--sim-signal);
+  background: var(--sim-paper);
+  color: var(--sim-signal);
   font-family: var(--mono);
   font-size: 9px;
   letter-spacing: .08em;
   text-transform: uppercase;
 }
 
-.sim-siphon:hover { background: rgba(79, 209, 165, .12); }
-.sim-siphon.is-flash { background: var(--sim-green); color: var(--sim-bg); }
+.sim-siphon:hover { background: var(--sim-signal-wash); }
+.sim-siphon.is-flash { background: var(--sim-signal); color: var(--sim-paper); }
 
 /* the synapse ------------------------------------------------------------- */
 .sim-synapse {
   position: relative;
   height: 132px;
-  background: var(--sim-panel);
-  border: 1px solid var(--sim-border-soft);
+  background: var(--sim-well);
+  border: 1px solid var(--sim-border);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -178,15 +177,14 @@ aplysia-sim {
 
 .sim-neuron {
   height: 26px;
-  background: #1B2226;
-  border: 1px solid #232B2F;
+  background: var(--sim-tissue);
   display: flex;
   align-items: center;
   padding: 0 10px;
   font-family: var(--mono);
   font-size: 9px;
   letter-spacing: .08em;
-  color: var(--sim-label);
+  color: var(--sim-tissue-ink);
 }
 
 .sim-cleft {
@@ -201,7 +199,7 @@ aplysia-sim {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--sim-green);
+  background: var(--sim-signal);
   animation: apl-drift 1.3s linear infinite;
 }
 
@@ -215,8 +213,8 @@ aplysia-sim {
 /* the trace --------------------------------------------------------------- */
 .sim-trace {
   height: 76px;
-  background: var(--sim-panel);
-  border: 1px solid var(--sim-border-soft);
+  background: var(--sim-chrome);
+  border: 1px solid var(--sim-border);
   display: flex;
   align-items: flex-end;
   gap: 4px;
@@ -228,20 +226,19 @@ aplysia-sim {
   font-family: var(--mono);
   font-size: 10.5px;
   letter-spacing: .06em;
-  color: var(--sim-label);
+  color: var(--muted);
   align-self: center;
 }
 
 .sim-bar {
   width: 12px;
   flex: none;
-  border-radius: 1px 1px 0 0;
 }
 
-.sim-bar-base { background: var(--sim-green); }
-.sim-bar-sens { background: var(--sim-amber); }
-.sim-bar-shock { background: var(--sim-orange); }
-.sim-bar-rest { background: #394044; }
+.sim-bar-base { background: var(--sim-signal); }
+.sim-bar-sens { background: var(--sim-sens); }
+.sim-bar-shock { background: var(--sim-shock); }
+.sim-bar-rest { background: var(--sim-rest); }
 
 .sim-key {
   display: flex;
@@ -250,7 +247,7 @@ aplysia-sim {
   font-family: var(--mono);
   font-size: 9.5px;
   letter-spacing: .06em;
-  color: var(--sim-label);
+  color: var(--muted);
 }
 
 .sim-key span {
@@ -278,19 +275,23 @@ aplysia-sim {
   padding: 8px 12px;
   text-align: left;
   cursor: pointer;
-  background: transparent;
-  border: 1px solid var(--sim-border);
-  color: var(--sim-text);
+  background: var(--sim-paper);
+  border: 1px solid var(--sim-rest);
+  color: var(--ink);
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
 .sim-choice b { font-size: 13px; font-weight: 600; }
-.sim-choice em { font-style: normal; font-size: 11.5px; color: var(--sim-muted); }
-.sim-choice:hover { border-color: var(--sim-muted); }
-.sim-choice[aria-pressed='true'] { background: var(--sim-green); border-color: var(--sim-green); color: #06231A; }
-.sim-choice[aria-pressed='true'] em { color: #0C3527; }
+.sim-choice em { font-style: normal; font-size: 11.5px; color: var(--muted); }
+.sim-choice:hover { border-color: var(--meta); }
+.sim-choice[aria-pressed='true'] {
+  background: var(--sim-signal);
+  border-color: var(--sim-signal);
+  color: var(--sim-paper);
+}
+.sim-choice[aria-pressed='true'] em { color: #F0DCD3; }
 
 .sim-toggle {
   display: flex;
@@ -304,7 +305,7 @@ aplysia-sim {
   font-size: 9.5px;
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--sim-label);
+  color: var(--muted);
   flex: 1 1 100%;
 }
 
@@ -312,28 +313,37 @@ aplysia-sim {
   min-height: 44px;
   padding: 0 14px;
   cursor: pointer;
-  background: transparent;
-  border: 1px solid var(--sim-border);
-  color: var(--sim-muted);
+  background: var(--sim-paper);
+  border: 1px solid var(--sim-rest);
+  color: var(--muted);
   font-size: 12.5px;
 }
 
-.sim-pill:hover { border-color: var(--sim-muted); color: var(--sim-text); }
-.sim-pill[aria-pressed='true'] { border-color: var(--sim-orange); color: var(--sim-orange); }
-.sim-pill[data-sim-protein='intact'][aria-pressed='true'] { border-color: var(--sim-green); color: var(--sim-green); }
+.sim-pill:hover { border-color: var(--meta); color: var(--ink); }
+
+.sim-pill[data-sim-protein='intact'][aria-pressed='true'] {
+  border-color: var(--sim-kept);
+  color: var(--sim-kept);
+}
+
+.sim-pill[data-sim-protein='blocked'][aria-pressed='true'] {
+  border-color: var(--sim-signal);
+  color: var(--sim-signal);
+}
 
 .sim-run {
   min-height: 44px;
   width: 100%;
   cursor: pointer;
-  background: transparent;
-  border: 1px solid var(--sim-amber);
-  color: var(--sim-amber);
+  background: var(--sim-paper);
+  border: 1px solid var(--sim-signal);
+  color: var(--sim-signal);
   font-size: 13px;
   font-weight: 600;
 }
 
-.sim-run:hover { background: rgba(214, 168, 60, .12); }
+.sim-run:hover:not(:disabled) { background: var(--sim-signal-wash); }
+.sim-run:disabled { border-color: var(--sim-rest); color: var(--meta); cursor: default; }
 
 .sim-results {
   display: flex;
@@ -350,8 +360,8 @@ aplysia-sim {
 }
 
 .sim-metric {
-  background: var(--sim-panel);
-  border: 1px solid var(--sim-border-soft);
+  background: var(--sim-chrome);
+  border: 1px solid var(--sim-border);
   padding: 10px 12px;
 }
 
@@ -360,12 +370,12 @@ aplysia-sim {
   font-size: 9.5px;
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--sim-label);
+  color: var(--muted);
 }
 
 .sim-meter {
   height: 10px;
-  background: #191F22;
+  background: var(--sim-track);
   margin-top: 8px;
   overflow: hidden;
 }
@@ -374,13 +384,13 @@ aplysia-sim {
   display: block;
   height: 100%;
   width: 0;
-  background: var(--sim-green);
+  background: var(--sim-kept);
   transition: width .4s ease;
 }
 
 .sim-metric-word {
   font-size: 12.5px;
-  color: var(--sim-muted);
+  color: var(--muted);
   margin-top: 6px;
 }
 
@@ -388,8 +398,8 @@ aplysia-sim {
   display: flex;
   align-items: center;
   gap: 14px;
-  background: var(--sim-panel);
-  border: 1px solid var(--sim-border-soft);
+  background: var(--sim-chrome);
+  border: 1px solid var(--sim-border);
   padding: 10px 12px;
 }
 
@@ -404,22 +414,22 @@ aplysia-sim {
 .sim-conn-bars i {
   display: block;
   width: 14px;
-  background: var(--sim-green);
+  background: var(--sim-signal);
   transition: height .4s ease;
 }
 
-.sim-conn-bars i.is-new { background: var(--sim-amber); }
+.sim-conn-bars i.is-new { background: var(--sim-kept); }
 
 .sim-verdict {
   font-size: 12.5px;
   line-height: 1.55;
-  color: var(--sim-text);
-  border-left: 2px solid var(--sim-amber);
+  color: var(--body);
+  border-left: 2px solid var(--sim-signal);
   padding-left: 11px;
   text-wrap: pretty;
 }
 
-/* controls — pinned to the foot of the panel, never scrolled away --------- */
+/* controls ---------------------------------------------------------------- */
 .sim-controls {
   display: flex;
   gap: 8px;
@@ -449,29 +459,26 @@ aplysia-sim {
   font-family: var(--sans);
 }
 
-.sim-btn-primary { background: var(--sim-green); color: #06231A; }
-.sim-btn-primary:hover { background: #6ADDB6; }
+.sim-btn-primary { background: var(--sim-signal); color: var(--sim-paper); }
+.sim-btn-primary:hover { background: var(--sim-signal-hover); }
 
 .sim-btn-shock {
-  background: transparent;
-  border-color: var(--sim-orange);
-  color: var(--sim-orange);
+  background: var(--sim-paper);
+  border-color: var(--sim-signal);
+  color: var(--sim-signal);
 }
-.sim-btn-shock:hover { background: rgba(224, 113, 74, .14); }
+
+.sim-btn-shock:hover { background: var(--sim-signal-wash); }
 
 .sim-btn-rest {
   flex: 0 1 92px;
-  background: transparent;
-  border-color: var(--sim-border);
-  color: var(--sim-muted);
+  background: var(--sim-paper);
+  border-color: var(--sim-rest);
+  color: var(--muted);
   font-weight: 400;
 }
-.sim-btn-rest:hover { border-color: var(--sim-muted); color: var(--sim-text); }
 
-.sim :focus-visible {
-  outline: 2px solid var(--sim-green);
-  outline-offset: 2px;
-}
+.sim-btn-rest:hover { border-color: var(--meta); color: var(--ink); }
 
 @media (prefers-reduced-motion: reduce) {
   .sim-gill,
