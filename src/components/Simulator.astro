@@ -13,6 +13,7 @@ import CajalSim from './sims/CajalSim.astro';
 import RetinaSim from './sims/RetinaSim.astro';
 import HomunculusSim from './sims/HomunculusSim.astro';
 import IconicSim from './sims/IconicSim.astro';
+import OrientationSim from './sims/OrientationSim.astro';
 import type { SimulatorKey } from '../data/types';
 
 interface Props {
@@ -30,6 +31,7 @@ const SIMS: Record<SimulatorKey, any> = {
   retina: RetinaSim,
   homunculus: HomunculusSim,
   iconic: IconicSim,
+  orientation: OrientationSim,
 };
 
 const Sim = SIMS[kind];
