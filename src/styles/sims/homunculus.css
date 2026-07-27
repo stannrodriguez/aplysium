@@ -1,0 +1,156 @@
+/* ── Penfield · the cortical strip ────────────────────────────────────────
+   The strip is a row of buttons sized by the cortex each part occupies, so
+   where the reader's clicks land is itself the result. The figure beside it
+   says where the patient felt it. */
+
+.hom-strip {
+  display: flex;
+  width: 100%;
+  height: 62px;
+  border: 1px solid var(--sim-border);
+  background: var(--sim-well);
+  overflow: hidden;
+}
+
+.hom-seg {
+  min-width: 0;
+  padding: 0;
+  cursor: pointer;
+  border: 0;
+  border-right: 1px solid var(--sim-paper);
+  background: var(--sim-tissue);
+  color: var(--sim-tissue-ink);
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: background .18s ease;
+}
+
+.hom-seg:last-child { border-right: 0; }
+.hom-seg:hover { background: var(--sim-signal-wash); }
+.hom-seg.is-mapped { background: var(--sim-rest); }
+.hom-seg.is-on {
+  background: var(--sim-signal);
+  color: var(--sim-paper);
+}
+
+.hom-strip-ends {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--meta);
+}
+
+/* the figure -------------------------------------------------------------- */
+.hom-body {
+  display: flex;
+  gap: 14px;
+  align-items: stretch;
+}
+
+.hom-figure {
+  flex: 0 0 108px;
+  background: var(--sim-well);
+  border: 1px solid var(--sim-border);
+  padding: 8px;
+}
+
+.hom-figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.hom-region {
+  fill: var(--sim-tissue);
+  stroke: var(--sim-well);
+  stroke-width: 1;
+  transition: fill .18s ease;
+}
+
+.hom-region.is-on { fill: var(--sim-signal); }
+
+.hom-said {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.hom-quote {
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.4;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.hom-attrib {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--meta);
+}
+
+/* the two shares ---------------------------------------------------------- */
+.hom-compare {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hom-row {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr) 46px;
+  align-items: center;
+  gap: 10px;
+}
+
+.hom-row-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hom-track {
+  height: 12px;
+  background: var(--sim-track);
+  overflow: hidden;
+}
+
+.hom-track i {
+  display: block;
+  height: 100%;
+  width: 0;
+  transition: width .3s ease;
+}
+
+.hom-track-cortex i { background: var(--sim-signal); }
+.hom-track-body i { background: var(--sim-tissue); }
+
+.hom-row-value {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink);
+  text-align: right;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hom-seg,
+  .hom-region,
+  .hom-track i { transition: none; }
+}
