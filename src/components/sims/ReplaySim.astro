@@ -1,0 +1,70 @@
+---
+import '../../styles/sim.css';
+import '../../styles/sims/replay.css';
+
+interface Props {
+  label?: string;
+}
+
+const { label = 'Eight cells at once · track and sleep' } = Astro.props;
+---
+
+<replay-sim class="sim">
+  <div class="sim-chrome">
+    <span class="sim-chrome-dot" aria-hidden="true"></span>
+    <span class="sim-chrome-label">{label}</span>
+    <span class="sim-chrome-status" data-sim-status aria-live="polite">idle</span>
+  </div>
+
+  <div class="sim-panels">
+    <section class="sim-panel">
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">The track</h3>
+        <p class="sim-readout">compression <b data-sim-compression>—</b></p>
+      </div>
+
+      <div class="sim-stage rep-track-stage" data-sim-track></div>
+
+      <p class="sim-note" data-sim-track-note>
+        Run the track. Eight cells, eight patches of track, one after another.
+      </p>
+    </section>
+
+    <section class="sim-panel">
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">Running — four seconds</h3>
+      </div>
+
+      <div class="sim-stage rep-raster-stage" data-sim-runraster></div>
+    </section>
+
+    <section class="sim-panel">
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">Sleeping — two seconds</h3>
+      </div>
+
+      <div class="sim-stage rep-raster-stage" data-sim-sleepraster></div>
+
+      <div class="sim-toggle">
+        <span class="sim-toggle-label">Which sleep epoch you record</span>
+        <button type="button" class="sim-pill" data-sim-epoch="after" aria-pressed="true">after the run</button>
+        <button type="button" class="sim-pill" data-sim-epoch="before" aria-pressed="false">before it — the control</button>
+      </div>
+
+      <p class="sim-verdict" data-sim-verdict>
+        The run has to come first — there is nothing to look for a replay of until there is a
+        sequence to replay.
+      </p>
+    </section>
+  </div>
+
+  <div class="sim-controls">
+    <button type="button" class="sim-btn sim-btn-primary" data-sim-run>Run the track</button>
+    <button type="button" class="sim-btn sim-btn-outline" data-sim-sleep disabled>Record sleep</button>
+    <button type="button" class="sim-btn sim-btn-quiet" data-sim-reset>Reset</button>
+  </div>
+</replay-sim>
+
+<script>
+  import '../../scripts/sims/replay';
+</script>

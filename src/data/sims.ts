@@ -25,6 +25,8 @@ export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
     'Let the animal forage until the spikes pile up somewhere. Take another cell and it cares about somewhere else. Then turn the cue card and watch the field go with it.',
   rotation:
     'Your own reaction times are the data here. Answer as fast as you are sure, across a dozen angles, and see whether the line through them comes out straight.',
+  replay:
+    'Run the track, then record a sleep epoch and look for the same order in it. The epoch before the run is the control, and it is what makes the other one mean anything.',
 };
 
 export const simCaption = (kind: SimulatorKey): string => SIM_CAPTIONS[kind];
