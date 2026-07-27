@@ -111,6 +111,7 @@ export const studies: Study[] = [
     finding: 'Cued a fraction of a second after a grid disappears, people report almost any row accurately; asked for the whole grid, they get four letters.',
     why: 'Showed the eye takes in far more in an instant than the mind can hold long enough to report.',
     method: 'A tone after the display told the viewer which row to report. Accuracy on the cued row, multiplied by the number of rows, estimates what was available before it decayed.',
+    simulator: 'iconic',
   },
   {
     id: 7,
