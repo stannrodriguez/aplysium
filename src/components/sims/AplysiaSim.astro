@@ -1,5 +1,6 @@
 ---
-import '../styles/sim.css';
+import '../../styles/sim.css';
+import '../../styles/sims/aplysia.css';
 
 interface Props {
   /** Comma list of panels: animal, synapse, trace, longterm. */
@@ -34,14 +35,14 @@ const restingVesicles = 5;
           <h3 class="sim-panel-title">The animal</h3>
           <p class="sim-readout">withdrawal <b data-sim-withdrawal aria-live="polite">100%</b></p>
         </div>
-        <div class="sim-stage">
-          <div class="sim-mantle" aria-hidden="true"></div>
-          <div class="sim-gill" data-sim-gill aria-hidden="true">
+        <div class="sim-stage apl-stage">
+          <div class="apl-mantle" aria-hidden="true"></div>
+          <div class="apl-gill" data-sim-gill aria-hidden="true">
             {gillBars.map(h => <span style={`height:${h}px`}></span>)}
           </div>
-          <span class="sim-stage-label sim-label-gill" aria-hidden="true">GILL</span>
-          <span class="sim-stage-label sim-label-body" aria-hidden="true">BODY</span>
-          <button type="button" class="sim-siphon" data-sim-siphon data-sim-tap>siphon</button>
+          <span class="sim-stage-label apl-label-gill" aria-hidden="true">GILL</span>
+          <span class="sim-stage-label apl-label-body" aria-hidden="true">BODY</span>
+          <button type="button" class="apl-siphon" data-sim-siphon data-sim-tap>siphon</button>
         </div>
         <p class="sim-note" data-sim-animal-note>
           Touch the siphon and the gill pulls in. Do it a few times and watch what happens.
@@ -55,17 +56,17 @@ const restingVesicles = 5;
           <h3 class="sim-panel-title">The synapse, recorded</h3>
           <p class="sim-readout">quanta / impulse <b data-sim-quanta aria-live="polite">15</b></p>
         </div>
-        <div class="sim-synapse">
-          <div class="sim-neuron">SENSORY NEURON</div>
-          <div class="sim-cleft" data-sim-cleft aria-hidden="true">
+        <div class="apl-synapse">
+          <div class="apl-neuron">SENSORY NEURON</div>
+          <div class="apl-cleft" data-sim-cleft aria-hidden="true">
             {Array.from({ length: restingVesicles }, (_, i) => (
               <span
-                class="sim-vesicle"
+                class="apl-vesicle"
                 style={`left:${(6 + i * (86 / restingVesicles)).toFixed(1)}%;animation-delay:${(i * 0.12).toFixed(2)}s`}
               ></span>
             ))}
           </div>
-          <div class="sim-neuron">MOTOR NEURON → GILL</div>
+          <div class="apl-neuron">MOTOR NEURON → GILL</div>
         </div>
         <p class="sim-note" data-sim-synapse-note>
           The behaviour and the synapse are the same event, measured twice.
@@ -124,8 +125,8 @@ const restingVesicles = 5;
               <p class="sim-metric-word" data-sim-h24-word></p>
             </div>
           </div>
-          <div class="sim-conn">
-            <div class="sim-conn-bars" data-sim-conn aria-hidden="true"></div>
+          <div class="apl-conn">
+            <div class="apl-conn-bars" data-sim-conn aria-hidden="true"></div>
             <p class="sim-note" data-sim-conn-note></p>
           </div>
           <p class="sim-verdict" data-sim-verdict></p>
@@ -136,11 +137,11 @@ const restingVesicles = 5;
 
   <div class="sim-controls">
     <button type="button" class="sim-btn sim-btn-primary" data-sim-tap>Tap the siphon</button>
-    <button type="button" class="sim-btn sim-btn-shock" data-sim-shock>Shock the tail</button>
-    <button type="button" class="sim-btn sim-btn-rest" data-sim-rest>Rest</button>
+    <button type="button" class="sim-btn sim-btn-outline" data-sim-shock>Shock the tail</button>
+    <button type="button" class="sim-btn sim-btn-quiet" data-sim-rest>Rest</button>
   </div>
 </aplysia-sim>
 
 <script>
-  import '../scripts/aplysia-sim';
+  import '../../scripts/sims/aplysia';
 </script>

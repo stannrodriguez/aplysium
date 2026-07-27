@@ -1,0 +1,143 @@
+/* ── Kandel · the gill-withdrawal reflex ──────────────────────────────────
+   The animal, the recorded synapse, and the connections that grow with spaced
+   training. The shell around it is `src/styles/sim.css`. */
+
+.apl-stage { height: 154px; }
+
+.apl-mantle {
+  position: absolute;
+  left: 16px;
+  top: 46px;
+  width: 118px;
+  height: 66px;
+  border-radius: 40px 20px 20px 40px;
+  background: var(--sim-tissue);
+}
+
+.apl-gill {
+  position: absolute;
+  left: 116px;
+  top: 42px;
+  transform-origin: left center;
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  transition: transform .38s ease;
+}
+
+.apl-gill span {
+  display: block;
+  width: 10px;
+  border-radius: 6px;
+  background: var(--sim-signal);
+  opacity: .85;
+}
+
+.apl-label-gill { left: 112px; top: 120px; }
+.apl-label-body { left: 40px; top: 72px; }
+
+.apl-siphon {
+  position: absolute;
+  right: 16px;
+  top: 50px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1.5px solid var(--sim-signal);
+  background: var(--sim-paper);
+  color: var(--sim-signal);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.apl-siphon:hover { background: var(--sim-signal-wash); }
+.apl-siphon.is-flash { background: var(--sim-signal); color: var(--sim-paper); }
+
+/* the synapse, recorded --------------------------------------------------- */
+.apl-synapse {
+  position: relative;
+  height: 132px;
+  background: var(--sim-well);
+  border: 1px solid var(--sim-border);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 12px 14px;
+}
+
+.apl-neuron {
+  height: 26px;
+  background: var(--sim-tissue);
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .08em;
+  color: var(--sim-tissue-ink);
+}
+
+.apl-cleft {
+  position: relative;
+  height: 38px;
+  margin: 0 6px;
+}
+
+.apl-vesicle {
+  position: absolute;
+  top: 2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--sim-signal);
+  animation: apl-drift 1.3s linear infinite;
+}
+
+@keyframes apl-drift {
+  0% { transform: translateY(0); opacity: 0 }
+  20% { opacity: 1 }
+  80% { opacity: 1 }
+  100% { transform: translateY(26px); opacity: 0 }
+}
+
+/* protein synthesis reads as kept / lost rather than plain on / off ------- */
+.sim-pill[data-sim-protein='intact'][aria-pressed='true'] {
+  border-color: var(--sim-kept);
+  color: var(--sim-kept);
+}
+
+/* connections that grew --------------------------------------------------- */
+.apl-conn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--sim-chrome);
+  border: 1px solid var(--sim-border);
+  padding: 10px 12px;
+}
+
+.apl-conn-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 34px;
+  flex: none;
+}
+
+.apl-conn-bars i {
+  display: block;
+  width: 14px;
+  background: var(--sim-signal);
+  transition: height .4s ease;
+}
+
+.apl-conn-bars i.is-new { background: var(--sim-kept); }
+
+@media (prefers-reduced-motion: reduce) {
+  .apl-gill,
+  .apl-conn-bars i { transition: none; }
+  .apl-vesicle { animation: none; opacity: 1; }
+}

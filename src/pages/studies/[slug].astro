@@ -2,10 +2,11 @@
 import Base from '../../layouts/Base.astro';
 import LayerList from '../../components/LayerList.astro';
 import StatusDot from '../../components/StatusDot.astro';
-import AplysiaSim from '../../components/AplysiaSim.astro';
+import Simulator from '../../components/Simulator.astro';
 import { studies } from '../../data/studies';
 import { entryFor } from '../../lib/entry';
 import { withBase } from '../../lib/url';
+import { simCaption } from '../../data/sims';
 import { ENTRY_STATUS_LINE } from '../../data/types';
 import type { Study } from '../../data/types';
 
@@ -21,10 +22,11 @@ const { study } = Astro.props;
 const { dive } = entryFor(study);
 const metaYear = dive.metaYear ?? study.year;
 const statusLine = ENTRY_STATUS_LINE[study.status];
-const hasSim = study.simulator === 'aplysia';
+const sim = study.simulator;
+const caption = sim ? dive.simCaption ?? simCaption(sim) : null;
 // The right-hand column exists for the instrument, or for a note about the one
 // this study is still waiting on.
-const twoColumn = hasSim || study.hasDemo;
+const twoColumn = Boolean(sim) || study.hasDemo;
 ---
 
 <Base title={`${study.claim} — ${study.author}`} description={dive.bridge}>
@@ -55,15 +57,15 @@ const twoColumn = hasSim || study.hasDemo;
         <LayerList layers={dive.layers} />
       </div>
 
-      {hasSim && (
+      {sim && (
         <aside class="sim-col">
           <p class="sim-col-label">The experiment</p>
-          <AplysiaSim show="animal,synapse,trace,longterm" />
-          {dive.simCaption && <p class="sim-col-caption">{dive.simCaption}</p>}
+          <Simulator kind={sim} />
+          {caption && <p class="sim-col-caption">{caption}</p>}
         </aside>
       )}
 
-      {!hasSim && study.hasDemo && (
+      {!sim && study.hasDemo && (
         <aside class="sim-col">
           <p class="sim-col-label">The experiment</p>
           <div class="sim-pending">
