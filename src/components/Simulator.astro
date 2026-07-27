@@ -14,6 +14,7 @@ import RetinaSim from './sims/RetinaSim.astro';
 import HomunculusSim from './sims/HomunculusSim.astro';
 import IconicSim from './sims/IconicSim.astro';
 import OrientationSim from './sims/OrientationSim.astro';
+import SplitBrainSim from './sims/SplitBrainSim.astro';
 import type { SimulatorKey } from '../data/types';
 
 interface Props {
@@ -32,6 +33,7 @@ const SIMS: Record<SimulatorKey, any> = {
   homunculus: HomunculusSim,
   iconic: IconicSim,
   orientation: OrientationSim,
+  splitbrain: SplitBrainSim,
 };
 
 const Sim = SIMS[kind];

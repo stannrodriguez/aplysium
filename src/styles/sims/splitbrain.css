@@ -1,0 +1,128 @@
+/* ── Sperry & Gazzaniga · the divided screen ──────────────────────────────
+   A screen split at fixation, the cards the hands can reach, and the two
+   answers written down side by side. */
+
+.spl-screen {
+  height: auto;
+  aspect-ratio: 320 / 130;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spl-half {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+}
+
+.spl-left { left: 0; border-right: 1px dashed var(--meta-faintest); }
+.spl-right { right: 0; }
+
+.spl-item {
+  font-family: var(--serif);
+  font-size: 21px;
+  line-height: 1.2;
+  color: var(--ink);
+  text-align: center;
+  text-wrap: balance;
+}
+
+.spl-gone {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--meta-faintest);
+}
+
+.spl-fix {
+  position: relative;
+  font-family: var(--mono);
+  font-size: 22px;
+  color: var(--sim-signal);
+  z-index: 1;
+}
+
+.spl-hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+  padding: 0 26px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .05em;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+/* the cards on the table ------------------------------------------------- */
+.spl-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.spl-card {
+  flex: 1 1 auto;
+  padding: 9px 10px;
+  text-align: center;
+  border: 1px solid var(--sim-rest);
+  background: var(--sim-paper);
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+.spl-card.is-picked {
+  border-color: var(--sim-signal);
+  background: var(--sim-signal);
+  color: var(--sim-paper);
+  font-weight: 600;
+}
+
+.spl-card.is-named {
+  border-color: var(--sim-kept);
+  color: var(--sim-kept);
+}
+
+/* the two answers --------------------------------------------------------- */
+.spl-answer {
+  display: grid;
+  grid-template-columns: 108px minmax(0, 1fr);
+  gap: 12px;
+  align-items: baseline;
+  padding: 10px 12px;
+  background: var(--sim-chrome);
+  border: 1px solid var(--sim-border);
+}
+
+.spl-answer-who {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--meta);
+  line-height: 1.4;
+}
+
+.spl-answer-what {
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.spl-why {
+  border-left: 2px solid var(--sim-signal);
+  padding-left: 11px;
+}
+
+.spl-why .spl-answer-what { font-size: 17px; }

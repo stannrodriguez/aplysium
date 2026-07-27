@@ -19,6 +19,8 @@ export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
     'This one runs on you. Twelve letters for fifty milliseconds, then either report the lot or report the one row the cue names. Compare the two scores, then push the cue later.',
   orientation:
     'Hunt for the angle this cell wants, one bar at a time, and watch the tuning curve fill in. Try the spot of light too — that is what had been failing for months.',
+  splitbrain:
+    'Flash the pair, then ask it both ways — out loud, and with the left hand. When the two answers disagree, ask why. That last answer is the study.',
 };
 
 export const simCaption = (kind: SimulatorKey): string => SIM_CAPTIONS[kind];
