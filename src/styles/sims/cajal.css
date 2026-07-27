@@ -1,0 +1,102 @@
+/* ── Cajal · the Golgi stain ──────────────────────────────────────────────
+   A section of tissue you stain and re-stain, and one contact magnified far
+   enough to see whether the two cells are continuous. */
+
+/* Both stages take their height from the drawing's own proportions, so nothing
+   gets clipped at whatever width the column happens to be. */
+.caj-stage {
+  height: auto;
+  aspect-ratio: 320 / 178;
+}
+
+.caj-section {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* every cell in the section, whether the stain took it or not */
+.caj-ghost { fill: var(--sim-tissue); opacity: .5; }
+
+/* the sparse few the stain took, drawn whole */
+.caj-soma { fill: var(--sim-signal); }
+.caj-process {
+  fill: none;
+  stroke: var(--sim-signal);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+}
+.caj-axon { stroke-width: 1.4; }
+
+.caj-contact {
+  fill: var(--sim-paper);
+  stroke: var(--sim-signal);
+  stroke-width: 1.4;
+  cursor: pointer;
+}
+
+.caj-contact:hover { fill: var(--sim-signal-wash); }
+.caj-contact.is-picked { fill: var(--sim-signal); }
+
+/* the contact, magnified -------------------------------------------------- */
+.caj-zoom {
+  height: auto;
+  aspect-ratio: 320 / 116;
+}
+
+.caj-zoom > [data-sim-zoom] {
+  position: absolute;
+  inset: 0;
+}
+
+.caj-zoom-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.caj-term { fill: var(--sim-signal); }
+.caj-dend { fill: var(--sim-tissue); }
+
+.caj-gap-line {
+  stroke: var(--sim-signal);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+
+.caj-zoom-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .08em;
+  fill: var(--muted);
+}
+
+.caj-blank {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .06em;
+  color: var(--muted);
+}
+
+/* the tally --------------------------------------------------------------- */
+.caj-tally {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.caj-count {
+  font-family: var(--mono);
+  font-size: 22px;
+  color: var(--sim-signal);
+  margin-top: 4px;
+}
+
+.caj-count.is-zero { color: var(--sim-kept); }

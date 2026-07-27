@@ -8,6 +8,11 @@
    behaviour scripts at runtime, so they never carry Astro's scope attribute.
    Everything is namespaced under .sim-. */
 
+/* Stages position their empty states absolutely, which would otherwise out-rank
+   the `hidden` attribute the scripts toggle. One rule, so no experiment has to
+   remember it. */
+.sim [hidden] { display: none; }
+
 .sim {
   background: var(--sim-paper);
   border: 1px solid var(--sim-border);

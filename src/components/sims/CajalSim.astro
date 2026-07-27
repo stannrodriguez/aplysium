@@ -1,0 +1,105 @@
+---
+import '../../styles/sim.css';
+import '../../styles/sims/cajal.css';
+
+interface Props {
+  label?: string;
+}
+
+const { label = 'Cajal · Golgi’s silver chromate' } = Astro.props;
+---
+
+<cajal-sim class="sim">
+  <div class="sim-chrome">
+    <span class="sim-chrome-dot" aria-hidden="true"></span>
+    <span class="sim-chrome-label">{label}</span>
+    <span class="sim-chrome-status" data-sim-status aria-live="polite">section 1 · 4 cells stained</span>
+  </div>
+
+  <div class="sim-panels">
+    <section class="sim-panel">
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">The section</h3>
+        <p class="sim-readout">stained <b data-sim-stained>4 of 36</b></p>
+      </div>
+
+      <div class="sim-stage caj-stage" data-sim-section>
+        <p class="caj-blank">
+          A section of tissue. The stain takes a sparse few cells and draws each one whole — soma,
+          dendrites and axon — against blank ground.
+        </p>
+      </div>
+
+      <div class="sim-field">
+        <span class="sim-field-label" id="caj-density-label">How much of the tissue the stain takes</span>
+        <input
+          class="sim-slider"
+          type="range"
+          min="2"
+          max="8"
+          value="4"
+          step="1"
+          data-sim-density
+          aria-labelledby="caj-density-label"
+        />
+        <span class="sim-value" data-sim-density-value>4 of 36</span>
+      </div>
+
+      <p class="sim-note" data-sim-section-note>
+        The stain takes a random few cells and leaves the rest blank. That is the whole trick — one
+        neuron, drawn whole, against nothing.
+      </p>
+    </section>
+
+    <section class="sim-panel">
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">The terminal, magnified</h3>
+      </div>
+
+      <div class="sim-stage caj-zoom">
+        <div data-sim-zoom></div>
+        <p class="caj-blank" data-sim-zoom-empty>
+          pick a terminal in the section above →
+        </p>
+      </div>
+
+      <div class="sim-toggle">
+        <span class="sim-toggle-label">Draw it as</span>
+        <button type="button" class="sim-pill" data-sim-view="observed" aria-pressed="true">what the stain shows</button>
+        <button type="button" class="sim-pill" data-sim-view="reticular" aria-pressed="false">what the reticular theory predicts</button>
+      </div>
+
+      <p class="sim-note" data-sim-zoom-note>
+        Every stained axon ends somewhere. Follow one to its terminal and look at what happens there.
+      </p>
+    </section>
+
+    <section class="sim-panel">
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">The count</h3>
+      </div>
+
+      <div class="caj-tally">
+        <div class="sim-metric">
+          <p class="sim-metric-label">Terminals traced</p>
+          <p class="caj-count" data-sim-examined aria-live="polite">0</p>
+        </div>
+        <div class="sim-metric">
+          <p class="sim-metric-label">Found continuous</p>
+          <p class="caj-count is-zero" data-sim-continuous>0</p>
+        </div>
+      </div>
+
+      <p class="sim-verdict" data-sim-verdict>Trace an axon to its terminal to start the count.</p>
+    </section>
+  </div>
+
+  <div class="sim-controls">
+    <button type="button" class="sim-btn sim-btn-primary" data-sim-restain>Stain a new section</button>
+    <button type="button" class="sim-btn sim-btn-quiet" data-sim-reset>Reset</button>
+  </div>
+</cajal-sim>
+
+<script>
+  import '../../scripts/sims/cajal';
+</script>
