@@ -13,6 +13,8 @@
  *   quanta = round(2 + a·13); transmitter vesicles follow quanta
  */
 
+import { SimElement, clamp, defineSim } from './base';
+
 type TrialKind = 'base' | 'sens' | 'shock' | 'rest';
 type Schedule = 'massed' | 'spaced';
 type Protein = 'intact' | 'blocked';
@@ -77,12 +79,7 @@ const TRAINING: Record<string, TrainingResult> = {
   },
 };
 
-const clamp = (n: number, lo: number, hi: number): number => Math.min(hi, Math.max(lo, n));
-
-class AplysiaSim extends HTMLElement {
-  /** Optional hook: onEvent(name, state) on tap / shock / rest / train. */
-  onEvent?: (name: string, state: SimState) => void;
-
+class AplysiaSim extends SimElement {
   private state: SimState = {
     habTaps: 0,
     sensitization: 0,
@@ -92,34 +89,19 @@ class AplysiaSim extends HTMLElement {
     trained: false,
   };
 
-  private flashTimer = 0;
   private relaxTimer = 0;
   /** How far the gill is pulled in right now, 0–1. Relaxes back after a tap. */
   private retraction = 0;
   /** Amplitude of the withdrawal just delivered; null until one is. */
   private lastResponse: number | null = null;
 
-  connectedCallback(): void {
-    this.querySelectorAll<HTMLElement>('[data-sim-tap]').forEach(el =>
-      el.addEventListener('click', () => this.tap()),
-    );
-    this.query('[data-sim-shock]')?.addEventListener('click', () => this.shock());
-    this.query('[data-sim-rest]')?.addEventListener('click', () => this.rest());
-    this.query('[data-sim-run]')?.addEventListener('click', () => this.train());
-
-    this.querySelectorAll<HTMLElement>('[data-sim-schedule]').forEach(el =>
-      el.addEventListener('click', () => this.pickSchedule(el.dataset.simSchedule as Schedule)),
-    );
-    this.querySelectorAll<HTMLElement>('[data-sim-protein]').forEach(el =>
-      el.addEventListener('click', () => this.pickProtein(el.dataset.simProtein as Protein)),
-    );
-
-    this.render();
-  }
-
-  disconnectedCallback(): void {
-    window.clearTimeout(this.flashTimer);
-    window.clearTimeout(this.relaxTimer);
+  protected setup(): void {
+    this.onClick('[data-sim-tap]', () => this.tap());
+    this.onClick('[data-sim-shock]', () => this.shock());
+    this.onClick('[data-sim-rest]', () => this.rest());
+    this.onClick('[data-sim-run]', () => this.train());
+    this.onClick('[data-sim-schedule]', el => this.pickSchedule(el.dataset.simSchedule as Schedule));
+    this.onClick('[data-sim-protein]', el => this.pickProtein(el.dataset.simProtein as Protein));
   }
 
   /* ── model ── */
@@ -143,25 +125,25 @@ class AplysiaSim extends HTMLElement {
     this.state.habTaps += 1;
     this.state.sensitization *= 0.78;
     this.lastResponse = a;
-    this.flash();
+    this.pulse('[data-sim-siphon]');
     this.withdraw(clamp(a / MAX_AMP, 0, 1));
     this.render();
-    this.emit(this.state.habTaps >= 6 ? 'habituated' : 'tapped');
+    this.report(this.state.habTaps >= 6 ? 'habituated' : 'tapped');
   }
 
   /** Pull the gill in, then let it back out — one withdrawal. */
   private withdraw(depth: number): void {
     this.retraction = depth;
     this.paintGill();
-    window.clearTimeout(this.relaxTimer);
-    this.relaxTimer = window.setTimeout(() => {
+    this.cancel(this.relaxTimer);
+    this.relaxTimer = this.delay(900, () => {
       this.retraction = 0;
       this.paintGill();
-    }, 900);
+    });
   }
 
   private paintGill(): void {
-    const gill = this.query('[data-sim-gill]');
+    const gill = this.q('[data-sim-gill]');
     if (!gill) return;
     const r = this.retraction;
     gill.style.transform = `translateX(-${Math.round(r * 42)}px) scaleX(${(1 - 0.55 * r).toFixed(3)})`;
@@ -173,7 +155,7 @@ class AplysiaSim extends HTMLElement {
     this.state.habTaps = Math.floor(this.state.habTaps / 2);
     this.log('shock', 0);
     this.render();
-    this.emit('shocked');
+    this.report('shocked');
   }
 
   private rest(): void {
@@ -183,7 +165,7 @@ class AplysiaSim extends HTMLElement {
     this.lastResponse = null;
     this.log('rest', 0);
     this.render();
-    this.emit('rested');
+    this.report('rested');
   }
 
   private pickSchedule(schedule: Schedule): void {
@@ -202,7 +184,7 @@ class AplysiaSim extends HTMLElement {
     if (!this.state.schedule) return;
     this.state.trained = true;
     this.render();
-    this.emit(`trained-${this.state.schedule}-${this.state.protein}`);
+    this.report(`trained-${this.state.schedule}-${this.state.protein}`);
   }
 
   private result(): TrainingResult | null {
@@ -212,32 +194,13 @@ class AplysiaSim extends HTMLElement {
     return schedule === 'massed' ? TRAINING.massed : TRAINING[`spaced-${protein}`];
   }
 
-  private emit(name: string): void {
-    const state = { ...this.state, trials: [...this.state.trials] };
-    this.onEvent?.(name, state);
-    this.dispatchEvent(new CustomEvent('aplysia:event', { detail: { name, state }, bubbles: true }));
-  }
-
-  private flash(): void {
-    const siphon = this.query('[data-sim-siphon]');
-    if (!siphon) return;
-    siphon.classList.add('is-flash');
-    window.clearTimeout(this.flashTimer);
-    this.flashTimer = window.setTimeout(() => siphon.classList.remove('is-flash'), 380);
+  private report(name: string): void {
+    this.emit(name, { ...this.state, trials: [...this.state.trials] });
   }
 
   /* ── view ── */
 
-  private query(selector: string): HTMLElement | null {
-    return this.querySelector<HTMLElement>(selector);
-  }
-
-  private text(selector: string, value: string): void {
-    const el = this.query(selector);
-    if (el && el.textContent !== value) el.textContent = value;
-  }
-
-  private render(): void {
+  protected render(): void {
     const { habTaps, sensitization, trials } = this.state;
     // What the readouts report: the withdrawal just delivered, or — before any
     // tap, and straight after a shock or a rest — the one now primed.
@@ -265,17 +228,12 @@ class AplysiaSim extends HTMLElement {
     this.text('[data-sim-trace-count]', trials.length === 1 ? '1 trial' : `${trials.length} trials`);
 
     /* training */
-    this.querySelectorAll<HTMLElement>('[data-sim-schedule]').forEach(el =>
-      el.setAttribute('aria-pressed', String(el.dataset.simSchedule === this.state.schedule)),
-    );
-    this.querySelectorAll<HTMLElement>('[data-sim-protein]').forEach(el =>
-      el.setAttribute('aria-pressed', String(el.dataset.simProtein === this.state.protein)),
-    );
+    this.pressed('[data-sim-schedule]', 'simSchedule', this.state.schedule);
+    this.pressed('[data-sim-protein]', 'simProtein', this.state.protein);
 
-    const run = this.query('[data-sim-run]') as HTMLButtonElement | null;
+    const run = this.q<HTMLButtonElement>('[data-sim-run]');
     if (run) {
       run.disabled = !this.state.schedule;
-      run.style.opacity = this.state.schedule ? '1' : '.45';
       run.textContent = this.state.schedule
         ? `▶ run 4 ${this.state.schedule} sessions`
         : 'pick a schedule first';
@@ -302,18 +260,18 @@ class AplysiaSim extends HTMLElement {
   }
 
   private renderVesicles(q: number): void {
-    const cleft = this.query('[data-sim-cleft]');
+    const cleft = this.q('[data-sim-cleft]');
     if (!cleft) return;
     const n = clamp(Math.round(q / 3), 1, 7);
     if (cleft.childElementCount === n) return;
     cleft.innerHTML = Array.from({ length: n }, (_, i) => {
       const left = 6 + i * (86 / n);
-      return `<span class="sim-vesicle" style="left:${left.toFixed(1)}%;animation-delay:${(i * 0.12).toFixed(2)}s"></span>`;
+      return `<span class="apl-vesicle" style="left:${left.toFixed(1)}%;animation-delay:${(i * 0.12).toFixed(2)}s"></span>`;
     }).join('');
   }
 
   private renderTrace(trials: Trial[]): void {
-    const trace = this.query('[data-sim-trace]');
+    const trace = this.q('[data-sim-trace]');
     if (!trace) return;
 
     if (!trials.length) {
@@ -336,7 +294,7 @@ class AplysiaSim extends HTMLElement {
   }
 
   private renderTraining(): void {
-    const results = this.query('[data-sim-results]');
+    const results = this.q('[data-sim-results]');
     if (!results) return;
 
     const r = this.result();
@@ -346,27 +304,20 @@ class AplysiaSim extends HTMLElement {
     }
     results.hidden = false;
 
-    const h1 = this.query('[data-sim-h1]');
-    if (h1) h1.style.width = `${r.h1}%`;
-    const h24 = this.query('[data-sim-h24]');
-    if (h24) {
-      h24.style.width = `${r.h24}%`;
-      h24.style.background = r.h24 > 40 ? 'var(--sim-kept)' : 'var(--sim-lost)';
-    }
+    this.css('[data-sim-h1]', 'width', `${r.h1}%`);
+    this.css('[data-sim-h24]', 'width', `${r.h24}%`);
+    this.css('[data-sim-h24]', 'background', r.h24 > 40 ? 'var(--sim-kept)' : 'var(--sim-lost)');
     this.text('[data-sim-h1-word]', `${r.h1}% — ${r.h1Word}`);
     this.text('[data-sim-h24-word]', `${r.h24}% — ${r.h24Word}`);
     this.text('[data-sim-conn-note]', r.connNote);
     this.text('[data-sim-verdict]', r.verdict);
 
-    const bars = this.query('[data-sim-conn]');
-    if (bars) {
-      bars.innerHTML =
-        '<i style="height:34px"></i>' +
-        Array.from({ length: r.newSynapses }, (_, i) => `<i class="is-new" style="height:${18 + i * 5}px"></i>`).join('');
-    }
+    this.html(
+      '[data-sim-conn]',
+      '<i style="height:34px"></i>' +
+        Array.from({ length: r.newSynapses }, (_, i) => `<i class="is-new" style="height:${18 + i * 5}px"></i>`).join(''),
+    );
   }
 }
 
-if (!customElements.get('aplysia-sim')) {
-  customElements.define('aplysia-sim', AplysiaSim);
-}
+defineSim('aplysia-sim', AplysiaSim);

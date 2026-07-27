@@ -1,0 +1,28 @@
+---
+/**
+ * The experiment a study pins in its right-hand column, chosen by key.
+ *
+ * Each island is a framework-free custom element whose markup is rendered here
+ * on the server, so the panel reads before — and without — JavaScript. Adding
+ * one is three edits: a key on `SimulatorKey`, a component in this map, and a
+ * caption in `src/data/sims.ts`.
+ */
+import AplysiaSim from './sims/AplysiaSim.astro';
+import type { SimulatorKey } from '../data/types';
+
+interface Props {
+  kind: SimulatorKey;
+}
+
+const { kind } = Astro.props;
+
+// Astro components have per-component prop types, so the map is deliberately
+// loose; the exhaustive `SimulatorKey` key is what keeps it honest.
+const SIMS: Record<SimulatorKey, any> = {
+  aplysia: AplysiaSim,
+};
+
+const Sim = SIMS[kind];
+---
+
+<Sim />

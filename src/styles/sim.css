@@ -1,12 +1,12 @@
-/* ── Aplysia simulator ────────────────────────────────────────────────────
-   An instrument sitting on the same paper as the reading: warm ground, square
-   corners, rust for the live signal. Global rather than scoped — the trace
-   bars and transmitter vesicles are written by the behavior script at runtime,
-   so they never carry Astro's scope attribute. Namespaced under .sim-. */
+/* ── The experiment shell ─────────────────────────────────────────────────
+   Every experiment on the site is the same instrument: a warm paper panel with
+   a chrome bar, a stack of readout panels, and a control bar at the foot. This
+   file is that shell and nothing else — each experiment's own stage lives in
+   `src/styles/sims/<name>.css`.
 
-aplysia-sim {
-  display: block;
-}
+   Global rather than scoped: bars, cells and markers are written by the
+   behaviour scripts at runtime, so they never carry Astro's scope attribute.
+   Everything is namespaced under .sim-. */
 
 .sim {
   background: var(--sim-paper);
@@ -94,42 +94,12 @@ aplysia-sim {
   text-wrap: pretty;
 }
 
-/* the animal -------------------------------------------------------------- */
+/* the stage — the inset well each experiment draws into ------------------- */
 .sim-stage {
   position: relative;
-  height: 154px;
   background: var(--sim-well);
   border: 1px solid var(--sim-border);
   overflow: hidden;
-}
-
-.sim-mantle {
-  position: absolute;
-  left: 16px;
-  top: 46px;
-  width: 118px;
-  height: 66px;
-  border-radius: 40px 20px 20px 40px;
-  background: var(--sim-tissue);
-}
-
-.sim-gill {
-  position: absolute;
-  left: 116px;
-  top: 42px;
-  transform-origin: left center;
-  display: flex;
-  gap: 6px;
-  align-items: flex-start;
-  transition: transform .38s ease;
-}
-
-.sim-gill span {
-  display: block;
-  width: 10px;
-  border-radius: 6px;
-  background: var(--sim-signal);
-  opacity: .85;
 }
 
 .sim-stage-label {
@@ -140,77 +110,7 @@ aplysia-sim {
   color: var(--muted);
 }
 
-.sim-label-gill { left: 112px; top: 120px; }
-.sim-label-body { left: 40px; top: 72px; }
-
-.sim-siphon {
-  position: absolute;
-  right: 16px;
-  top: 50px;
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  cursor: pointer;
-  border: 1.5px solid var(--sim-signal);
-  background: var(--sim-paper);
-  color: var(--sim-signal);
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-
-.sim-siphon:hover { background: var(--sim-signal-wash); }
-.sim-siphon.is-flash { background: var(--sim-signal); color: var(--sim-paper); }
-
-/* the synapse ------------------------------------------------------------- */
-.sim-synapse {
-  position: relative;
-  height: 132px;
-  background: var(--sim-well);
-  border: 1px solid var(--sim-border);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 12px 14px;
-}
-
-.sim-neuron {
-  height: 26px;
-  background: var(--sim-tissue);
-  display: flex;
-  align-items: center;
-  padding: 0 10px;
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: .08em;
-  color: var(--sim-tissue-ink);
-}
-
-.sim-cleft {
-  position: relative;
-  height: 38px;
-  margin: 0 6px;
-}
-
-.sim-vesicle {
-  position: absolute;
-  top: 2px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--sim-signal);
-  animation: apl-drift 1.3s linear infinite;
-}
-
-@keyframes apl-drift {
-  0% { transform: translateY(0); opacity: 0 }
-  20% { opacity: 1 }
-  80% { opacity: 1 }
-  100% { transform: translateY(26px); opacity: 0 }
-}
-
-/* the trace --------------------------------------------------------------- */
+/* the trace — one bar per trial, in order -------------------------------- */
 .sim-trace {
   height: 76px;
   background: var(--sim-chrome);
@@ -239,6 +139,8 @@ aplysia-sim {
 .sim-bar-sens { background: var(--sim-sens); }
 .sim-bar-shock { background: var(--sim-shock); }
 .sim-bar-rest { background: var(--sim-rest); }
+.sim-bar-kept { background: var(--sim-kept); }
+.sim-bar-lost { background: var(--sim-lost); }
 
 .sim-key {
   display: flex;
@@ -262,7 +164,7 @@ aplysia-sim {
   flex: none;
 }
 
-/* training ---------------------------------------------------------------- */
+/* choosing a condition ---------------------------------------------------- */
 .sim-choices {
   display: flex;
   gap: 8px;
@@ -321,16 +223,46 @@ aplysia-sim {
 
 .sim-pill:hover { border-color: var(--meta); color: var(--ink); }
 
-.sim-pill[data-sim-protein='intact'][aria-pressed='true'] {
-  border-color: var(--sim-kept);
-  color: var(--sim-kept);
-}
-
-.sim-pill[data-sim-protein='blocked'][aria-pressed='true'] {
+.sim-pill[aria-pressed='true'] {
   border-color: var(--sim-signal);
   color: var(--sim-signal);
 }
 
+/* a continuous setting ---------------------------------------------------- */
+.sim-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.sim-field-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  flex: 1 1 100%;
+}
+
+.sim-slider {
+  flex: 1 1 140px;
+  min-width: 0;
+  min-height: 44px;
+  accent-color: var(--sim-signal);
+  cursor: pointer;
+}
+
+.sim-value {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: .04em;
+  color: var(--sim-signal);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* running it and reading the result --------------------------------------- */
 .sim-run {
   min-height: 44px;
   width: 100%;
@@ -343,7 +275,7 @@ aplysia-sim {
 }
 
 .sim-run:hover:not(:disabled) { background: var(--sim-signal-wash); }
-.sim-run:disabled { border-color: var(--sim-rest); color: var(--meta); cursor: default; }
+.sim-run:disabled { border-color: var(--sim-rest); color: var(--meta); cursor: default; opacity: .55; }
 
 .sim-results {
   display: flex;
@@ -394,32 +326,6 @@ aplysia-sim {
   margin-top: 6px;
 }
 
-.sim-conn {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  background: var(--sim-chrome);
-  border: 1px solid var(--sim-border);
-  padding: 10px 12px;
-}
-
-.sim-conn-bars {
-  display: flex;
-  align-items: flex-end;
-  gap: 5px;
-  height: 34px;
-  flex: none;
-}
-
-.sim-conn-bars i {
-  display: block;
-  width: 14px;
-  background: var(--sim-signal);
-  transition: height .4s ease;
-}
-
-.sim-conn-bars i.is-new { background: var(--sim-kept); }
-
 .sim-verdict {
   font-size: 12.5px;
   line-height: 1.55;
@@ -459,18 +365,20 @@ aplysia-sim {
   font-family: var(--sans);
 }
 
-.sim-btn-primary { background: var(--sim-signal); color: var(--sim-paper); }
-.sim-btn-primary:hover { background: var(--sim-signal-hover); }
+.sim-btn:disabled { cursor: default; opacity: .5; }
 
-.sim-btn-shock {
+.sim-btn-primary { background: var(--sim-signal); color: var(--sim-paper); }
+.sim-btn-primary:hover:not(:disabled) { background: var(--sim-signal-hover); }
+
+.sim-btn-outline {
   background: var(--sim-paper);
   border-color: var(--sim-signal);
   color: var(--sim-signal);
 }
 
-.sim-btn-shock:hover { background: var(--sim-signal-wash); }
+.sim-btn-outline:hover:not(:disabled) { background: var(--sim-signal-wash); }
 
-.sim-btn-rest {
+.sim-btn-quiet {
   flex: 0 1 92px;
   background: var(--sim-paper);
   border-color: var(--sim-rest);
@@ -478,11 +386,8 @@ aplysia-sim {
   font-weight: 400;
 }
 
-.sim-btn-rest:hover { border-color: var(--meta); color: var(--ink); }
+.sim-btn-quiet:hover:not(:disabled) { border-color: var(--meta); color: var(--ink); }
 
 @media (prefers-reduced-motion: reduce) {
-  .sim-gill,
-  .sim-meter i,
-  .sim-conn-bars i { transition: none; }
-  .sim-vesicle { animation: none; opacity: 1; }
+  .sim-meter i { transition: none; }
 }
