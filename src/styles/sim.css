@@ -432,7 +432,7 @@ aplysia-sim {
 /* On desktop the panel scrolls inside its sticky column, so pin the controls
    to its foot. On mobile the page itself scrolls and pinning would float them
    over the panels. */
-@media (min-width: 900px) {
+@media (min-width: 1100px) {
   .sim-controls {
     position: sticky;
     bottom: 0;
