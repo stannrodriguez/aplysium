@@ -1,0 +1,90 @@
+---
+import '../../styles/sim.css';
+import '../../styles/sims/axon.css';
+
+interface Props {
+  label?: string;
+}
+
+const { label = 'Squid giant axon · voltage recorded' } = Astro.props;
+---
+
+<axon-sim class="sim">
+  <div class="sim-chrome">
+    <span class="sim-chrome-dot" aria-hidden="true"></span>
+    <span class="sim-chrome-label">{label}</span>
+    <span class="sim-chrome-status" data-sim-status aria-live="polite">resting</span>
+  </div>
+
+  <div class="sim-panels">
+    <section class="sim-panel">
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">Membrane potential</h3>
+        <p class="sim-readout">peak <b data-sim-peak aria-live="polite">−65.0 mV</b></p>
+      </div>
+
+      <div class="sim-stage hh-stage" data-sim-vplot></div>
+
+      <div class="sim-field">
+        <span class="sim-field-label" id="hh-amp-label">Stimulus — a half-millisecond pulse</span>
+        <input
+          class="sim-slider"
+          type="range"
+          min="0"
+          max="30"
+          value="8"
+          step="1"
+          data-sim-amp
+          aria-labelledby="hh-amp-label"
+        />
+        <span class="sim-value" data-sim-amp-value>8 µA/cm²</span>
+      </div>
+
+      <p class="sim-note" data-sim-v-note>
+        Set a stimulus strength and fire it. The pulse itself is the shaded band.
+      </p>
+    </section>
+
+    <section class="sim-panel">
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">The two currents, separated</h3>
+      </div>
+
+      <div class="sim-stage hh-stage-g" data-sim-gplot></div>
+
+      <p class="sim-key">
+        <span><i style="background:var(--sim-signal)"></i> sodium</span>
+        <span><i style="background:var(--sim-kept)"></i> potassium</span>
+        <span><i style="background:var(--sim-signal);opacity:.26"></i> earlier runs</span>
+      </p>
+
+      <p class="sim-note" data-sim-g-note>Stimulate the axon to separate the two currents.</p>
+    </section>
+
+    <section class="sim-panel">
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">Block a channel</h3>
+      </div>
+
+      <div class="sim-toggle">
+        <span class="sim-toggle-label">Applied to the bath</span>
+        <button type="button" class="sim-pill" data-sim-blocker="none" aria-pressed="true">nothing</button>
+        <button type="button" class="sim-pill" data-sim-blocker="ttx" aria-pressed="false">tetrodotoxin — blocks Na⁺</button>
+        <button type="button" class="sim-pill" data-sim-blocker="tea" aria-pressed="false">TEA — blocks K⁺</button>
+      </div>
+
+      <p class="sim-verdict" data-sim-verdict>
+        Fire it at two different strengths above threshold and leave both traces on screen.
+      </p>
+    </section>
+  </div>
+
+  <div class="sim-controls">
+    <button type="button" class="sim-btn sim-btn-primary" data-sim-stimulate>Stimulate</button>
+    <button type="button" class="sim-btn sim-btn-quiet" data-sim-clear>Clear</button>
+  </div>
+</axon-sim>
+
+<script>
+  import '../../scripts/sims/axon';
+</script>
