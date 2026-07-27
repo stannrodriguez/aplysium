@@ -29,18 +29,22 @@
   --motif-ink: #A8431F;
   --motif-mut: #D2C6B4;
 
-  /* simulator — dark instrument panel */
-  --sim-bg: #0F1214;
-  --sim-panel: #0A0C0D;
-  --sim-chrome: #141819;
-  --sim-border: #262B2E;
-  --sim-border-soft: #20262A;
-  --sim-text: #E6E8E6;
-  --sim-muted: #8B9297;
-  --sim-label: #7C8489;
-  --sim-green: #4FD1A5;
-  --sim-amber: #D6A83C;
-  --sim-orange: #E0714A;
+  /* simulator — an instrument on the same paper as the reading */
+  --sim-paper: #FDFCF9;   /* panel body */
+  --sim-chrome: #F7F4EC;  /* title bar and control bar */
+  --sim-well: #F1ECE0;    /* inset stages: the animal, the synapse, the trace */
+  --sim-border: #E3DFD4;
+  --sim-track: #EFEADF;   /* meter troughs */
+  --sim-tissue: #D8CDB6;  /* mantle and neuron bodies */
+  --sim-tissue-ink: #5F5842;
+  --sim-signal: #A8431F;  /* the live signal: gill, transmitter, primary action */
+  --sim-signal-hover: #8E3517;
+  --sim-signal-wash: #F3E4DC;
+  --sim-sens: #8A7A3C;    /* response after a tail shock */
+  --sim-shock: #E0BBA9;   /* the shock itself */
+  --sim-rest: #DDD8CB;
+  --sim-kept: #5E8A6B;    /* memory that survived */
+  --sim-lost: #C58A66;    /* memory that faded */
 
   /* type */
   --serif: Newsreader, Georgia, 'Times New Roman', serif;

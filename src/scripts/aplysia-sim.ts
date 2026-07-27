@@ -351,7 +351,7 @@ class AplysiaSim extends HTMLElement {
     const h24 = this.query('[data-sim-h24]');
     if (h24) {
       h24.style.width = `${r.h24}%`;
-      h24.style.background = r.h24 > 40 ? 'var(--sim-green)' : 'var(--sim-orange)';
+      h24.style.background = r.h24 > 40 ? 'var(--sim-kept)' : 'var(--sim-lost)';
     }
     this.text('[data-sim-h1-word]', `${r.h1}% — ${r.h1Word}`);
     this.text('[data-sim-h24-word]', `${r.h24}% — ${r.h24Word}`);
