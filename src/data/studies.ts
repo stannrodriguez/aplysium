@@ -217,6 +217,7 @@ export const studies: Study[] = [
     finding: 'Deciding whether two shapes match takes time proportional to the angle between them, about sixty degrees per second.',
     why: 'Showed that picturing something is a physical process that takes measurable time.',
     method: 'Same/different judgements on pairs of block figures at set angular offsets. The straight line through the reaction times is the result; nothing else in the design carries it.',
+    simulator: 'rotation',
   },
   {
     id: 13,
