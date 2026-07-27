@@ -1,0 +1,79 @@
+/* ── Hartline & Kuffler · the receptive field ─────────────────────────────
+   A patch of retina you put a light on, the cell's own record underneath, and
+   the map that comes out of enough readings. */
+
+.rf-stage {
+  height: auto;
+  aspect-ratio: 320 / 200;
+  cursor: crosshair;
+}
+
+.rf-raster {
+  height: auto;
+  aspect-ratio: 320 / 74;
+}
+
+.rf-map {
+  height: auto;
+  aspect-ratio: 320 / 200;
+}
+
+.rf-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.rf-bg { fill: var(--sim-well); }
+
+/* the light itself, not the cell's opinion of it */
+.rf-spot {
+  fill: #F6E7B8;
+  stroke: #D9C48A;
+  stroke-width: 1;
+}
+
+.rf-electrode {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.4;
+}
+
+.rf-label {
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: .08em;
+  fill: var(--meta);
+}
+
+/* the record -------------------------------------------------------------- */
+.rf-window { fill: #F6E7B8; opacity: .55; }
+
+.rf-tick {
+  stroke: var(--ink);
+  stroke-width: 1.3;
+}
+
+/* the map ----------------------------------------------------------------- */
+.rf-map > [data-sim-mapplot] {
+  position: absolute;
+  inset: 0;
+}
+
+.rf-on { fill: var(--sim-signal); }
+.rf-off { fill: var(--sim-kept); }
+.rf-null { fill: var(--meta-faint); }
+
+.rf-map-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 28px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .06em;
+  color: var(--muted);
+}
