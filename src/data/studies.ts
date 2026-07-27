@@ -164,6 +164,7 @@ export const studies: Study[] = [
     finding: 'With the corpus callosum cut, the left hemisphere gives confident reasons for actions the right hemisphere chose without it.',
     why: 'Caught the talking half of the brain inventing confident reasons for choices it never made.',
     method: 'Flash a word to one visual hemifield only and ask for a verbal report or a hand response. The trick is keeping presentation shorter than an eye movement.',
+    simulator: 'splitbrain',
   },
   {
     id: 10,
