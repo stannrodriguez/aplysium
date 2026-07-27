@@ -4,8 +4,10 @@ A reading-first static site of twenty landmark neuroscience studies that hold up
 under replication. One deep-dive entry per study; every page stands alone — no
 backend, no login, no accounts.
 
-Built with [Astro](https://astro.build). Ships zero JavaScript except one small
-custom element for the Aplysia simulator and ~20 lines for expand-all.
+Built with [Astro](https://astro.build). Ships zero JavaScript except the
+experiment on the entry that carries one — thirteen small custom elements, one
+per experiment, each loaded only by its own page — and ~20 lines for
+expand-all.
 
 ```bash
 npm install
@@ -27,6 +29,7 @@ npm run preview
 src/data/types.ts              Study, DeepDive, Layer, status, motif and simulator keys
 src/data/studies.ts            all twenty studies — the single source
 src/data/sims.ts               simulator key → the caption under the panel
+src/data/homunculus.ts         the cortical strip, shared by markup and behaviour
 src/data/entries/<slug>.ts     authored deep dive for one study
 src/data/entries/index.ts      slug → deep dive
 src/lib/motif.ts               the nineteen looping idea sketches
@@ -70,15 +73,41 @@ and calling an `onEvent(name, detail)` property if one is set.
    in `src/data/sims.ts`.
 4. Set `simulator: '<key>'` on the study.
 
-Until a study has one, `hasDemo: true` renders a note in that column saying the
-experiment is not built yet.
+All thirteen studies marked `hasDemo` have one. A study without a `simulator`
+key reads as a single column of prose.
+
+## The experiments themselves
+
+Each one computes its result rather than replaying a stored answer, so what the
+reader does actually determines what they see:
+
+| Study | What it runs |
+|---|---|
+| Cajal | a sparse Golgi stain over a fixed section, traced terminal by terminal |
+| Hodgkin & Huxley | the 1952 equations integrated at 5 µs steps |
+| Hartline / Kuffler | a difference of Gaussians integrated over the lit disc |
+| Penfield | the strip segmented by the cortex each part occupies |
+| Sperling | whole and partial report, scored on the reader |
+| Hubel & Wiesel | an orientation tuning curve, built one bar at a time |
+| Sperry & Gazzaniga | a hemifield flash, asked about two ways |
+| O'Keefe | spikes plotted where the animal was standing |
+| Shepard & Metzler | the reader's own reaction times against angle |
+| Wilson & McNaughton | a track sequence, and the same order in sleep |
+| Schultz | Rescorla–Wagner, with the error as the cell's response |
+| Simons & Chabris | the counting task, once |
+| Moser & Moser | three plane waves at sixty degrees, thresholded |
 
 ## Accessibility
 
 - `prefers-reduced-motion` freezes the index motifs mid-cycle, drops the
-  transmitter drift, and makes the gill and meters change state instantly.
+  transmitter drift, and makes the gill and meters change state instantly. The
+  experiments that animate a run — foraging, the track, the pass-counting clip
+  — compute the same result without animating it.
 - Every simulator control is at least a 44px target.
 - Replication dots carry their status word as an accessible label.
 - The simulator's mono labels sit at `--muted` rather than `--meta`, which
   keeps them above 4.5:1 on the warm ground.
 - The reading layers are native `<details>`, so they work with no JavaScript.
+- Every experiment's markup is server-rendered, so the panel says what it is
+  before its script arrives, and each stage carries an `aria-label` describing
+  the current state rather than the widget.
