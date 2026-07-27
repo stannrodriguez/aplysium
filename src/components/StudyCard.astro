@@ -1,0 +1,132 @@
+---
+import Motif from './Motif.astro';
+import StatusDot from './StatusDot.astro';
+import type { Study } from '../data/types';
+
+interface Props {
+  study: Study;
+}
+
+const { study } = Astro.props;
+---
+
+<a class="cell" href={`/studies/${study.slug}/`}>
+  <div class="motif-slot"><Motif type={study.motif} /></div>
+  <div class="dot-slot"><StatusDot status={study.status} /></div>
+  <span class="idea">{study.idea}</span>
+  <span class="lede">{study.lede}</span>
+  <span class="meta">
+    <span>{study.author}</span><span aria-hidden="true">·</span><span>{study.year}</span>
+    {study.hasDemo && <span class="run"><span aria-hidden="true">▶</span> run it</span>}
+  </span>
+</a>
+
+<style>
+  /* Desktop: a hairline-separated cell in the three-column idea grid. */
+  .cell {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto auto 1fr;
+    grid-template-areas:
+      'motif dot'
+      'idea  idea'
+      'lede  lede'
+      'meta  meta';
+    row-gap: 11px;
+    column-gap: 10px;
+    min-height: 196px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--hairline-index);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .motif-slot {
+    grid-area: motif;
+    height: 52px;
+    display: flex;
+    align-items: center;
+  }
+
+  .dot-slot {
+    grid-area: dot;
+    align-self: center;
+    display: flex;
+  }
+
+  .idea {
+    grid-area: idea;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    line-height: 1.18;
+    color: #141310;
+    text-wrap: pretty;
+  }
+
+  .lede {
+    grid-area: lede;
+    font-family: var(--serif);
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+
+  .meta {
+    grid-area: meta;
+    align-self: end;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 6px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .02em;
+    color: var(--meta-faintest);
+  }
+
+  .run {
+    color: var(--accent);
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  .cell:hover .idea,
+  .cell:focus-visible .idea {
+    color: var(--accent);
+  }
+
+  /* Mobile: its own row layout — motif column beside the text, dot inline with
+     the title. Not a reflow of the grid cell. */
+  @media (max-width: 719px) {
+    .cell {
+      grid-template-columns: 54px minmax(0, 1fr) auto;
+      grid-template-rows: auto auto auto;
+      grid-template-areas:
+        'motif idea dot'
+        'motif lede lede'
+        'motif meta meta';
+      column-gap: 14px;
+      row-gap: 6px;
+      min-height: 0;
+      padding: 18px 22px;
+      border-bottom: 0;
+      border-top: 1px solid var(--hairline-index);
+    }
+
+    .motif-slot {
+      justify-content: center;
+      align-self: start;
+    }
+
+    .dot-slot {
+      align-self: start;
+      margin-top: 5px;
+    }
+
+    .idea { font-size: 18px; }
+    .lede { font-size: 15.5px; }
+    .meta { padding-top: 0; }
+  }
+</style>

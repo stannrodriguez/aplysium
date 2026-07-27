@@ -1,0 +1,37 @@
+---
+import { STATUS } from '../data/types';
+import type { StatusKey } from '../data/types';
+
+interface Props {
+  status: StatusKey;
+  /** Entry pages use the deeper green; the index uses the softer one. */
+  variant?: 'index' | 'entry';
+  size?: number;
+  /** Set false when adjacent text already states the status word. */
+  labelled?: boolean;
+}
+
+const { status, variant = 'index', size = 8, labelled = true } = Astro.props;
+const meta = STATUS[status];
+const color = variant === 'entry' ? meta.dotEntry : meta.dot;
+---
+
+<span
+  class="dot"
+  style={`--dot-color:${color};--dot-size:${size}px`}
+  title={labelled ? meta.word : undefined}
+  role={labelled ? 'img' : undefined}
+  aria-label={labelled ? `replication: ${meta.word}` : undefined}
+  aria-hidden={labelled ? undefined : 'true'}
+></span>
+
+<style>
+  .dot {
+    width: var(--dot-size);
+    height: var(--dot-size);
+    border-radius: 50%;
+    background: var(--dot-color);
+    flex: none;
+    display: inline-block;
+  }
+</style>

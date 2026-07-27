@@ -1,0 +1,110 @@
+---
+import Base from '../layouts/Base.astro';
+import StudyCard from '../components/StudyCard.astro';
+import StatusDot from '../components/StatusDot.astro';
+import { orderedStudies } from '../data/studies';
+import { STATUS_LEGEND } from '../data/types';
+---
+
+<Base
+  title="Twenty things we figured out about the mind"
+  description="Twenty landmark neuroscience studies that hold up under replication — the idea first, one sentence each, earliest to latest."
+>
+  <main class="page">
+    <header class="masthead">
+      <p class="kicker">A century of brain science</p>
+      <h1>Twenty things we figured out about the mind</h1>
+    </header>
+
+    <div class="grid">
+      {orderedStudies.map(study => <StudyCard study={study} />)}
+    </div>
+
+    <footer class="legend">
+      {STATUS_LEGEND.map(item => (
+        <span class="legend-item">
+          <StatusDot status={item.key} size={7} labelled={false} />
+          {item.label}
+        </span>
+      ))}
+      <span class="legend-run"><span aria-hidden="true">▶</span> run it — has an experiment you can try</span>
+    </footer>
+  </main>
+</Base>
+
+<style>
+  .page {
+    max-width: 1280px;
+    margin: 0 auto;
+    color: var(--ink-soft);
+  }
+
+  .masthead {
+    max-width: 660px;
+    padding: 52px 52px 20px;
+  }
+
+  .kicker {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--meta-faint);
+  }
+
+  .masthead h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 38px;
+    line-height: 1.08;
+    margin: 12px 0 0;
+    text-wrap: pretty;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 40px;
+    padding: 20px 52px 56px;
+    border-top: 1px solid var(--hairline-index);
+    margin-top: 16px;
+  }
+
+  .legend {
+    padding: 0 52px 40px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--meta-faintest);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .legend-run { color: var(--accent); }
+
+  @media (max-width: 1023px) {
+    .grid { grid-template-columns: repeat(2, 1fr); column-gap: 32px; }
+  }
+
+  @media (max-width: 719px) {
+    .masthead { padding: 28px 22px 16px; }
+    .masthead h1 { font-size: 27px; line-height: 1.1; margin-top: 8px; }
+    .kicker { font-size: 10px; letter-spacing: .16em; }
+
+    .grid {
+      grid-template-columns: 1fr;
+      column-gap: 0;
+      padding: 0 0 32px;
+      border-top: 0;
+      margin-top: 4px;
+    }
+
+    .legend { padding: 0 22px 36px; gap: 14px 20px; }
+  }
+</style>

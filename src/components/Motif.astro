@@ -1,0 +1,20 @@
+---
+import type { MotifKey } from '../data/types';
+import { motifHtml } from '../lib/motif';
+
+interface Props {
+  type: MotifKey;
+}
+
+const { type } = Astro.props;
+---
+
+<div class="motif" aria-hidden="true" set:html={motifHtml(type)} />
+
+<style>
+  .motif {
+    width: 52px;
+    height: 52px;
+    flex: none;
+  }
+</style>
