@@ -20,7 +20,15 @@ export const studies: Study[] = [
     subject: 'chick, human tissue',
     claim: 'The brain is built from separate cells, not one continuous web.',
     finding: 'Silver-stained tissue showed neurons ending in free terminals, not fused into a continuous net.',
-    why: 'Settled a basic question — the brain is built from separate cells, not one continuous web. Everything since assumes it.',
+    why: 'The leading view was that the nervous system was one continuous web of protoplasm, a net with no separate parts. Cajal’s tissue said otherwise, and separate cells gave the field its unit: something you can record from, count, label, wire into a circuit, and strengthen one connection of at a time.',
+    significance: {
+      summary: 'It gave neuroscience its unit — and a gap between cells where signal has to be passed, and can be changed.',
+      paras: [
+        'The rival account, the reticular theory, was not a small error. If the nervous system were a single continuous mesh, there would be no such thing as one cell to record from, no junction between two cells, and nothing to strengthen or weaken when an animal learns — excitation would simply spread through the net the way current spreads through a wire. What the silver stain showed instead was processes that end freely: an axon runs up against the next cell, presses against it, and stops.',
+        'That gap is what the rest of the field is built on. Sherrington named it the synapse in 1897, and because signal has to be handed across it rather than flow through, transmission has a direction — dendrite to cell body to axon, which Cajal set out as the law of dynamic polarisation — and a place where it can be turned up or down. Every drug that acts on the brain acts there, and so does every account of learning from Hebb onward.',
+        'The assumption is invisible now because it is everywhere. Recording from a cell, mapping which cells fire where, tagging the particular cells that hold a memory, even the artificial “neuron” in a neural network — each is a sentence that only parses if the unit exists. The one place Golgi was not wrong is that electrical synapses do join some cells directly, but they are a special case the rule survives.',
+      ],
+    },
     method: 'Golgi’s silver chromate stains a sparse random subset of cells, so a single neuron shows up whole against blank tissue. Cajal drew hundreds of them and never once found two cells continuous.',
     simulator: 'cajal',
   },
@@ -38,7 +46,15 @@ export const studies: Study[] = [
     subject: 'squid',
     claim: 'A nerve impulse is ions crossing a membrane, on a timer.',
     finding: 'The action potential is sodium rushing in, then potassium leaving, and the timing of the two accounts for its shape.',
-    why: 'Turned the nerve impulse from a mystery into an equation you can actually solve.',
+    why: 'Nerves had been known to carry electricity for a century and a half, but the impulse behaved like nothing in a wire: far too slow, undiminished over distance, and all-or-none. Hodgkin and Huxley showed it was ions crossing a membrane through gates that open and shut on their own timetable, and wrote it down as a set of equations that predicted the spike’s shape, threshold and speed before anyone had seen a channel.',
+    significance: {
+      summary: 'A century-old mystery became four differential equations that predicted things they were never fitted to — and implied ion channels twenty years before one was recorded.',
+      paras: [
+        'Electricity in nerve was old news; Galvani had twitched a frog’s leg in 1780. What nobody could account for was the behaviour. The impulse travels at tens of metres a second, not near light speed. It does not fade with distance, as a signal in a cable must. And it is all-or-none: below a threshold nothing happens, above it you get the same full-sized spike every time. Bernstein’s standing explanation was that the membrane briefly loses its selectivity and the voltage collapses to zero. Hodgkin and Huxley’s own 1939 recording killed that — the inside of the axon does not fall to zero, it overshoots to about +40 mV, positive relative to the outside. Something was actively driving it the other way.',
+        'The equation treats the membrane as a capacitor in parallel with three conductances, each a function of voltage and time: C·dV/dt = −gNa·m³h·(V − ENa) − gK·n⁴·(V − EK) − gL·(V − EL), where each E is the voltage at which that ion stops flowing. The gating variables m, h and n each follow a first-order equation of the form dx/dt = α(V)·(1 − x) − β(V)·x, with α and β measured from the voltage-clamp records. Sodium conductance switches on fast (m) and then shuts itself off (h); potassium comes on more slowly (n) and drags the voltage back down. Threshold, the spike’s shape, the refractory period and the impossibility of a second spike arriving too soon all fall out of the interaction of those three timescales — none of them has to be put in by hand.',
+        'Huxley integrated the system by hand on a mechanical calculator, and it reproduced a propagating action potential with a conduction velocity of 18.8 m/s against a measured 21.2, along with a threshold and a refractory period that had never gone into the fit. Predicting what you did not fit is what makes it a theory rather than a description. The exponents m³h and n⁴ also implied that the membrane held discrete, independently gated pores — confirmed decades later when Neher and Sakmann recorded a single channel opening. Every conductance-based model since is written in this form, from cardiac cells to cortical networks, and it is the frame in which local anaesthetics, channel-blocking toxins and the inherited channelopathies are all understood.',
+      ],
+    },
     method: 'The squid axon is wide enough to thread a wire down. Holding voltage fixed and measuring the current needed to hold it, they separated the two ion currents and fitted equations that predicted the spike they had not yet used to fit them.',
     simulator: 'axon',
   },
@@ -56,7 +72,14 @@ export const studies: Study[] = [
     subject: 'horseshoe crab, cat',
     claim: 'The eye reports edges and differences, not raw brightness.',
     finding: 'A retinal ganglion cell fires to a spot of light in its centre and is silenced by light in the ring around it.',
-    why: 'Explained why we notice edges and contrast rather than raw brightness.',
+    why: 'The eye is not a camera passing pixels back. By the time signal leaves the retina it has already been reduced to differences — where light changes across space — which is why a million optic-nerve fibres can carry what a hundred million photoreceptors collect, and why a face looks like the same face in sunlight and under a lamp.',
+    significance: {
+      summary: 'The retina discards uniform brightness and keeps change: compression, contrast constancy, and the first receptive field anyone mapped.',
+      paras: [
+        'Flood the whole receptive field evenly and the cell barely moves off its resting rate — the centre’s excitation and the surround’s inhibition cancel. What leaves the eye is where brightness changes, not how much of it there is. That is a hundred-to-one reduction into a nerve with far fewer fibres than the retina has receptors, and it is why the absolute level of light stops mattering: a doubling of the sun changes centre and surround together, so the difference the cell reports is unchanged. It is also why brightness illusions work. Mach bands, and the grey patch that looks lighter against a dark ground, are the retina’s output rather than the light’s.',
+        'The other legacy is the tool. Hartline in the horseshoe crab and Kuffler in the cat established that a cell can be characterised by its receptive field: a region of the world, with a shape, that drives or suppresses it. That is the organising idea of all sensory physiology afterwards, and Hubel and Wiesel walked straight through the door a few years later by asking what shape sat one stage further up. The difference-of-Gaussians filter the retina computes is also, independently, the standard edge detector in image processing, and something close to it is what the first layer of a vision network converges on when trained from scratch.',
+      ],
+    },
     method: 'Record one fibre, then move a small light around the retina and mark where it drives the cell and where it suppresses it. The map that comes out is a ring, not a patch.',
     simulator: 'retina',
   },
@@ -74,7 +97,16 @@ export const studies: Study[] = [
     subject: 'human',
     claim: 'Each body part gets cortical space by how sensitive it is, not how big it is.',
     finding: 'Stimulating a point on the cortical strip evokes sensation in one body part; the area given to a part scales with its sensitivity, not its size.',
-    why: 'The first real map of which strip of cortex handles which body part, read off awake patients.',
+    why: 'Where a function lived in the brain had been argued for a century from damaged brains, after the fact. Penfield could put a current on a named point of a conscious person’s cortex and be told exactly where in the body it was felt, which turned localisation from an inference into a direct reading — and the map that came out was a map of sensitivity rather than of anatomy.',
+    significance: {
+      summary: 'Localisation stopped being an inference from lesions, and cortical territory turned out to be allocated by how much information a body part sends, not by how big it is.',
+      paras: [
+        'Nineteenth-century evidence on localisation came from damage: a patient loses speech, dies years later, and someone looks for the lesion. That yields correlations, one accident at a time, with no control over what else the injury took. Penfield had a live, conscious cortex in front of him and a stimulating electrode, so he could work in the other direction — apply current at a chosen point and ask what the person felt. Done point by point across hundreds of patients, an orderly strip emerged along the postcentral gyrus: stimulate near the top, at the midline, and the toes tingle; move down the strip and you get leg, trunk, arm, hand, thumb, face, lips, tongue, in that order, with the matching sequence for movement on the gyrus just in front of it.',
+        'The order was more or less expected. The proportions were not. The hand, lips and tongue take up more of the strip than the trunk and both legs together, which is what the distorted little figure drawn along the strip is recording. Cortical territory tracks innervation density and tactile acuity: you can tell two points apart about two millimetres apart on a fingertip and only about forty millimetres apart on the back, and the cortical areas stand in roughly that ratio. So the brain spends its surface where the information is — a principle that turns up everywhere once you know to look for it, in the fovea’s outsized share of visual cortex, in one cortical barrel per whisker in a rodent, in the expanded sonar band in a bat.',
+        'The method never left the operating theatre; mapping eloquent cortex before a resection is still standard, and still done awake, for exactly Penfield’s reason — the cortex has no sensation of its own, so the only way to label a point is to ask the person under it. The map also explains things it was not built for. After an amputation, a touch on the face can be felt in the missing hand, because face and hand are neighbours on the strip and the vacated territory does not stay vacant.',
+        'What has narrowed is the tidiness. There is not one homunculus but several adjacent body maps in areas 3a, 3b, 1 and 2, each with its own emphasis; the sequence is broken in places rather than continuous; the borders shift with training, injury or amputation instead of being fixed; and recent imaging has found the motor strip interrupted by regions that belong to no single body part at all. The finding that survives all of that is the one that mattered: an orderly map, disproportionate in a way that says what cortex is for.',
+      ],
+    },
     method: 'Awake craniotomy for epilepsy surgery. Patients under local anaesthetic reported what they felt as each point was stimulated, which is how the map got labelled at all.',
     simulator: 'homunculus',
   },
@@ -92,8 +124,16 @@ export const studies: Study[] = [
     subject: 'human',
     claim: 'You can lose the memory for facts and keep the memory for skills.',
     finding: 'After both medial temporal lobes were removed, H.M. could learn new motor skills but could not form new facts about his life.',
-    why: 'Proof that memory is not one system — you can lose one kind and keep another intact.',
-    method: 'Milner tested him repeatedly over decades. The mirror-drawing task improved session over session while he denied ever having done it, which is the whole argument in one observation.',
+    why: 'One patient split memory into parts that had been assumed to be a single faculty. H.M. could hold a conversation, keep a phone number in mind, and get measurably better at a motor skill across days — while being unable to say he had ever done any of it. Memory is not one capacity that can be more or less damaged; it is several systems, in different tissue.',
+    significance: {
+      summary: 'Facts came apart from skills, short-term from long-term, and forming a memory from keeping one — all read off a single person.',
+      paras: [
+        'Before 1957 memory was largely treated as one thing. Lashley had spent thirty years removing cortex from rats and concluding that what mattered was how much you took, not where from. H.M.’s surgery removed the medial temporal lobes on both sides and left the rest intact: his IQ was unchanged, his perception and language were normal, his personality was his own, and he could repeat back a string of digits as well as anyone. What he could not do was keep anything. Minutes after a conversation it was gone, and it stayed gone for fifty-five years.',
+        'Each thing he kept marks a boundary. He held a digit span, so short-term memory does not run through the hippocampus — two stores, not one store with a decay curve. He improved at mirror-drawing session after session while insisting each time that he had never tried it, so learning a skill is a different system from knowing a fact. He remembered his childhood while losing the years just before surgery, so the medial temporal lobe is where memories are assembled and held while they set, not where old ones are kept. Every one of those distinctions is textbook now, and each was first read off one man.',
+        'Milner’s method carried as much as the case did. Testing a single patient repeatedly over decades, rather than averaging a group, is what let a dissociation this specific be seen at all — an average across amnesic patients would have shown a memory deficit and nothing more. The design became the template for cognitive neuropsychology: find the person in whom one ability is gone and a neighbouring one is intact, and you have shown the two are separable.',
+      ],
+    },
+    method: 'Milner tested him repeatedly over decades. His mirror-drawing improved session after session while he denied each time ever having tried it — the skill was being stored somewhere that could not be reached by asking.',
   },
   {
     id: 6,
@@ -109,7 +149,14 @@ export const studies: Study[] = [
     subject: 'human',
     claim: 'A whole scene is there for a fraction of a second, then most of it is gone.',
     finding: 'Cued a fraction of a second after a grid disappears, people report almost any row accurately; asked for the whole grid, they get four letters.',
-    why: 'Showed the eye takes in far more in an instant than the mind can hold long enough to report.',
+    why: 'Everyone who has ever said “I saw it all, I just couldn’t say it” turned out to be right, and Sperling found the way to prove it. What a person can report underestimates what they had, so perception and memory come apart — and the gap between them became something with a size and a decay rate you can measure.',
+    significance: {
+      summary: 'Report is not perception. A brief, high-capacity visual store exists, decays in under a second, and can be measured after it is already gone.',
+      paras: [
+        'The standing number was about four items — the span of apprehension, arrived at by showing people a display and asking what they saw. Sperling’s move was to make the demand small and unpredictable: a tone sounded after the display had vanished names one row, so the viewer has only three letters to produce but cannot have chosen in advance which three. They get almost all of them, whichever row is named. If any row can be reported, every row must still have been available when the tone sounded — so multiply, and roughly nine of the twelve letters were there. Four was never the limit on what was seen, only on what survived being read out.',
+        'Delay the tone and the estimate falls back to four within about a second, so the store is real, brief, and decaying on its own rather than being overwritten by the question. Neisser later named it iconic memory. The design generalised further than the finding: partial report is now a standard way to measure a representation you cannot ask about directly, and the logic runs through change blindness, the capacity limits of visual working memory, and the current arguments over how much of experience is simply the part that can be reported.',
+      ],
+    },
     method: 'A tone after the display told the viewer which row to report. Accuracy on the cued row, multiplied by the number of rows, estimates what was available before it decayed.',
     simulator: 'iconic',
   },
@@ -127,7 +174,14 @@ export const studies: Study[] = [
     subject: 'cat',
     claim: 'Single cells fire for a line at one specific angle and go quiet off it.',
     finding: 'A V1 cell fires hard at a bar of one angle and falls near-silent a few degrees off it.',
-    why: 'Found the basic unit of seeing: single cells tuned to a single edge at a single angle.',
+    why: 'It answered how a brain turns light into things: not in one step, but in stages, each combining a few cells from the stage below into a slightly more particular preference. A retinal cell wants a spot; a cortical cell built from a row of those spots wants a line at one angle. Recognition stopped being a mystery and became a problem with an architecture.',
+    significance: {
+      summary: 'Selectivity is built in stages, each cell assembled from the one below — the architecture vision science, and later the convolutional network, was built on.',
+      paras: [
+        'Line up the centre-surround cells from the previous study in a row, feed them all to one cortical cell, and that cell will fire hard for a bar at the angle of the row and fall near-silent a few degrees off it. Hubel and Wiesel found exactly that, and then the stage above it: complex cells with the same angle preference but no fussiness about where in the field the bar sits. Selectivity is being added and tolerance recovered, alternately, going up. That is a recipe rather than a single result, and it is why people went looking for — and eventually found — cells further along tuned to corners, to shapes, and to faces.',
+        'They also found the cortex organised. Orientation preference rotates smoothly across the surface, cells are grouped into columns by which eye drives them, and the same six-layered circuit repeats wherever you record, which is where the idea of a canonical cortical computation comes from. Fukushima’s Neocognitron took the simple-cell/complex-cell alternation directly, and it is still the shape of a convolutional network: a filter bank, then a pooling step, repeated. Train one of those on photographs from scratch and the first layer it learns is oriented edges.',
+      ],
+    },
     method: 'They found it by accident: a glass slide edge sweeping across the projector drove a cell that dots never had. The method after that was systematic bar angles, one cell at a time.',
     simulator: 'orientation',
   },
@@ -145,7 +199,14 @@ export const studies: Study[] = [
     subject: 'cat, monkey',
     claim: 'Some wiring forms only in a window of early life that then shuts for good.',
     finding: 'An eye sutured shut during a critical window loses its cortical territory to the other eye and does not get it back.',
-    why: 'Showed the brain has deadlines — some wiring only forms during a window in early life.',
+    why: 'Experience does not merely add to a brain; it is required to finish building one, and only on a schedule. An eye closed during the first months of life loses its cortical territory to the other eye and never wins it back, while the identical deprivation in an adult does almost nothing. Development has deadlines, and once one passes, the wiring it governed stops being negotiable.',
+    significance: {
+      summary: 'Wiring depends on experience, but only inside a window — and the loss is competitive, which is why one bad eye is worse than two.',
+      paras: [
+        'The deprived eye is not damaged. The eye is fine and so is its retina; what has changed is upstream, in cortex, where cells that used to answer to it now answer only to its partner. The tell is that closing both eyes does far less harm than closing one. If deprivation simply starved a pathway, two would be worse than one. Instead the two eyes are competing for the same cortical territory on the strength of their activity, and an eye that sends nothing loses ground — which is also the first clear demonstration that cortical connections are settled by use rather than laid down finished.',
+        'This is why an infant born with a cataract is operated on within weeks rather than at a convenient age, why amblyopia is patched in early childhood and is largely untreatable later, and why deaf children receive cochlear implants as early as possible. It is also the sharp form of the nature-and-nurture question: genes lay down an approximate wiring, activity refines it, and the refinement is only on offer for a while. Whether the window truly shuts or merely stiffens is the live question now — the molecular brakes that close it have been identified in animals, and lifting them reopens plasticity, which is one of the routes being tried against adult amblyopia.',
+      ],
+    },
     method: 'Close one eye for a period, then reopen it and count how many cortical cells still respond to it. Closing the same eye in an adult does almost nothing, which is what makes it a window.',
   },
   {
@@ -162,7 +223,15 @@ export const studies: Study[] = [
     subject: 'human',
     claim: 'One half of the brain invents confident reasons for what the other half chose.',
     finding: 'With the corpus callosum cut, the left hemisphere gives confident reasons for actions the right hemisphere chose without it.',
-    why: 'Caught the talking half of the brain inventing confident reasons for choices it never made.',
+    why: 'The half of the brain that talks will produce a confident explanation for a decision it had no part in, and cannot tell that it is doing so. It is not lying and it does not feel like guessing — the invented reason arrives with exactly the certainty of a real one, which puts the ordinary sense of knowing why you did something under permanent suspicion.',
+    significance: {
+      summary: 'The verbal hemisphere explains actions it did not choose, fluently and without doubt — so introspection is partly reconstruction.',
+      paras: [
+        'Cutting the corpus callosum leaves two hemispheres that can no longer compare notes, and because each sees only the opposite half of the visual world, an experimenter can hand information to one of them alone. Show the right hemisphere an instruction and the patient carries it out. Ask the left hemisphere, which does the talking, why — and it does not say it does not know. It produces a reason at once, fitted to whatever the body was seen doing. Gazzaniga called the machinery behind this the interpreter: a system that takes the evidence available to it and narrates the result as intention.',
+        'What outlives the surgery is the limit this puts on self-report generally. An explanation of your own behaviour is not a readout of the process that produced it; it is assembled afterwards from what was visible, and it feels the same either way. Other lines of work reached the same place from different directions — choice blindness, where people defend a choice they did not make; post-hoc reasons offered for priming effects; the ordinary confabulation of confidently wrong reasons. It is why asking a subject why they did something is treated as data about the explaining rather than about the doing.',
+        'The disconnection itself is not in doubt; what remains argued is how far it goes. Claims about two independent consciousnesses in one skull rest on a handful of patients, all with long histories of severe epilepsy and surgery, and recent testing has found the same split perception coexisting with a single unified sense of self — which fits one interpreter that has lost some of its inputs better than it fits two minds sharing a head.',
+      ],
+    },
     method: 'Flash a word to one visual hemifield only and ask for a verbal report or a hand response. The trick is keeping presentation shorter than an eye movement.',
     simulator: 'splitbrain',
   },
@@ -180,7 +249,14 @@ export const studies: Study[] = [
     subject: 'rat',
     claim: 'Brains track what predicts what, not what merely happens together.',
     finding: 'A rat conditions to a tone only when the tone changes the probability of shock, not when it merely precedes it.',
-    why: 'Changed what learning by association means: brains track prediction, not mere co-occurrence.',
+    why: 'Association had meant that things happening together get linked. Rescorla showed animals ignore pairings that carry no news: if the shock is just as likely without the tone, the tone never becomes a warning, however often the two coincide. Learning is driven by prediction error — the gap between what happened and what was expected — which is the idea the rest of learning theory, and eventually reinforcement learning, is written on.',
+    significance: {
+      summary: 'Animals learn from surprise, not co-occurrence — the step that produced the Rescorla–Wagner rule and, through it, modern reinforcement learning.',
+      paras: [
+        'Pavlov’s account was contiguity: put two events close together in time often enough and a link forms. Rescorla’s design holds the pairings fixed and varies only what happens on the trials with no tone at all. If shocks arrive just as often when the tone is absent, the rat does not come to fear the tone — it is redundant, and no number of pairings changes that. Leave the pairings exactly as they are but make the tone the only occasion for shock, and conditioning is strong. What the animal is tracking is whether the cue changes the odds, which is a comparison between two probabilities rather than a count of coincidences.',
+        'Formalised with Wagner in 1972, this becomes a learning rule in one line: a cue’s associative strength changes in proportion to the difference between what actually arrived and what all the cues present jointly predicted. Nothing to be surprised by, nothing to learn. That single term accounts for blocking — pair a new cue with an outcome an old cue already predicts and the new one stays inert — and for conditioned inhibition, and it is the direct ancestor of temporal-difference learning in machine learning. It is also why the dopamine result later in this list landed so hard: those cells were computing, spike for spike, the error term this rule had required for twenty-five years.',
+      ],
+    },
     method: 'Hold the number of tone–shock pairings constant and vary the shocks that arrive without a tone. Pairings alone stop predicting learning as soon as you do.',
   },
   {
@@ -197,7 +273,14 @@ export const studies: Study[] = [
     subject: 'rat',
     claim: 'A single cell fires only when you’re in one particular place in a room.',
     finding: 'A hippocampal cell fires when the rat is in one particular part of the room and is quiet everywhere else.',
-    why: 'Found single neurons that fire only when the animal is in one particular place — a map made of cells.',
+    why: 'Tolman’s claim that animals navigate with a map in the head, rather than a chain of learned turns, had been argued behaviourally for thirty years with no way to settle it. O’Keefe found the map’s parts: cells that fire when, and only when, the animal is at one location — whatever route it took to get there and whichever way it is facing. An abstract cognitive posit turned out to be readable off single cells.',
+    significance: {
+      summary: 'The cognitive map stopped being a theoretical posit: a cell fires for a place, not for a movement or a view.',
+      paras: [
+        'Behaviourism held that a rat running a maze had learned a sequence of responses. Tolman argued for a map, on the strength of shortcuts and detours the sequence account could not produce, and the argument stalled because both sides were reading the same behaviour. A place cell settles it in a different currency altogether. The cell fires in one part of the room and is silent elsewhere, regardless of heading, regardless of the path taken, and it keeps firing in the dark — so what it encodes is position in the room, not a view, a turn, or a smell.',
+        'Rotate the cue card on the wall and the field rotates with it, which shows the map is anchored to landmarks rather than floating free. Move the animal to a different room and the same population takes up entirely new positions — a separate chart, not a redrawn one. That is enough structure to build on, and much of what follows depends on it: the sequences replayed in sleep are place-cell sequences, grid cells were found by asking what feeds this map, and the hippocampus’s other job, episodic memory, is now usually explained as the same machinery indexing where-and-when rather than merely where.',
+      ],
+    },
     method: 'Chronic electrodes in a freely moving animal, with position tracked at the same time. Plotting spikes against position is what turns a spike train into a map.',
     simulator: 'placefield',
   },
@@ -215,8 +298,15 @@ export const studies: Study[] = [
     subject: 'human',
     claim: 'Turning a shape over in your mind runs at a steady, measurable speed.',
     finding: 'Deciding whether two shapes match takes time proportional to the angle between them, about sixty degrees per second.',
-    why: 'Showed that picturing something is a physical process that takes measurable time.',
-    method: 'Same/different judgements on pairs of block figures at set angular offsets. The straight line through the reaction times is the result; nothing else in the design carries it.',
+    why: 'Psychology needed a way to make claims about invisible mental processes testable, and this was the demonstration that a stopwatch would do it. The time to decide whether two shapes match rises in a straight line with the angle between them, so whatever people are doing passes through the intermediate orientations at a rate — exactly as turning a physical object would.',
+    significance: {
+      summary: 'A private mental act with a public, measurable speed — and the strongest evidence that imagery keeps the structure of what it represents.',
+      paras: [
+        'Behaviourism had ruled the inside of the head out of bounds on the grounds that nothing there could be measured. Shepard and Metzler measured something. Reaction time against angular disparity is a straight line through a dozen angles, around sixty degrees a second, and the slope is the same whether the rotation is in the plane of the page or in depth — cases where the difference between the two retinal images is nothing alike. A lookup, a feature count, or a verbal description of each figure would not care how far apart the two orientations were. Something is being turned, continuously, through the positions in between.',
+        'That is what an analog representation means in practice: the intermediate states are real states, and the format preserves the geometry of the thing represented instead of encoding it as a list of propositions. The claim was fought over for a decade in the imagery debate, and the method that came out of it is now routine — measure how a response time scales with some parameter of the task and you have constrained the algorithm without opening the skull. It is also one of the few psychological effects with a stable individual-difference structure, which is how it ended up in half the spatial-ability test batteries in use.',
+      ],
+    },
+    method: 'Same/different judgements on pairs of block figures at set angular offsets. Everything rests on the reaction times: plotted against angle they fall on a straight line, and nothing else in the design carries the result.',
     simulator: 'rotation',
   },
   {
@@ -233,7 +323,15 @@ export const studies: Study[] = [
     subject: 'rabbit',
     claim: 'Use a synapse hard and it stays stronger for hours — a memory, physically.',
     finding: 'A short burst of high-frequency stimulation leaves a hippocampal synapse measurably stronger for hours.',
-    why: 'Found a synapse that gets stronger after use and stays that way — memory you can measure.',
+    why: 'Hebb proposed in 1949 that memory is stored by strengthening the connections between cells that fire together, and for twenty-four years it was a plausible sentence with nothing behind it. Bliss and Lømo turned it into a measurement: a second of high-frequency stimulation leaves a synapse measurably stronger for hours, in a living animal, in the structure H.M. had lost.',
+    significance: {
+      summary: 'Hebb’s postulate became a phenomenon you can induce, measure, block and reverse — and the mechanism turned out to be a coincidence detector.',
+      paras: [
+        'Storage needs a synapse that changes with use and then stays changed. It also needs the change to be specific: a nervous system in which everything strengthens at once stores nothing. Both hold here. Potentiation appears only in the pathway that was tetanised, while a control pathway onto the very same cells in the same animal is unmoved, and it persists for hours under anaesthetic and for weeks in a freely moving animal. That is a physical trace with a location, a lifetime and an on-switch.',
+        'The mechanism, worked out over the following decade, is why this became the standard model of storage rather than one curiosity among several. The NMDA receptor passes calcium only when two things coincide — glutamate bound, and the cell already depolarised by other input — which is Hebb’s “fire together” implemented as a piece of protein. Downstream, the synapse inserts more AMPA receptors, and for changes that last it transcribes new protein and physically grows. Block NMDA receptors and you block both the potentiation and new spatial learning in the same animals, which is as close to a causal link between synaptic change and memory as the field had for decades.',
+        'The honest gap is that potentiating a pathway with an electrode is not itself a memory. Showing that a particular memory lives in particular strengthened synapses took another thirty years and the engram work further down this list.',
+      ],
+    },
     method: 'Stimulate the perforant path, record the population response, deliver a tetanus, then keep recording the same test pulse. The control is the unpotentiated pathway in the same animal.',
   },
   {
@@ -250,7 +348,14 @@ export const studies: Study[] = [
     subject: 'rat',
     claim: 'The brain replays the paths it took that day, sped up, while you sleep.',
     finding: 'Place-cell sequences run during the maze re-run during later sleep, compressed roughly twentyfold.',
-    why: 'Caught the sleeping brain replaying the day’s path at high speed.',
+    why: 'Consolidation had only ever been inferred from outside — memories get more robust with time and with sleep — with no account of what the brain was doing during it. Here it is doing something specific and visible: re-running the same place-cell sequences it ran during the day, compressed roughly twentyfold. Offline rehearsal went from a hypothesis to an event you can time, disrupt and test.',
+    significance: {
+      summary: 'Consolidation caught in the act — the day’s sequences re-run in sleep at twenty times speed, and blocking them costs the animal the memory.',
+      paras: [
+        'The method mattered as much as the result. One electrode gives you one cell, and a single cell firing during sleep tells you nothing about order. Once arrays could hold a hundred cells at once, you could learn which cells fire together on the track and then look for that same joint structure afterwards — and it is there, during the sharp-wave ripples of slow-wave sleep, running at about twenty times the speed the animal actually moved. The epoch recorded before the run is what makes it mean anything: the pattern is absent beforehand and present after, so it is the experience being replayed rather than a standing habit of the tissue.',
+        'What it explains is the long-standing puzzle from H.M. — why the hippocampus is needed to form memories but not to keep them. If the hippocampus replays its sequences to the cortex repeatedly while offline, the cortex can learn slowly and statistically, which is what cortex appears to do, without the interference that fast learning causes; and the memory ends up somewhere the hippocampus is no longer required. Later work found reverse replay after a reward, replay of paths the animal never took, and, decisively, that disrupting the ripples specifically — leaving the rest of sleep intact — impairs learning the next day. Experience replay in reinforcement-learning systems is borrowed from this, name included.',
+      ],
+    },
     method: 'Record many cells at once, learn which pairs fire together on the track, then look for that same order in sleep. It only works because the arrays got big enough to see sequence rather than single cells.',
     simulator: 'replay',
   },
@@ -268,7 +373,14 @@ export const studies: Study[] = [
     subject: 'human',
     claim: 'One patch of cortex responds mainly to faces and little else.',
     finding: 'A patch of fusiform cortex responds about twice as strongly to faces as to any other object class tested.',
-    why: 'Showed some patches of cortex are specialists, tuned to one kind of thing.',
+    why: 'Whether cortex is a general-purpose learner or contains machinery dedicated to particular problems had no clean human evidence either way. A patch of fusiform cortex that answers roughly twice as strongly to faces as to anything else, findable in nearly every person scanned, is about as concrete as that argument gets — and the per-subject localiser it required is now how most human functional imaging is done.',
+    significance: {
+      summary: 'Evidence that cortex holds specialised machinery, and the localiser method that made small, individually placed regions findable at all.',
+      paras: [
+        'Averaging brains together smears a region that sits a centimetre apart in different people into nothing, which is roughly what earlier imaging had found. Kanwisher’s design defines the region separately in each subject with one set of scans, then tests it with fresh stimuli in another, so the claim is never fitted and tested on the same data. That is the standard functional-localiser design now, and it reaches well past faces: the same approach turned up regions for places, for bodies, for visual word forms, and the language network.',
+        'The interpretation is what stays open. The expertise account holds that this tissue handles any category you have spent years telling apart at the individual level — faces for everyone, but also birds for a birdwatcher or cars for a car expert — rather than faces as such. Others argue that face information is distributed across ventral temporal cortex and this patch is only its peak. What is not in dispute is that the tissue does something specific to faces: damage there produces prosopagnosia, in which a person can describe a face feature by feature and not know whose it is, and stimulating it in an awake patient makes the face they are looking at visibly distort while the rest of the scene stays put.',
+      ],
+    },
     method: 'Define the region in each subject with one set of scans, then test it with new stimuli in a second set. Localising per subject rather than averaging brains is what made the effect survive.',
   },
   {
@@ -285,7 +397,15 @@ export const studies: Study[] = [
     subject: 'monkey',
     claim: 'Dopamine signals a better-than-expected outcome, not the pleasure itself.',
     finding: 'Dopamine neurons fire to unexpected reward, stay flat when the reward was predicted, and dip below baseline when a predicted reward does not arrive.',
-    why: 'Reframed dopamine: it signals surprise, not pleasure — the root of modern reinforcement learning.',
+    why: 'Dopamine was the brain’s pleasure chemical, in the literature and in the popular account alike. The cells turn out to report not how good an outcome is but how much better it is than expected — bursting for surprises, staying flat for outcomes already predicted, and dipping below baseline at the exact moment a promised reward fails to arrive. It was also the first time a specific algorithm from machine learning was found running, term for term, in identified neurons.',
+    significance: {
+      summary: 'Dopamine reports prediction error rather than pleasure — the temporal-difference term from reinforcement learning, measured in single cells.',
+      paras: [
+        'Three trial types carry the whole argument. Unexpected juice: a burst. The same juice after a cue the monkey has learned: nothing at the juice, and a burst at the cue instead — the response has migrated to the earliest reliable predictor of good news. Cue, then no juice: at precisely the moment the juice was due, the cell drops below its baseline rate, reporting an absence. Nothing that signals pleasure or reward can produce that third result, since nothing happened. A cell computing “what I got minus what I expected” produces all three.',
+        'The expression for that quantity already existed. Temporal-difference learning had been developed in machine learning, and its error term — reward received, plus the revised value of the state you now find yourself in, minus what you had predicted — is what these cells are firing. Sutton and Barto’s algorithm and Rescorla and Wagner’s rule are close relatives, so a line runs from the conditioning result earlier in this list straight into the electrode.',
+        'What followed is a large share of computational psychiatry and of drug research: addiction as a signal that never fully predicts away, the apathy and learning deficits of Parkinson’s read as a flattened error signal rather than a movement problem, and the reward machinery that now trains large models. It is also the standing example of what it looks like when a computational theory and a recording meet: the algorithm was not fitted to the neurons, and the neurons were not chosen to suit the algorithm.',
+      ],
+    },
     method: 'Record midbrain dopamine cells while a monkey learns a cue. The omission trial is the decisive one: nothing happens, and the cell responds to it.',
     simulator: 'dopamine',
   },
@@ -303,7 +423,14 @@ export const studies: Study[] = [
     subject: 'human',
     claim: 'Focused on a task, half of people miss a gorilla walking through the scene.',
     finding: 'About half of viewers counting basketball passes never see a person in a gorilla suit cross the middle of the screen.',
-    why: 'Showed how completely attention can hide something sitting in plain sight.',
+    why: 'Seeing feels like receiving whatever is in front of you, and it is not. Half of people watching a video attentively fail to register a person in a gorilla suit walking into the middle of it, stopping, and beating their chest. Attention is not a spotlight that brightens one part of an otherwise visible scene — outside it, things can be missing from experience entirely.',
+    significance: {
+      summary: 'Without attention there is no awareness — and the failure is invisible from the inside, which is the part with consequences.',
+      paras: [
+        'The effect had a name already, from Mack and Rock’s work on inattentional blindness, but the demonstrations were small stimuli near fixation and easy to dismiss. Here the missed object is large, high-contrast, central, moving, and on screen for nine seconds, and about half of viewers doing an ordinary attentive task never see it. The rate moves in an orderly way with load: the harder the counting task, the more people miss, and viewers tracking the black-shirted team miss less often than those tracking the white-shirted one, because the gorilla is black. So this is not a failure of the eye but of what attention was allocated to.',
+        'The second half of the finding is metacognitive, and it is what gives the first half its bite. Told about it afterwards, people are certain they would have noticed, and some insist the video must have been swapped. That confidence is why the result keeps reappearing in applied settings — a radiologist hunting lung nodules misses a gorilla pasted into the scan, a driver on a phone call looks straight at a motorcycle, a witness reports the attended part of a scene with exactly the same certainty either way. “I was looking right at it” turns out to be no evidence at all that you saw it.',
+      ],
+    },
     method: 'One viewing only, one counting task, then the question. The design is spent after a single trial per subject, which is why sample size does the work.',
     simulator: 'gorilla',
   },
@@ -321,7 +448,15 @@ export const studies: Study[] = [
     subject: 'rat',
     claim: 'Cells tile the whole space you move through in a repeating hexagonal pattern.',
     finding: 'An entorhinal cell fires at the vertices of a hexagonal lattice that tiles the entire environment.',
-    why: 'Found a built-in hexagonal grid the brain uses to keep track of space.',
+    why: 'Place cells tell an animal where it is but not how far anything is from anything else — each cell is its own landmark, with no common scale. Grid cells supply the metric: one cell fires at every vertex of a regular hexagonal lattice covering the whole space, so distance and direction can be read off the same repeating pattern wherever you happen to be. It is the closest thing anyone has found in a brain to a coordinate system, and unlike a place field it is largely generated from the inside rather than imposed by what is on the walls.',
+    significance: {
+      summary: 'A self-generated coordinate system for space — periodic, modular, and now the leading model of how brains represent structure in general.',
+      paras: [
+        'The pattern only appears if the animal has room. In a small box a grid cell shows one firing field and is indistinguishable from a place cell, which is what such cells had been taken for; enlarge the box and the lattice unfolds, with a spacing and orientation that hold up in darkness and survive the removal of landmarks. That points at path integration — the animal updating its position from its own movement, which requires a metric — whereas a purely landmark-anchored map does not.',
+        'The organisation is unusually explicit for cortex. Grid cells come in modules of a few discrete spacings, each roughly 1.4 times the last, and a handful of modules with incommensurate periods can pin down position across a very large range without ambiguity, for the same reason gears with coprime tooth counts take a long time to repeat. Grid input is one leading account of how place fields are built in the first place.',
+        'And the pattern has turned up where nobody put it. People show a grid-like signal while imagining navigation, and while moving through purely abstract spaces — birds varying continuously in neck and leg length, say. That is the current basis for the claim that the hippocampal formation maps conceptual structure using the machinery it evolved for rooms, which would make “where am I” and “what is this like” the same computation.',
+      ],
+    },
     method: 'Same recording method as place cells, but in a much larger box. In a small arena the lattice looks like a single place field; the geometry only appears when the animal has room.',
     simulator: 'grid',
   },
@@ -339,7 +474,15 @@ export const studies: Study[] = [
     subject: 'mouse',
     claim: 'Switch the specific cells back on and the memory comes back with them.',
     finding: 'Reactivating exactly the cells that were active during learning makes the mouse behave as if the event were happening again.',
-    why: 'Pinned a single memory to specific cells and switched it back on with light.',
+    why: 'Lashley spent thirty years cutting up rat cortex looking for where a memory was kept and concluded there was no such place. Tagging exactly the cells that happened to be active while a mouse learned something, then switching those cells back on with light, makes the animal behave as though the event were happening again — which moves the engram from a correlation to an address you can drive. It is the difference between finding the cells that light up during a memory and showing that those cells are the memory.',
+    significance: {
+      summary: 'From correlation to sufficiency: reactivating the tagged cells recreates the memory, and mistagging them creates one that never happened.',
+      paras: [
+        'Everything rests on the tagging. A genetic switch is held open for a few hours with a drug, so that whichever cells fire during learning permanently express a light-sensitive channel, and then closed, freezing that population. Later a light pulse drives only those cells, and the mouse freezes in a context where nothing bad has ever happened to it. The controls carry the weight: mice tagged in a different context do nothing when the light comes on, and neither do mice given light without the channel. Sufficiency is a much stronger claim than the imaging and recording work could make, because it does not merely watch the trace — it turns it on.',
+        'The follow-ups are stranger and more informative than the original. Tag the cells for a safe context, reactivate them while shocking the animal somewhere else, and the mouse afterwards fears the safe place: a memory of an event that never occurred, built deliberately. In mice with retrograde amnesia, and in early Alzheimer’s models, a memory can be unreachable by ordinary cues while still being recoverable by driving the tagged cells directly — which separates a memory that is gone from one that is merely inaccessible, a distinction behaviour alone can never make.',
+        'What has narrowed is what “the engram” names. The tagged population in one small structure is enough to trigger the memory, but it is an entry point into a trace distributed across many regions rather than the trace itself, and the tag captures whichever cells were active in a window, not necessarily the ones doing the storing.',
+      ],
+    },
     method: 'A genetic tag opens during learning and marks whichever cells fire, then closes. Later a light pulse drives only those cells. The controls are the mice tagged in the wrong context.',
   },
   {
@@ -356,7 +499,14 @@ export const studies: Study[] = [
     subject: 'Aplysia californica',
     claim: 'Learning is stored as changes in the strength of specific synapses.',
     finding: 'Habituation and sensitization change how much transmitter one identified synapse releases, and the behaviour changes with it.',
-    why: 'Watched a memory form as a change in the strength of one identified synapse.',
+    why: 'Memory could be described at the level of behaviour, or hypothesised at the level of synapses, with nothing joining the two. In an animal of twenty thousand neurons, many of them individually identifiable and named, Kandel could train the animal, watch the behaviour change, and record the one synapse responsible changing at the same time — the same event measured in two currencies. The molecular machinery he found there turned out to be the machinery flies, mice and people use.',
+    significance: {
+      summary: 'The first complete chain from a training session to the molecules that hold the change — and it is the same chain in flies, mice and us.',
+      paras: [
+        'The gamble was the animal. Working on memory in a sea slug in the early 1960s looked to many colleagues like a category error, on the grounds that the phenomenon was too complex to survive that much simplification. What it bought was accountability at every step: the path from a touch on the siphon to the gill moving runs through cells you can name and impale, so “the memory is in the synapse” stops being a hypothesis about where to look and becomes a measurement of transmitter released before and after training, at a known junction, in a known circuit.',
+        'The mechanism is what made it more than a slug result. A single training session changes synapses that already exist and fades within hours; spaced sessions require new protein synthesis, run through cAMP and the transcription factor CREB, and grow new connections between the same two cells. Block protein synthesis and the short-term memory is untouched while the long-term one never forms — two processes sharing a synapse, not one process lasting longer. That same cAMP/CREB pathway was then found doing the same job in Drosophila and in mice, which is why a finding about an invertebrate reflex belongs on a list about the human mind.',
+      ],
+    },
     method: 'The sea slug has about twenty thousand neurons, some identifiable in every animal. That let them record the same sensory–motor synapse before and after training and watch the behavioural change and the synaptic change be the same event.',
     simulator: 'aplysia',
   },

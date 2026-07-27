@@ -65,6 +65,16 @@ export const kandelAplysia: DeepDive = {
     },
     {
       num: '06',
+      title: 'Why it matters',
+      summary: 'The first unbroken chain from a training session to the molecules that hold the change — and the same chain runs in flies, mice and us.',
+      paras: [
+        'Before this, memory could be described at the level of behaviour or hypothesised at the level of synapses, and there was no way to hold the two accounts against each other. Everything in between was inference. In an animal whose cells can be named and impaled, every step from the touch on the siphon to the gill moving is accountable, so “the memory is in the synapse” stops being a claim about where to look and becomes a measurement of transmitter released at a known junction, before and after training.',
+        'The bet that made it work was the animal itself, and it was not an obvious one in the early 1960s — colleagues thought memory too complex to survive that much simplification. What justified it was that the mechanism generalised. cAMP and CREB turned out to be doing the same job in Drosophila and in mice, and the short-term/long-term dissociation found here holds across species, which is why a result about an invertebrate reflex sits on a list about the human mind.',
+        'It also set the terms for the memory work that followed. Once a memory is a physical change at identified synapses, the questions become which synapses, tagged how, and reachable how — which is the line running through long-term potentiation and the engram experiments further along, both of which are asking Kandel’s question in tissue that is far harder to hold still.',
+      ],
+    },
+    {
+      num: '07',
       title: 'How solid is this',
       summary: 'Replicated across labs; the cAMP/CREB pathway generalises to flies, mice and humans. Nobel 2000.',
       paras: [

@@ -246,7 +246,7 @@ class IconicSim extends SimElement {
     const t = this.lastTrial;
     if (!t) return '';
     if (t.mode === 'whole')
-      return `${t.correct} of ${ROWS * COLS} letters. That is the whole-report score — and it is about where almost everyone lands.`;
+      return `${t.correct} of ${ROWS * COLS} letters — your whole-report score, and about where almost everyone lands.`;
     return `${t.correct} of ${COLS} in the cued row. Across ${ROWS} rows that puts about ${t.estimate.toFixed(
       0,
     )} of the 12 letters still available when the cue arrived${t.delayMs ? `, ${t.delayMs} ms after the grid` : ''}.`;

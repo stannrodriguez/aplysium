@@ -280,7 +280,7 @@ class GorillaSim extends SimElement {
     if (this.phase === 'playing') return 'Count the passes made by the white team.';
     if (this.phase === 'counting') return 'How many passes did the white team make?';
     if (this.phase === 'asked') return 'One more question.';
-    return 'That is the experiment. There is nothing else to do with it.';
+    return 'The experiment is over for you now. It only works on someone who does not know what is coming.';
   }
 
   private countLine(): string {
@@ -293,7 +293,7 @@ class GorillaSim extends SimElement {
   private verdict(): string {
     if (this.phase !== 'done') {
       if (this.phase === 'idle' && this.viewings > 0)
-        return 'You can run it again, but you will not be a naive subject twice. That is the constraint the original was built around.';
+        return 'You can run it again, but you will not be a naive subject twice — which is why the original needed hundreds of people who had each seen it exactly once.';
       return 'The counting task is real — the passes are actually thrown, and the tally is whatever happened.';
     }
 
