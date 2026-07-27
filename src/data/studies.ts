@@ -287,6 +287,7 @@ export const studies: Study[] = [
     finding: 'Dopamine neurons fire to unexpected reward, stay flat when the reward was predicted, and dip below baseline when a predicted reward does not arrive.',
     why: 'Reframed dopamine: it signals surprise, not pleasure — the root of modern reinforcement learning.',
     method: 'Record midbrain dopamine cells while a monkey learns a cue. The omission trial is the decisive one: nothing happens, and the cell responds to it.',
+    simulator: 'dopamine',
   },
   {
     id: 17,

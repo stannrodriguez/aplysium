@@ -1,0 +1,86 @@
+---
+import '../../styles/sim.css';
+import '../../styles/sims/dopamine.css';
+
+interface Props {
+  label?: string;
+}
+
+const { label = 'One midbrain dopamine cell · monkey' } = Astro.props;
+---
+
+<dopamine-sim class="sim">
+  <div class="sim-chrome">
+    <span class="sim-chrome-dot" aria-hidden="true"></span>
+    <span class="sim-chrome-label">{label}</span>
+    <span class="sim-chrome-status" data-sim-status aria-live="polite">V = 0.00 · 0 trials</span>
+  </div>
+
+  <div class="sim-panels">
+    <section class="sim-panel">
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">One trial</h3>
+        <p class="sim-readout">error at reward <b data-sim-delta aria-live="polite">—</b></p>
+      </div>
+
+      <div class="sim-stage dop-trace-stage" data-sim-trace></div>
+
+      <p class="sim-note" data-sim-trace-note>
+        Three kinds of trial. Start with a reward out of nowhere, then train the cue, then take the
+        reward away.
+      </p>
+    </section>
+
+    <section class="sim-panel">
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">What the cue has come to mean</h3>
+      </div>
+
+      <div class="dop-v">
+        <span class="dop-v-label">Predicts reward</span>
+        <span class="dop-v-track"><i data-sim-v-bar></i></span>
+        <span class="dop-v-value" data-sim-v>0.00</span>
+      </div>
+
+      <div class="sim-choices">
+        <button type="button" class="sim-choice" data-sim-trial="surprise">
+          <b>Reward, no cue</b><em>nothing predicted it</em>
+        </button>
+        <button type="button" class="sim-choice" data-sim-trial="paired">
+          <b>Cue, then reward</b><em>one pairing</em>
+        </button>
+        <button type="button" class="sim-choice" data-sim-trial="omitted">
+          <b>Cue, then nothing</b><em>the reward is withheld</em>
+        </button>
+      </div>
+
+      <p class="sim-note">
+        The cue's strength is updated after each trial it appears in — by the error the cell just
+        reported, which is the only quantity in the model.
+      </p>
+    </section>
+
+    <section class="sim-panel">
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">Error at the moment of reward</h3>
+        <p class="sim-readout">every trial</p>
+      </div>
+
+      <div class="sim-stage dop-history-stage" data-sim-history></div>
+
+      <p class="sim-verdict" data-sim-verdict>
+        The cell is not reporting reward. Three trial types will show you what it is reporting
+        instead.
+      </p>
+    </section>
+  </div>
+
+  <div class="sim-controls">
+    <button type="button" class="sim-btn sim-btn-primary" data-sim-train>Train it — 8 pairings</button>
+    <button type="button" class="sim-btn sim-btn-quiet" data-sim-reset>Reset</button>
+  </div>
+</dopamine-sim>
+
+<script>
+  import '../../scripts/sims/dopamine';
+</script>

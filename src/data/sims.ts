@@ -27,6 +27,8 @@ export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
     'Your own reaction times are the data here. Answer as fast as you are sure, across a dozen angles, and see whether the line through them comes out straight.',
   replay:
     'Run the track, then record a sleep epoch and look for the same order in it. The epoch before the run is the control, and it is what makes the other one mean anything.',
+  dopamine:
+    'Give it a reward out of nowhere, then train the cue until the burst moves onto it, then withhold the reward. The third trial is the one that decides what the cell is reporting.',
 };
 
 export const simCaption = (kind: SimulatorKey): string => SIM_CAPTIONS[kind];
