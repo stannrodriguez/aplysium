@@ -129,6 +129,7 @@ export const studies: Study[] = [
     finding: 'A V1 cell fires hard at a bar of one angle and falls near-silent a few degrees off it.',
     why: 'Found the basic unit of seeing: single cells tuned to a single edge at a single angle.',
     method: 'They found it by accident: a glass slide edge sweeping across the projector drove a cell that dots never had. The method after that was systematic bar angles, one cell at a time.',
+    simulator: 'orientation',
   },
   {
     id: 8,

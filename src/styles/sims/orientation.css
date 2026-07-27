@@ -1,0 +1,58 @@
+/* ── Hubel & Wiesel · orientation tuning ──────────────────────────────────
+   The screen the cat is looking at, what the electrode heard, and the curve
+   the readings make. */
+
+.ori-screen-stage {
+  height: auto;
+  aspect-ratio: 320 / 160;
+}
+
+.ori-raster-stage {
+  height: auto;
+  aspect-ratio: 320 / 60;
+}
+
+.ori-tuning-stage {
+  height: auto;
+  aspect-ratio: 320 / 128;
+}
+
+.ori-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ori-screen { fill: var(--sim-well); }
+
+/* the field is a boundary, not a stimulus — it stays quiet */
+.ori-field {
+  fill: none;
+  stroke: var(--meta-faintest);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+}
+
+.ori-bar { fill: #F6E7B8; stroke: #D9C48A; stroke-width: 1; }
+
+.ori-label,
+.ori-tick-label {
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: .08em;
+  fill: var(--meta);
+}
+
+.ori-tick { stroke: var(--ink); stroke-width: 1.3; }
+
+.ori-grid { stroke: var(--sim-border); stroke-width: 1; }
+
+.ori-curve {
+  fill: none;
+  stroke: var(--sim-signal);
+  stroke-width: 1.5;
+  opacity: .5;
+}
+
+.ori-point { fill: var(--sim-signal); }
+.ori-point.is-current { stroke: var(--ink); stroke-width: 1.4; }
