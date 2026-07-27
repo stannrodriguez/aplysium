@@ -1,0 +1,102 @@
+---
+import '../../styles/sim.css';
+import '../../styles/sims/retina.css';
+
+interface Props {
+  label?: string;
+}
+
+const { label = 'One retinal ganglion cell · recorded' } = Astro.props;
+---
+
+<retina-sim class="sim">
+  <div class="sim-chrome">
+    <span class="sim-chrome-dot" aria-hidden="true"></span>
+    <span class="sim-chrome-label">{label}</span>
+    <span class="sim-chrome-status" data-sim-status aria-live="polite">ON-centre cell</span>
+  </div>
+
+  <div class="sim-panels">
+    <section class="sim-panel">
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">The retina</h3>
+        <p class="sim-readout">firing <b data-sim-rate aria-live="polite">12 /s</b></p>
+      </div>
+
+      <div class="sim-stage rf-stage" data-sim-retina></div>
+
+      <div class="sim-field">
+        <span class="sim-field-label" id="rf-radius-label">Spot size</span>
+        <input
+          class="sim-slider"
+          type="range"
+          min="5"
+          max="60"
+          value="14"
+          step="1"
+          data-sim-radius
+          aria-labelledby="rf-radius-label"
+        />
+        <span class="sim-value" data-sim-radius-value>28 px across</span>
+      </div>
+
+      <p class="sim-note" data-sim-retina-note>
+        Click anywhere on the retina to put the spot of light there and flash it.
+      </p>
+    </section>
+
+    <section class="sim-panel">
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">What the electrode heard</h3>
+        <p class="sim-readout">4 repeats</p>
+      </div>
+
+      <div class="sim-stage rf-raster" data-sim-raster></div>
+
+      <p class="sim-note">
+        Each tick is one impulse. The cell never goes silent — it has a resting rate to be pushed
+        above or below, which is what makes suppression something you can measure.
+      </p>
+    </section>
+
+    <section class="sim-panel">
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">The map</h3>
+      </div>
+
+      <div class="sim-stage rf-map">
+        <div data-sim-mapplot></div>
+        <p class="rf-map-empty" data-sim-map-empty>
+          sweep a small spot over the whole patch to see the shape →
+        </p>
+      </div>
+
+      <p class="sim-key">
+        <span><i style="background:var(--sim-signal)"></i> drives the cell</span>
+        <span><i style="background:var(--sim-kept)"></i> suppresses it</span>
+        <span><i style="background:var(--meta-faint)"></i> no effect</span>
+      </p>
+
+      <div class="sim-toggle">
+        <span class="sim-toggle-label">Which cell you are on</span>
+        <button type="button" class="sim-pill" data-sim-polarity="on" aria-pressed="true">ON-centre</button>
+        <button type="button" class="sim-pill" data-sim-polarity="off" aria-pressed="false">OFF-centre</button>
+      </div>
+
+      <p class="sim-verdict" data-sim-verdict>
+        Flash the spot in a few places and watch the rate. The cell has a shape; the readings are how
+        you find it.
+      </p>
+    </section>
+  </div>
+
+  <div class="sim-controls">
+    <button type="button" class="sim-btn sim-btn-primary" data-sim-map>Map the whole field</button>
+    <button type="button" class="sim-btn sim-btn-outline" data-sim-flood>Flood it evenly</button>
+    <button type="button" class="sim-btn sim-btn-quiet" data-sim-reset>Reset</button>
+  </div>
+</retina-sim>
+
+<script>
+  import '../../scripts/sims/retina';
+</script>

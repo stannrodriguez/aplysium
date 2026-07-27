@@ -58,6 +58,7 @@ export const studies: Study[] = [
     finding: 'A retinal ganglion cell fires to a spot of light in its centre and is silenced by light in the ring around it.',
     why: 'Explained why we notice edges and contrast rather than raw brightness.',
     method: 'Record one fibre, then move a small light around the retina and mark where it drives the cell and where it suppresses it. The map that comes out is a ring, not a patch.',
+    simulator: 'retina',
   },
   {
     id: 4,

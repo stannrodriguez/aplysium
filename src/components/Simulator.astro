@@ -10,6 +10,7 @@
 import AplysiaSim from './sims/AplysiaSim.astro';
 import AxonSim from './sims/AxonSim.astro';
 import CajalSim from './sims/CajalSim.astro';
+import RetinaSim from './sims/RetinaSim.astro';
 import type { SimulatorKey } from '../data/types';
 
 interface Props {
@@ -24,6 +25,7 @@ const SIMS: Record<SimulatorKey, any> = {
   aplysia: AplysiaSim,
   cajal: CajalSim,
   axon: AxonSim,
+  retina: RetinaSim,
 };
 
 const Sim = SIMS[kind];
