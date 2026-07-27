@@ -305,6 +305,7 @@ export const studies: Study[] = [
     finding: 'About half of viewers counting basketball passes never see a person in a gorilla suit cross the middle of the screen.',
     why: 'Showed how completely attention can hide something sitting in plain sight.',
     method: 'One viewing only, one counting task, then the question. The design is spent after a single trial per subject, which is why sample size does the work.',
+    simulator: 'gorilla',
   },
   {
     id: 18,
