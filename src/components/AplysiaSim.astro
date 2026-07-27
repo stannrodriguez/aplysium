@@ -1,0 +1,137 @@
+---
+import '../styles/sim.css';
+
+interface Props {
+  /** Comma list of panels: animal, synapse, trace, longterm. */
+  show?: string;
+  label?: string;
+}
+
+const { show = 'animal,synapse,trace,longterm', label = 'Aplysia · the gill-withdrawal reflex' } = Astro.props;
+
+const panels = show.split(',').map(p => p.trim());
+const showAnimal = panels.includes('animal');
+const showSynapse = panels.includes('synapse');
+const showTrace = panels.includes('trace');
+const showLong = panels.includes('longterm');
+
+const gillBars = [30, 40, 46, 40, 30];
+---
+
+<aplysia-sim class="sim" data-show={show}>
+  <div class="sim-chrome">
+    <span class="sim-chrome-dot" aria-hidden="true"></span>
+    <span class="sim-chrome-label">{label}</span>
+    <span class="sim-chrome-status" data-sim-status aria-live="polite">untrained</span>
+  </div>
+
+  <div class="sim-panels">
+    {showAnimal && (
+      <section class="sim-panel">
+        <div class="sim-panel-head">
+          <h3 class="sim-panel-title">The animal</h3>
+          <p class="sim-readout">withdrawal <b data-sim-withdrawal aria-live="polite">100%</b></p>
+        </div>
+        <div class="sim-stage">
+          <div class="sim-mantle" aria-hidden="true"></div>
+          <div class="sim-gill" data-sim-gill aria-hidden="true">
+            {gillBars.map(h => <span style={`height:${h}px`}></span>)}
+          </div>
+          <span class="sim-stage-label sim-label-gill" aria-hidden="true">GILL</span>
+          <span class="sim-stage-label sim-label-body" aria-hidden="true">BODY</span>
+          <button type="button" class="sim-siphon" data-sim-siphon data-sim-tap>siphon</button>
+        </div>
+        <p class="sim-note" data-sim-animal-note>
+          Touch the siphon and the gill pulls in. Do it a few times and watch what happens.
+        </p>
+      </section>
+    )}
+
+    {showSynapse && (
+      <section class="sim-panel">
+        <div class="sim-panel-head">
+          <h3 class="sim-panel-title">The synapse, recorded</h3>
+          <p class="sim-readout">quanta / impulse <b data-sim-quanta aria-live="polite">15</b></p>
+        </div>
+        <div class="sim-synapse">
+          <div class="sim-neuron">SENSORY NEURON</div>
+          <div class="sim-cleft" data-sim-cleft aria-hidden="true"></div>
+          <div class="sim-neuron">MOTOR NEURON → GILL</div>
+        </div>
+        <p class="sim-note" data-sim-synapse-note>
+          The behaviour and the synapse are the same event, measured twice.
+        </p>
+      </section>
+    )}
+
+    {showTrace && (
+      <section class="sim-panel">
+        <div class="sim-panel-head">
+          <h3 class="sim-panel-title">Record — every trial, in order</h3>
+          <p class="sim-readout" data-sim-trace-count>0 trials</p>
+        </div>
+        <div class="sim-trace" data-sim-trace>
+          <span class="sim-trace-empty">tap the siphon to begin →</span>
+        </div>
+        <p class="sim-key">
+          <span><i style="background:var(--sim-green)"></i> untrained</span>
+          <span><i style="background:var(--sim-amber)"></i> after shock</span>
+          <span><i style="background:var(--sim-orange)"></i> shock</span>
+          <span><i style="background:#394044"></i> rest</span>
+        </p>
+      </section>
+    )}
+
+    {showLong && (
+      <section class="sim-panel">
+        <div class="sim-panel-head">
+          <h3 class="sim-panel-title">Training schedule — short vs long term</h3>
+        </div>
+        <div class="sim-choices">
+          <button type="button" class="sim-choice" data-sim-schedule="massed" aria-pressed="false">
+            <b>Massed</b><em>4 sessions back to back</em>
+          </button>
+          <button type="button" class="sim-choice" data-sim-schedule="spaced" aria-pressed="false">
+            <b>Spaced</b><em>4 sessions with rests between</em>
+          </button>
+        </div>
+        <div class="sim-toggle">
+          <span class="sim-toggle-label">Protein synthesis</span>
+          <button type="button" class="sim-pill" data-sim-protein="intact" aria-pressed="true">intact</button>
+          <button type="button" class="sim-pill" data-sim-protein="blocked" aria-pressed="false">blocked</button>
+        </div>
+        <button type="button" class="sim-run" data-sim-run disabled>pick a schedule first</button>
+
+        <div class="sim-results" data-sim-results hidden>
+          <div class="sim-results-pair">
+            <div class="sim-metric">
+              <p class="sim-metric-label">An hour later</p>
+              <div class="sim-meter"><i data-sim-h1></i></div>
+              <p class="sim-metric-word" data-sim-h1-word></p>
+            </div>
+            <div class="sim-metric">
+              <p class="sim-metric-label">A day later</p>
+              <div class="sim-meter"><i data-sim-h24></i></div>
+              <p class="sim-metric-word" data-sim-h24-word></p>
+            </div>
+          </div>
+          <div class="sim-conn">
+            <div class="sim-conn-bars" data-sim-conn aria-hidden="true"></div>
+            <p class="sim-note" data-sim-conn-note></p>
+          </div>
+          <p class="sim-verdict" data-sim-verdict></p>
+        </div>
+      </section>
+    )}
+  </div>
+
+  <div class="sim-controls">
+    <button type="button" class="sim-btn sim-btn-primary" data-sim-tap>Tap the siphon</button>
+    <button type="button" class="sim-btn sim-btn-shock" data-sim-shock>Shock the tail</button>
+    <button type="button" class="sim-btn sim-btn-rest" data-sim-rest>Rest</button>
+  </div>
+</aplysia-sim>
+
+<script>
+  import '../scripts/aplysia-sim';
+</script>
