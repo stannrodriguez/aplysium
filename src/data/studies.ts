@@ -199,6 +199,7 @@ export const studies: Study[] = [
     finding: 'A hippocampal cell fires when the rat is in one particular part of the room and is quiet everywhere else.',
     why: 'Found single neurons that fire only when the animal is in one particular place — a map made of cells.',
     method: 'Chronic electrodes in a freely moving animal, with position tracked at the same time. Plotting spikes against position is what turns a spike train into a map.',
+    simulator: 'placefield',
   },
   {
     id: 12,

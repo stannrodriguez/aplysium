@@ -21,6 +21,8 @@ export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
     'Hunt for the angle this cell wants, one bar at a time, and watch the tuning curve fill in. Try the spot of light too — that is what had been failing for months.',
   splitbrain:
     'Flash the pair, then ask it both ways — out loud, and with the left hand. When the two answers disagree, ask why. That last answer is the study.',
+  placefield:
+    'Let the animal forage until the spikes pile up somewhere. Take another cell and it cares about somewhere else. Then turn the cue card and watch the field go with it.',
 };
 
 export const simCaption = (kind: SimulatorKey): string => SIM_CAPTIONS[kind];

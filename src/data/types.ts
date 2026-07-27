@@ -14,7 +14,7 @@ export type MotifKey =
   | 'orbit' | 'spin' | 'rotatebar' | 'cross' | 'split';
 
 /** Interactive component a study's entry embeds, if it has one. */
-export type SimulatorKey = 'aplysia' | 'cajal' | 'axon' | 'retina' | 'homunculus' | 'iconic' | 'orientation' | 'splitbrain';
+export type SimulatorKey = 'aplysia' | 'cajal' | 'axon' | 'retina' | 'homunculus' | 'iconic' | 'orientation' | 'splitbrain' | 'placefield';
 
 export interface Study {
   /** Chronological position, 1–20. Stable id for the study. */
