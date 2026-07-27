@@ -16,6 +16,8 @@ const showTrace = panels.includes('trace');
 const showLong = panels.includes('longterm');
 
 const gillBars = [30, 40, 46, 40, 30];
+// Resting state: quanta 15 → five vesicles. The script takes over from here.
+const restingVesicles = 5;
 ---
 
 <aplysia-sim class="sim" data-show={show}>
@@ -55,7 +57,14 @@ const gillBars = [30, 40, 46, 40, 30];
         </div>
         <div class="sim-synapse">
           <div class="sim-neuron">SENSORY NEURON</div>
-          <div class="sim-cleft" data-sim-cleft aria-hidden="true"></div>
+          <div class="sim-cleft" data-sim-cleft aria-hidden="true">
+            {Array.from({ length: restingVesicles }, (_, i) => (
+              <span
+                class="sim-vesicle"
+                style={`left:${(6 + i * (86 / restingVesicles)).toFixed(1)}%;animation-delay:${(i * 0.12).toFixed(2)}s`}
+              ></span>
+            ))}
+          </div>
           <div class="sim-neuron">MOTOR NEURON → GILL</div>
         </div>
         <p class="sim-note" data-sim-synapse-note>

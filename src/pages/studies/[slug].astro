@@ -163,7 +163,7 @@ const twoColumn = hasSim || study.hasDemo;
   /* two columns ----------------------------------------------------------- */
   .body {
     display: grid;
-    grid-template-columns: 1fr 470px;
+    grid-template-columns: minmax(0, 1fr) 470px;
     gap: 44px;
     align-items: start;
     margin-top: 8px;
@@ -234,7 +234,7 @@ const twoColumn = hasSim || study.hasDemo;
   .entry-foot a:hover { text-decoration: underline; }
 
   /* ── mobile: its own order — claim, then the instrument, then the layers ─ */
-  @media (max-width: 899px) {
+  @media (max-width: 1099px) {
     .entry { padding: 24px 20px 44px; }
 
     .hero { border-bottom: 0; padding-bottom: 0; }
@@ -249,6 +249,7 @@ const twoColumn = hasSim || study.hasDemo;
     .body {
       display: flex;
       flex-direction: column;
+      align-items: stretch;
       gap: 0;
       margin-top: 0;
     }
@@ -257,6 +258,9 @@ const twoColumn = hasSim || study.hasDemo;
       order: -1;
       position: static;
       margin-top: 20px;
+      /* full width on a phone, but the instrument should not sprawl on a
+         tablet just because the columns have stacked */
+      max-width: 560px;
     }
 
     .sim-col :global(.sim) {
