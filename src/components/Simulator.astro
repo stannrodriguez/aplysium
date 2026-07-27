@@ -20,6 +20,7 @@ import RotationSim from './sims/RotationSim.astro';
 import ReplaySim from './sims/ReplaySim.astro';
 import DopamineSim from './sims/DopamineSim.astro';
 import GorillaSim from './sims/GorillaSim.astro';
+import GridSim from './sims/GridSim.astro';
 import type { SimulatorKey } from '../data/types';
 
 interface Props {
@@ -44,6 +45,7 @@ const SIMS: Record<SimulatorKey, any> = {
   replay: ReplaySim,
   dopamine: DopamineSim,
   gorilla: GorillaSim,
+  grid: GridSim,
 };
 
 const Sim = SIMS[kind];

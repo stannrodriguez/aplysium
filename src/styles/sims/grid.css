@@ -1,0 +1,47 @@
+/* ── Moser & Moser · the grid ─────────────────────────────────────────────
+   The same recording as a place field, in a box big enough for the geometry
+   to have somewhere to appear. */
+
+.grd-arena {
+  height: auto;
+  aspect-ratio: 260 / 220;
+}
+
+.grd-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* the room, and the walls of whichever box is in it */
+.grd-room { fill: var(--sim-chrome); }
+
+.grd-walls {
+  fill: var(--sim-well);
+  stroke: var(--sim-border);
+  stroke-width: 1;
+}
+
+.grd-path {
+  fill: none;
+  stroke: var(--meta-faint);
+  stroke-width: .75;
+  opacity: .5;
+}
+
+.grd-spike { fill: var(--sim-signal); opacity: .74; }
+
+.grd-rat { fill: var(--ink); }
+
+.grd-counts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.grd-count {
+  font-family: var(--mono);
+  font-size: 20px;
+  color: var(--sim-signal);
+  margin-top: 4px;
+}
