@@ -76,6 +76,7 @@ export const studies: Study[] = [
     finding: 'Stimulating a point on the cortical strip evokes sensation in one body part; the area given to a part scales with its sensitivity, not its size.',
     why: 'The first real map of which strip of cortex handles which body part, read off awake patients.',
     method: 'Awake craniotomy for epilepsy surgery. Patients under local anaesthetic reported what they felt as each point was stimulated, which is how the map got labelled at all.',
+    simulator: 'homunculus',
   },
   {
     id: 5,

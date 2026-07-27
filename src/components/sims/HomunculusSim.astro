@@ -1,0 +1,143 @@
+---
+import '../../styles/sim.css';
+import '../../styles/sims/homunculus.css';
+import { PARTS, cortexShare } from '../../data/homunculus';
+
+interface Props {
+  label?: string;
+}
+
+const { label = 'Awake craniotomy · the postcentral strip' } = Astro.props;
+
+/* Each segment is as wide as the cortex that part actually occupies, so where
+   a click lands is already the result before anything is read. */
+const segments = PARTS.map(part => ({ part, width: cortexShare(part) * 100 }));
+
+/* The figure. Regions carry `data-region` rather than `data-part`: the strip
+   holds the buttons, and this says where the patient felt it. */
+const regions: Array<{ key: string; shapes: string }> = [
+  { key: 'face', shapes: '<circle cx="60" cy="26" r="17"/>' },
+  { key: 'tongue', shapes: '<ellipse cx="60" cy="32" rx="5.5" ry="2.8"/>' },
+  { key: 'lips', shapes: '<ellipse cx="60" cy="38.5" rx="8.5" ry="3.2"/>' },
+  { key: 'neck', shapes: '<rect x="52" y="43" width="16" height="7"/>' },
+  { key: 'throat', shapes: '<rect x="56" y="44" width="8" height="5"/>' },
+  { key: 'shoulder', shapes: '<rect x="30" y="51" width="60" height="9"/>' },
+  { key: 'trunk', shapes: '<rect x="44" y="60" width="32" height="44"/>' },
+  { key: 'arm', shapes: '<rect x="28" y="60" width="13" height="42"/><rect x="79" y="60" width="13" height="42"/>' },
+  { key: 'thumb', shapes: '<rect x="23" y="104" width="4.5" height="9"/><rect x="92.5" y="104" width="4.5" height="9"/>' },
+  { key: 'hand', shapes: '<rect x="27" y="103" width="15" height="11"/><rect x="78" y="103" width="15" height="11"/>' },
+  {
+    key: 'fingers',
+    shapes:
+      '<rect x="28" y="114" width="2.6" height="9"/><rect x="31.8" y="114" width="2.6" height="9"/><rect x="35.6" y="114" width="2.6" height="9"/><rect x="39.4" y="114" width="2.6" height="9"/>' +
+      '<rect x="79" y="114" width="2.6" height="9"/><rect x="82.8" y="114" width="2.6" height="9"/><rect x="86.6" y="114" width="2.6" height="9"/><rect x="90.4" y="114" width="2.6" height="9"/>',
+  },
+  { key: 'leg', shapes: '<rect x="46" y="104" width="13" height="56"/><rect x="61" y="104" width="13" height="56"/>' },
+  { key: 'toes', shapes: '<rect x="44" y="161" width="15" height="7"/><rect x="61" y="161" width="15" height="7"/>' },
+];
+---
+
+<homunculus-sim class="sim">
+  <div class="sim-chrome">
+    <span class="sim-chrome-dot" aria-hidden="true"></span>
+    <span class="sim-chrome-label">{label}</span>
+    <span class="sim-chrome-status" data-sim-status aria-live="polite">strip exposed</span>
+  </div>
+
+  <div class="sim-panels">
+    <section class="sim-panel">
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">The strip</h3>
+        <p class="sim-readout">points found <b data-sim-found>0 of 13</b></p>
+      </div>
+
+      <div class="hom-strip" role="group" aria-label="The postcentral strip, medial to lateral. Each segment is as wide as the cortex that body part occupies.">
+        {segments.map(({ part, width }) => (
+          <button
+            type="button"
+            class="hom-seg"
+            style={`flex: 0 0 ${width.toFixed(2)}%`}
+            data-part={part.key}
+            data-mapped={part.key}
+            title={`${part.name} — ${width.toFixed(1)}% of the strip`}
+          >
+            <span class="visually-hidden">Stimulate the {part.name} point</span>
+            <span aria-hidden="true">{part.name}</span>
+          </button>
+        ))}
+      </div>
+
+      <p class="hom-strip-ends">
+        <span>medial · top of the head</span>
+        <span>lateral · down the side</span>
+      </p>
+
+      <p class="sim-note">
+        The segments are as wide as the cortex each part actually occupies. Click along the strip and
+        notice which parts you keep landing on.
+      </p>
+    </section>
+
+    <section class="sim-panel">
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">What the patient said</h3>
+      </div>
+
+      <div class="hom-body">
+        <div class="hom-figure" data-sim-figure>
+          <svg viewBox="0 0 120 176" aria-hidden="true">
+            {regions.map(r => (
+              <g class="hom-region" data-region={r.key} set:html={r.shapes} />
+            ))}
+          </svg>
+        </div>
+
+        <div class="hom-said">
+          <p class="hom-quote" data-sim-report aria-live="polite">
+            Touch a point on the strip and the patient will tell you where they felt it.
+          </p>
+          <p class="hom-attrib">local anaesthetic · awake · unprompted</p>
+        </div>
+      </div>
+
+      <p class="sim-note">
+        This is the whole labelling method. The cortex has no sensation of its own, so the map exists
+        only because the person under it could say what they felt.
+      </p>
+    </section>
+
+    <section class="sim-panel">
+      <div class="sim-panel-head">
+        <h3 class="sim-panel-title">Cortex against skin</h3>
+        <p class="sim-readout" data-sim-part-name></p>
+      </div>
+
+      <div class="hom-compare" data-sim-compare hidden>
+        <div class="hom-row">
+          <span class="hom-row-label">Share of strip</span>
+          <span class="hom-track hom-track-cortex"><i data-sim-cortex-bar></i></span>
+          <span class="hom-row-value" data-sim-cortex>0%</span>
+        </div>
+        <div class="hom-row">
+          <span class="hom-row-label">Share of skin</span>
+          <span class="hom-track hom-track-body"><i data-sim-body-bar></i></span>
+          <span class="hom-row-value" data-sim-body>0%</span>
+        </div>
+      </div>
+
+      <p class="sim-verdict" data-sim-verdict>
+        The segments are sized by the cortex each part actually gets. Click around and see which ones
+        you keep landing on.
+      </p>
+    </section>
+  </div>
+
+  <div class="sim-controls">
+    <button type="button" class="sim-btn sim-btn-primary" data-sim-survey>Walk the whole strip</button>
+    <button type="button" class="sim-btn sim-btn-quiet" data-sim-reset>Reset</button>
+  </div>
+</homunculus-sim>
+
+<script>
+  import '../../scripts/sims/homunculus';
+</script>
