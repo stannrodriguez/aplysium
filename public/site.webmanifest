@@ -1,0 +1,22 @@
+{
+  "name": "Aplysium — Twenty Things About the Mind",
+  "short_name": "Aplysium",
+  "description": "Twenty landmark neuroscience studies, the idea first.",
+  "start_url": "/aplysium/",
+  "scope": "/aplysium/",
+  "display": "standalone",
+  "background_color": "#FDFCF9",
+  "theme_color": "#FDFCF9",
+  "icons": [
+    {
+      "src": "/aplysium/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/aplysium/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

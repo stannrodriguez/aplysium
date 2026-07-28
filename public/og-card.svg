@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#FDFCF9"/>
+  <text x="76" y="95" fill="#A69E8E" font-family="monospace" font-size="18" letter-spacing="5">A CENTURY OF BRAIN SCIENCE</text>
+  <text x="74" y="204" fill="#14130F" font-family="Georgia, serif" font-size="68">Twenty things we figured out</text>
+  <text x="74" y="279" fill="#14130F" font-family="Georgia, serif" font-size="68">about the mind</text>
+  <line x1="74" y1="331" x2="1126" y2="331" stroke="#ECE8DE" stroke-width="2"/>
+  <g transform="translate(76 374)">
+    <g fill="#A8431F"><circle cx="0" cy="0" r="7"/><circle cx="25" cy="0" r="7"/><circle cx="50" cy="0" r="7"/></g>
+    <text x="0" y="57" fill="#1A1A17" font-family="Arial, sans-serif" font-size="29" font-weight="700">The brain is cellular</text>
+    <text x="0" y="96" fill="#6B6558" font-family="Georgia, serif" font-size="22">The idea first. One sentence each.</text>
+  </g>
+  <g transform="translate(452 374)">
+    <rect x="0" y="-7" width="13" height="38" fill="#A8431F"/>
+    <text x="0" y="57" fill="#1A1A17" font-family="Arial, sans-serif" font-size="29" font-weight="700">The spike is ions</text>
+    <text x="0" y="96" fill="#6B6558" font-family="Georgia, serif" font-size="22">Interactive experiments you can run.</text>
+  </g>
+  <g transform="translate(824 374)">
+    <g fill="#9CAF9E"><circle cx="0" cy="0" r="7"/><circle cx="25" cy="0" r="7"/><circle cx="50" cy="0" r="7"/></g>
+    <text x="0" y="57" fill="#1A1A17" font-family="Arial, sans-serif" font-size="29" font-weight="700">Memory isn't one thing</text>
+    <text x="0" y="96" fill="#6B6558" font-family="Georgia, serif" font-size="22">Earliest to latest. Replication noted.</text>
+  </g>
+  <text x="76" y="574" fill="#A8431F" font-family="monospace" font-size="18" letter-spacing="3">▶ RUN IT · READ IT IN LAYERS</text>
+</svg>

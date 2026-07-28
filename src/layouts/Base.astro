@@ -8,6 +8,9 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+const siteOrigin = Astro.site ?? Astro.url.origin;
+const canonicalURL = new URL(Astro.url.pathname, siteOrigin);
+const socialImage = new URL(`${import.meta.env.BASE_URL}og-card.png`, siteOrigin);
 ---
 
 <!doctype html>
@@ -17,9 +20,26 @@ const { title, description } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#FDFCF9" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Aplysium" />
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="manifest" href={withBase('/site.webmanifest')} />
+    <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Aplysium" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Aplysium — twenty landmark ideas from a century of brain science" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
     <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
