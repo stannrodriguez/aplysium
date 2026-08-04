@@ -45,3 +45,45 @@
   color: var(--sim-signal);
   margin-top: 4px;
 }
+
+/* ── the insight: the lattice read as a coordinate grid ──────────────────────
+   The same three plane waves, now sampled across the whole floor as a soft rate
+   map with the lattice vertices marked on its maxima. Nothing here moves when
+   the world toggles — that is the point being made. */
+
+/* the firing field, sampled as a soft heat behind the vertices */
+.grd-field { fill: var(--sim-signal); }
+
+/* the coordinate nodes: the vertices themselves */
+.grd-node {
+  fill: var(--sim-signal);
+  stroke: var(--sim-paper);
+  stroke-width: 1;
+}
+
+/* one lattice triangle, drawn to show the geometry */
+.grd-tri {
+  fill: none;
+  stroke: var(--sim-tissue-ink);
+  stroke-width: 1.2;
+  stroke-dasharray: 3 3;
+}
+
+.grd-ann {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .04em;
+  fill: var(--muted);
+}
+
+/* the cue card pinned to a wall */
+.grd-cue {
+  fill: var(--sim-tissue);
+  stroke: var(--sim-tissue-ink);
+  stroke-width: 1;
+}
+
+/* lights out: the room dims, but the lattice does not budge */
+.grd-svg.is-dark .grd-room,
+.grd-svg.is-dark .grd-walls { fill: var(--sim-tissue-ink); }
+.grd-svg.is-dark .grd-cue { opacity: .35; }

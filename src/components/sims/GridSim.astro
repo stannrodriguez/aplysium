@@ -9,65 +9,95 @@ interface Props {
 const { label = 'One entorhinal cell · rat, freely moving' } = Astro.props;
 ---
 
-<grid-sim class="sim">
+<grid-sim class="sim" data-mode="large">
   <div class="sim-chrome">
     <span class="sim-chrome-dot" aria-hidden="true"></span>
     <span class="sim-chrome-label">{label}</span>
     <span class="sim-chrome-status" data-sim-status aria-live="polite">cell 1 · large box</span>
   </div>
 
+  <div class="sim-modes" role="group" aria-label="Choose what to watch">
+    <button type="button" class="sim-mode-tab" data-sim-mode="large" aria-pressed="true">Large box</button>
+    <button type="button" class="sim-mode-tab" data-sim-mode="small" aria-pressed="false">Small box</button>
+    <button type="button" class="sim-mode-tab" data-sim-mode="insight" aria-pressed="false">The coordinate grid</button>
+  </div>
+
   <div class="sim-panels">
     <section class="sim-panel">
-      <div class="sim-panel-head">
-        <h3 class="sim-panel-title">The room, from above</h3>
-        <p class="sim-readout">firing <b data-sim-rate aria-live="polite">0 /s</b></p>
-      </div>
-
-      <div class="sim-stage grd-arena" data-sim-arena></div>
-
-      <p class="sim-note">
-        The same method as a place cell — spikes plotted where the animal was standing — and the same
-        room. The only thing that changes below is how much of it the animal can reach.
+      <p class="sim-lead" data-sim-lead aria-live="polite">
+        Let the animal forage. The same recording method as a place cell — a dot wherever the cell
+        fired — but in a box with room to spare. The firing fields come out as a repeating hexagonal
+        lattice that tiles the whole floor.
       </p>
-    </section>
 
-    <section class="sim-panel">
-      <div class="sim-panel-head">
-        <h3 class="sim-panel-title">How big a box it gets</h3>
-      </div>
-
-      <div class="sim-choices">
-        <button type="button" class="sim-choice" data-sim-box="large" aria-pressed="true">
-          <b>Large</b><em>room enough for the geometry to show</em>
-        </button>
-        <button type="button" class="sim-choice" data-sim-box="small" aria-pressed="false">
-          <b>Small</b><em>the arena these cells were first recorded in</em>
-        </button>
-      </div>
-
-      <div class="grd-counts">
-        <div class="sim-metric">
-          <p class="sim-metric-label">Patches fired in</p>
-          <p class="grd-count" data-sim-vertices aria-live="polite">0</p>
+      {/* ── the experiment: forage a box, plot the spikes ── */}
+      <div data-sim-experiment>
+        <div class="sim-panel-head">
+          <h3 class="sim-panel-title">The room, from above</h3>
+          <p class="sim-readout">firing <b data-sim-rate aria-live="polite">0 /s</b></p>
         </div>
-        <div class="sim-metric">
-          <p class="sim-metric-label">Floor covered</p>
-          <p class="grd-count" data-sim-coverage>0%</p>
+
+        <div class="sim-stage grd-arena" data-sim-arena></div>
+
+        <div class="grd-counts">
+          <div class="sim-metric">
+            <p class="sim-metric-label">Patches fired in</p>
+            <p class="grd-count" data-sim-vertices aria-live="polite">0</p>
+          </div>
+          <div class="sim-metric">
+            <p class="sim-metric-label">Floor covered</p>
+            <p class="grd-count" data-sim-coverage>0%</p>
+          </div>
         </div>
+
+        <p class="sim-verdict" data-sim-verdict>
+          Cover some floor first. One cell, and nothing to say about it until there are enough spikes
+          to have a shape.
+        </p>
       </div>
 
-      <p class="sim-verdict" data-sim-verdict>
-        Cover some floor first. One cell, and nothing to say about it until there are enough spikes
-        to have a shape.
-      </p>
+      {/* ── the insight: the lattice as a coordinate system ── */}
+      <div data-sim-insight hidden>
+        <div class="sim-panel-head">
+          <h3 class="sim-panel-title">One module of the grid</h3>
+          <p class="sim-readout">spacing <b>fixed</b> · 60&#176;</p>
+        </div>
+
+        <div class="sim-stage grd-arena" data-sim-insight-stage>
+          <svg
+            class="grd-svg"
+            viewBox="0 0 260 220"
+            xmlns="http://www.w3.org/2000/svg"
+            role="img"
+            aria-label="The firing lattice of one grid cell across the whole floor: evenly spaced vertices sixty degrees apart, with a cue card on one wall"
+            data-sim-insight-svg
+          ></svg>
+        </div>
+
+        <div class="sim-toggle">
+          <span class="sim-toggle-label">The world it is standing in</span>
+          <button type="button" class="sim-pill" data-sim-world="cue" aria-pressed="true">Lit &middot; cue card</button>
+          <button type="button" class="sim-pill" data-sim-world="dark" aria-pressed="false">Dark</button>
+          <button type="button" class="sim-pill" data-sim-world="nocue" aria-pressed="false">Cue removed</button>
+        </div>
+
+        <p class="sim-note" data-sim-world-note aria-live="polite">
+          Lights on, cue card on the wall. Spacing and orientation as recorded.
+        </p>
+
+        <p class="sim-verdict" data-sim-insight-verdict>
+          Every vertex sits the same distance and 60&#176; from the next: a metric for distance and
+          direction the animal reads off wherever it stands. It is largely built from the animal's own
+          movement — path integration — so the pattern holds in darkness and outlives the landmarks on
+          the walls. Grids come in modules, each spacing about 1.4 times the last, and a few together
+          pin down a position across a very large space.
+        </p>
+      </div>
     </section>
   </div>
 
-  <div class="sim-controls">
-    <button type="button" class="sim-btn sim-btn-primary" data-sim-run>▶ let it forage</button>
-    <button type="button" class="sim-btn sim-btn-outline" data-sim-next-cell>Next cell</button>
-    <button type="button" class="sim-btn sim-btn-quiet" data-sim-clear>Clear</button>
-  </div>
+  {/* the action bar changes with the mode; the insight mode runs itself */}
+  <div class="sim-controls" data-sim-controls></div>
 </grid-sim>
 
 <script>
