@@ -36,7 +36,8 @@
 }
 
 .caj-contact:hover { fill: var(--sim-signal-wash); }
-.caj-contact.is-picked { fill: var(--sim-signal); }
+.caj-contact.is-traced { fill: var(--sim-signal-wash); }
+.caj-contact.is-picked { fill: var(--sim-signal); stroke-width: 2; }
 
 /* the contact, magnified -------------------------------------------------- */
 .caj-zoom {
@@ -100,3 +101,88 @@
 }
 
 .caj-count.is-zero { color: var(--sim-kept); }
+
+/* the insight — the gap, and what it makes possible ----------------------- */
+.caj-insight-stage {
+  height: auto;
+  aspect-ratio: 320 / 178;
+}
+
+.caj-insight-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.caj-in-soma {
+  fill: var(--sim-tissue);
+  stroke: var(--sim-tissue-ink);
+  stroke-width: 1.2;
+}
+
+.caj-in-axon,
+.caj-in-dend,
+.caj-in-dend2 {
+  fill: none;
+  stroke: var(--sim-signal);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.caj-in-term { fill: var(--sim-signal); transition: opacity .35s ease; }
+
+.caj-in-nt {
+  fill: var(--sim-signal);
+  opacity: 0;
+}
+
+.caj-in-nt.is-on {
+  opacity: 1;
+  animation: caj-cross 1.4s ease-in-out infinite;
+}
+
+@keyframes caj-cross {
+  0% { transform: translateX(-9px); opacity: .2; }
+  50% { opacity: 1; }
+  100% { transform: translateX(9px); opacity: .2; }
+}
+
+.caj-in-arrow {
+  fill: none;
+  stroke: var(--sim-signal);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* the fused net of the rival theory: no gap, no direction */
+.caj-in-mesh {
+  fill: none;
+  stroke: var(--sim-tissue-ink);
+  stroke-width: 2;
+  opacity: .7;
+  stroke-linecap: round;
+}
+
+.caj-in-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .1em;
+  fill: var(--sim-signal);
+}
+
+.caj-in-sub {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 11px;
+  fill: var(--muted);
+}
+
+/* the weight knob goes quiet when there is no junction to turn */
+.sim-field.is-off { opacity: .5; }
+.sim-field.is-off .sim-value { color: var(--muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  .caj-in-nt.is-on { animation: none; opacity: 1; }
+  .caj-in-term { transition: none; }
+}

@@ -8,7 +8,7 @@ export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
   aplysia:
     'Four tabs, one synapse. Run baseline, habituation and sensitization to watch the same junction change strength — then open “Short vs long-term” for the insight the reflex was hiding: why one memory fades and another grows new wiring.',
   cajal:
-    'Stain a section, then follow a stained axon to the marked terminal at its end. The toggle draws the rival theory over the same contact, so you can see the two predictions differ.',
+    'Three tabs. Stain a section to see the sparse whole neurons, then trace an axon to its terminal — a free ending against the next cell, never fused. Then open “The gap” for the insight: because the terminal ends free there is a synapse, and a single junction you can turn up or down.',
   axon:
     'Push the stimulus up until it fires, then keep pushing — every spike lands on the last. The blockers at the bottom take one ion channel out at a time.',
   retina:

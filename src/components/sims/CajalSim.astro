@@ -9,95 +9,123 @@ interface Props {
 const { label = 'Cajal · Golgi’s silver chromate' } = Astro.props;
 ---
 
-<cajal-sim class="sim">
+<cajal-sim class="sim" data-mode="stain">
   <div class="sim-chrome">
     <span class="sim-chrome-dot" aria-hidden="true"></span>
     <span class="sim-chrome-label">{label}</span>
     <span class="sim-chrome-status" data-sim-status aria-live="polite">section 1 · 4 cells stained</span>
   </div>
 
+  <div class="sim-modes" role="group" aria-label="Choose what to look at">
+    <button type="button" class="sim-mode-tab" data-sim-mode="stain" aria-pressed="true">Stain</button>
+    <button type="button" class="sim-mode-tab" data-sim-mode="trace" aria-pressed="false">Trace</button>
+    <button type="button" class="sim-mode-tab" data-sim-mode="insight" aria-pressed="false">The gap</button>
+  </div>
+
   <div class="sim-panels">
     <section class="sim-panel">
-      <div class="sim-panel-head">
-        <h3 class="sim-panel-title">The section</h3>
-        <p class="sim-readout">stained <b data-sim-stained>4 of 36</b></p>
-      </div>
-
-      <div class="sim-stage caj-stage" data-sim-section>
-        <p class="caj-blank">
-          A section of tissue. The stain takes a sparse few cells and draws each one whole — soma,
-          dendrites and axon — against blank ground.
-        </p>
-      </div>
-
-      <div class="sim-field">
-        <span class="sim-field-label" id="caj-density-label">How much of the tissue the stain takes</span>
-        <input
-          class="sim-slider"
-          type="range"
-          min="2"
-          max="8"
-          value="4"
-          step="1"
-          data-sim-density
-          aria-labelledby="caj-density-label"
-        />
-        <span class="sim-value" data-sim-density-value>4 of 36</span>
-      </div>
-
-      <p class="sim-note" data-sim-section-note>
-        The stain takes a random few cells and leaves the rest blank, so a single neuron stands out
-        entire — every branch of it traceable, with nothing overlapping to confuse the picture.
+      <p class="sim-lead" data-sim-lead aria-live="polite">
+        Golgi’s silver stain takes a sparse, random few cells and draws each one whole — soma,
+        dendrites and axon — against blank tissue. Stain a section and a single neuron stands out
+        entire, with nothing overlapping to confuse the picture.
       </p>
-    </section>
 
-    <section class="sim-panel">
-      <div class="sim-panel-head">
-        <h3 class="sim-panel-title">The terminal, magnified</h3>
-      </div>
-
-      <div class="sim-stage caj-zoom">
-        <div data-sim-zoom></div>
-        <p class="caj-blank" data-sim-zoom-empty>
-          pick a terminal in the section above →
-        </p>
-      </div>
-
-      <div class="sim-toggle">
-        <span class="sim-toggle-label">Draw it as</span>
-        <button type="button" class="sim-pill" data-sim-view="observed" aria-pressed="true">what the stain shows</button>
-        <button type="button" class="sim-pill" data-sim-view="reticular" aria-pressed="false">what the reticular theory predicts</button>
-      </div>
-
-      <p class="sim-note" data-sim-zoom-note>
-        Every stained axon ends somewhere. Follow one to its terminal and look at what happens there.
-      </p>
-    </section>
-
-    <section class="sim-panel">
-      <div class="sim-panel-head">
-        <h3 class="sim-panel-title">The count</h3>
-      </div>
-
-      <div class="caj-tally">
-        <div class="sim-metric">
-          <p class="sim-metric-label">Terminals traced</p>
-          <p class="caj-count" data-sim-examined aria-live="polite">0</p>
+      {/* ── the experiment: the section, and (in trace mode) the terminal ── */}
+      <div data-sim-experiment>
+        <div class="sim-panel-head">
+          <h3 class="sim-panel-title">The section</h3>
+          <p class="sim-readout">stained <b data-sim-stained>4 of 36</b></p>
         </div>
-        <div class="sim-metric">
-          <p class="sim-metric-label">Found continuous</p>
-          <p class="caj-count is-zero" data-sim-continuous>0</p>
+
+        <div class="sim-stage caj-stage" data-sim-section>
+          <p class="caj-blank">
+            A section of tissue. The stain takes a sparse few cells and draws each one whole — soma,
+            dendrites and axon — against blank ground.
+          </p>
+        </div>
+
+        {/* stain mode: how much of the tissue the stain takes */}
+        <div class="sim-field" data-sim-density-field>
+          <span class="sim-field-label" id="caj-density-label">How much of the tissue the stain takes</span>
+          <input
+            class="sim-slider"
+            type="range"
+            min="2"
+            max="8"
+            value="4"
+            step="1"
+            data-sim-density
+            aria-labelledby="caj-density-label"
+          />
+          <span class="sim-value" data-sim-density-value>4 of 36</span>
+        </div>
+
+        {/* trace mode: the terminal magnified, and the running count */}
+        <div data-sim-trace hidden>
+          <div class="sim-panel-head">
+            <h3 class="sim-panel-title">The terminal, magnified</h3>
+          </div>
+
+          <div class="sim-stage caj-zoom">
+            <div data-sim-zoom></div>
+            <p class="caj-blank" data-sim-zoom-empty>
+              trace a terminal to magnify it →
+            </p>
+          </div>
+
+          <div class="caj-tally">
+            <div class="sim-metric">
+              <p class="sim-metric-label">Terminals traced</p>
+              <p class="caj-count" data-sim-examined aria-live="polite">0</p>
+            </div>
+            <div class="sim-metric">
+              <p class="sim-metric-label">Found continuous</p>
+              <p class="caj-count is-zero" data-sim-continuous>0</p>
+            </div>
+          </div>
+
+          <p class="sim-verdict" data-sim-verdict>Trace an axon to its terminal to start the count.</p>
         </div>
       </div>
 
-      <p class="sim-verdict" data-sim-verdict>Trace an axon to its terminal to start the count.</p>
+      {/* ── the insight: the gap, and what it makes possible ── */}
+      <div data-sim-insight hidden>
+        <div class="sim-toggle">
+          <span class="sim-toggle-label">Draw the nervous system as</span>
+          <button type="button" class="sim-pill" data-sim-theory="doctrine" aria-pressed="true">separate cells, a gap</button>
+          <button type="button" class="sim-pill" data-sim-theory="reticular" aria-pressed="false">one fused net</button>
+        </div>
+
+        <div class="sim-stage caj-insight-stage">
+          <div data-sim-insight-svg></div>
+        </div>
+
+        <div class="sim-field" data-sim-weight-field>
+          <span class="sim-field-label" id="caj-weight-label">Turn this one connection up or down</span>
+          <input
+            class="sim-slider"
+            type="range"
+            min="0"
+            max="100"
+            value="55"
+            step="5"
+            data-sim-weight
+            aria-labelledby="caj-weight-label"
+          />
+          <span class="sim-value" data-sim-weight-value>55%</span>
+        </div>
+
+        <p class="sim-verdict" data-sim-insight-verdict>
+          Because the terminal ends free, there is a gap between the two cells — the synapse. Signal
+          has to be handed across it, so transmission has a direction, and this one connection can be
+          turned up or down. That last part is what learning is.
+        </p>
+      </div>
     </section>
   </div>
 
-  <div class="sim-controls">
-    <button type="button" class="sim-btn sim-btn-primary" data-sim-restain>Stain a new section</button>
-    <button type="button" class="sim-btn sim-btn-quiet" data-sim-reset>Reset</button>
-  </div>
+  {/* the action bar changes with the mode; the insight mode runs itself */}
+  <div class="sim-controls" data-sim-controls></div>
 </cajal-sim>
 
 <script>
