@@ -1,5 +1,7 @@
 /* ── Simons & Chabris · counting the passes ───────────────────────────────
-   Six players, a ball, and something walking through the middle. */
+   Six players, a ball, and something walking through the middle. Two beats:
+   the single-shot trial (the court) and the locked insight (the confidence
+   gap and the load effect). Shell: `src/styles/sim.css`. */
 
 .gor-stage {
   height: auto;
@@ -23,7 +25,7 @@
 
 .gor-ball { fill: var(--sim-signal); }
 
-.gor-ape { fill: #2B2620; }
+.gor-ape { fill: var(--sim-tissue-ink); }
 
 .gor-ring {
   fill: none;
@@ -42,6 +44,17 @@
 }
 
 .gor-brief b { color: var(--ink); font-weight: 600; }
+
+/* the locked insight tab reads as unavailable until the trial is spent ----- */
+.sim-mode-tab[data-sim-mode='insight']:disabled {
+  cursor: default;
+  opacity: .55;
+}
+
+.sim-mode-tab[data-sim-mode='insight']:disabled:hover {
+  background: var(--sim-chrome);
+  color: var(--muted);
+}
 
 /* answering ---------------------------------------------------------------- */
 .gor-row {
@@ -89,4 +102,112 @@
   font-size: 13px;
   line-height: 1.5;
   color: var(--ink);
+}
+
+.gor-reveal {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--body);
+  border-left: 2px solid var(--sim-signal);
+  padding-left: 11px;
+  text-wrap: pretty;
+}
+
+/* the quiet pointer to the insight, sat in the control bar ----------------- */
+.gor-nav {
+  flex: 1 1 auto;
+  color: var(--sim-signal);
+  border-color: var(--sim-rest);
+}
+
+.gor-nav:hover:not(:disabled) { border-color: var(--sim-signal); color: var(--sim-signal); }
+
+/* the insight: the confidence gap ----------------------------------------- */
+.gor-gap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+@media (max-width: 420px) {
+  .gor-gap { grid-template-columns: 1fr; }
+}
+
+/* the bar you would have sworn by, against the one that was real */
+.gor-meter-sure { background: var(--sim-lost); }
+.gor-meter-real { background: var(--sim-signal); }
+
+/* the load effect — who notices, as the task pulls attention around -------- */
+.gor-load {
+  background: var(--sim-chrome);
+  border: 1px solid var(--sim-border);
+  padding: 12px 12px 10px;
+}
+
+.gor-load-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  gap: 10px;
+  height: 96px;
+}
+
+.gor-load-col {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.gor-load-track {
+  width: 100%;
+  max-width: 46px;
+  height: 64px;
+  background: var(--sim-track);
+  display: flex;
+  align-items: flex-end;
+}
+
+.gor-load-track i {
+  display: block;
+  width: 100%;
+  background: var(--sim-signal);
+  transition: height .4s ease;
+}
+
+.gor-load-track i.is-warm { background: var(--sim-kept); }
+
+.gor-load-word {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .04em;
+  color: var(--sim-signal);
+  font-weight: 600;
+}
+
+.gor-load-col:last-child .gor-load-word { color: var(--sim-kept); }
+
+.gor-load-cap {
+  font-size: 11px;
+  line-height: 1.3;
+  color: var(--muted);
+  text-align: center;
+  text-wrap: pretty;
+}
+
+.gor-load-axis {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gor-load-track i { transition: none; }
 }

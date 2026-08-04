@@ -30,7 +30,7 @@ export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
   dopamine:
     'Give it a reward out of nowhere, then train the cue until the burst moves onto it, then withhold the reward. The third trial is the one that decides what the cell is reporting.',
   gorilla:
-    'One viewing, and the counting task is real. Do it properly before you read anything below it — the panel is spent after a single go, exactly as the original was.',
+    'One viewing, and the counting task is real. Do it properly first — the insight beat stays locked until you have, because the panel is spent after a single naive go, exactly as the original was.',
   grid:
     'Forage the large box until the pattern shows, then put the same cell in the small one. What looked like a fact about the cell turns out to be a fact about the size of the box.',
 };
