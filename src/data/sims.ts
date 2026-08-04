@@ -22,7 +22,7 @@ export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
   splitbrain:
     'Three tabs, one flash. Ask the talking half out loud and it names only the right hemifield; ask the left hand and it takes the left. Then open “Why did you do that?” — the insight — and the talking half invents a confident reason for a choice it never saw.',
   placefield:
-    'Let the animal forage until the spikes pile up somewhere. Take another cell and it cares about somewhere else. Then turn the cue card and watch the field go with it.',
+    'Three tabs, one box. Forage until the spikes pile up in one patch — the place field — then switch cells to watch the room tile itself. “Codes place” is the insight: turn the one cue card and the whole field swings round with it, because the map is pinned to the landmark, not the room.',
   rotation:
     'Your own reaction times are the data here. Answer as fast as you are sure, across a dozen angles, and see whether the line through them comes out straight.',
   replay:
