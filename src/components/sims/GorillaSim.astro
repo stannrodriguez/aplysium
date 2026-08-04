@@ -9,20 +9,42 @@ interface Props {
 const { label = 'One viewing · count the passes' } = Astro.props;
 ---
 
-<gorilla-sim class="sim">
+<gorilla-sim class="sim" data-mode="trial">
   <div class="sim-chrome">
     <span class="sim-chrome-dot" aria-hidden="true"></span>
     <span class="sim-chrome-label">{label}</span>
     <span class="sim-chrome-status" data-sim-status aria-live="polite">ready</span>
   </div>
 
+  {/* Two beats. The trial is the single honest viewing; the insight is the
+     metacognitive point, and it stays locked until the trial is spent — you
+     cannot read why you missed it before you have had your one naive go. */}
+  <div class="sim-modes" role="group" aria-label="The trial, then the insight">
+    <button type="button" class="sim-mode-tab" data-sim-mode="trial" aria-pressed="true">The trial</button>
+    <button
+      type="button"
+      class="sim-mode-tab"
+      data-sim-mode="insight"
+      aria-pressed="false"
+      disabled
+      aria-disabled="true"
+      title="Do the trial first — one naive viewing"
+    >The insight &#128274;</button>
+  </div>
+
   <div class="sim-panels">
-    <section class="sim-panel">
+    {/* ── the experiment: one viewing, one count, then the question ── */}
+    <section class="sim-panel" data-sim-mode-panel="trial">
       <div class="sim-panel-head">
         <h3 class="sim-panel-title">The task</h3>
       </div>
 
-      <div class="sim-stage gor-stage" data-sim-court>
+      <div
+        class="sim-stage gor-stage"
+        data-sim-court
+        role="img"
+        aria-label="A court, ready. Three players in white and three in dark will pass a ball; count the passes made by the white team."
+      >
         <p class="gor-brief">
           Three players in white pass a ball between themselves, three in dark do the same.
           <b>Count the passes made by the white team.</b> It runs for sixteen seconds and you get one
@@ -30,7 +52,10 @@ const { label = 'One viewing · count the passes' } = Astro.props;
         </p>
       </div>
 
-      <p class="sim-note" data-sim-task>One viewing. The count is what you are being asked for.</p>
+      <p class="sim-lead" data-sim-lead aria-live="polite">
+        One viewing, and the counting task is real. When you are ready, start the clip and count the
+        white team's passes — nothing else is being asked of you.
+      </p>
 
       <div class="gor-row" data-sim-count-row hidden>
         <input
@@ -55,27 +80,67 @@ const { label = 'One viewing · count the passes' } = Astro.props;
       </div>
 
       <p class="gor-actual" data-sim-actual aria-live="polite"></p>
+      <p class="gor-reveal" data-sim-reveal aria-live="polite" hidden></p>
     </section>
 
-    <section class="sim-panel" data-sim-result hidden>
+    {/* ── the insight: why half miss it — locked until the trial is spent ── */}
+    <section class="sim-panel" data-sim-mode-panel="insight" hidden>
       <div class="sim-panel-head">
-        <h3 class="sim-panel-title">What that was</h3>
+        <h3 class="sim-panel-title">Why half miss it</h3>
       </div>
 
-      <p class="sim-verdict" data-sim-verdict></p>
+      <p class="sim-lead" data-sim-insight-lead aria-live="polite">
+        Attention has to be spent on something, and you spent it on the passes. Outside that spotlight
+        a person in a gorilla suit could stand in the middle of the frame and beat their chest, and
+        for about half of viewers it never reaches awareness at all.
+      </p>
 
-      <p class="sim-note">
-        Simons and Chabris got about half. The design is spent after one trial per person, which is
-        why the sample size had to do the work — and why watching it a second time tells you nothing
-        about yourself.
+      <div class="gor-gap" aria-label="The confidence gap">
+        <div class="sim-metric">
+          <p class="sim-metric-label">Sure they would have noticed</p>
+          <div class="sim-meter"><i class="gor-meter-sure" style="width:94%"></i></div>
+          <p class="sim-metric-word">Told afterward, almost everyone is certain a gorilla could not have slipped past them.</p>
+        </div>
+        <div class="sim-metric">
+          <p class="sim-metric-label">Actually noticed, first naive viewing</p>
+          <div class="sim-meter"><i class="gor-meter-real" style="width:50%"></i></div>
+          <p class="sim-metric-word">About half do. The other half were looking right at it and saw nothing.</p>
+        </div>
+      </div>
+
+      <p class="sim-note">The distance between those two bars is the finding. "I was looking right at it" is no evidence you saw it.</p>
+
+      <div class="gor-load" aria-label="How load changes who misses it">
+        <div class="gor-load-bars">
+          <div class="gor-load-col">
+            <div class="gor-load-track"><i style="height:50%"></i></div>
+            <span class="gor-load-word">about half</span>
+            <span class="gor-load-cap">count the white team</span>
+          </div>
+          <div class="gor-load-col">
+            <div class="gor-load-track"><i style="height:32%"></i></div>
+            <span class="gor-load-word">fewer</span>
+            <span class="gor-load-cap">harder count</span>
+          </div>
+          <div class="gor-load-col">
+            <div class="gor-load-track"><i class="is-warm" style="height:72%"></i></div>
+            <span class="gor-load-word">most</span>
+            <span class="gor-load-cap">attend the dark team</span>
+          </div>
+        </div>
+        <p class="gor-load-axis">share who notice the gorilla</p>
+      </div>
+
+      <p class="sim-verdict" data-sim-insight-verdict>
+        Load decides it. Make the count harder and more people miss the gorilla; track the team whose
+        colour matches the gorilla and more people catch it. It is not effort or eyesight — it is where
+        the attention went. Half of people were pointed away from it by the very task they were doing well.
       </p>
     </section>
   </div>
 
-  <div class="sim-controls">
-    <button type="button" class="sim-btn sim-btn-primary" data-sim-start>Start the clip</button>
-    <button type="button" class="sim-btn sim-btn-quiet" data-sim-reset>Reset</button>
-  </div>
+  {/* the action bar is rebuilt per mode and phase; the insight beat has none */}
+  <div class="sim-controls" data-sim-controls></div>
 </gorilla-sim>
 
 <script>
