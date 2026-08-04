@@ -1,7 +1,7 @@
 ---
 import '../../styles/sim.css';
 import '../../styles/sims/homunculus.css';
-import { PARTS, cortexShare } from '../../data/homunculus';
+import { PARTS, cortexShare, bodyShare, magnification } from '../../data/homunculus';
 
 interface Props {
   label?: string;
@@ -12,6 +12,34 @@ const { label = 'Awake craniotomy · the postcentral strip' } = Astro.props;
 /* Each segment is as wide as the cortex that part actually occupies, so where
    a click lands is already the result before anything is read. */
 const segments = PARTS.map(part => ({ part, width: cortexShare(part) * 100 }));
+
+/* The two mirrored strips of the insight view. The same parts, in the same
+   order, sized once by cortex and once by skin — so a part that balloons on
+   the strip and vanishes on the body is the same segment above and below.
+   Binned by magnification into how much information the part sends, which is
+   the quantity the cortex is spending its surface on. */
+type Band = 'high' | 'even' | 'low';
+const band = (part: (typeof PARTS)[number]): Band => {
+  const m = magnification(part);
+  if (m >= 1.8) return 'high';
+  if (m <= 0.6) return 'low';
+  return 'even';
+};
+
+const cortexRow = PARTS.map(part => ({ part, width: cortexShare(part) * 100, band: band(part) }));
+const skinRow = PARTS.map(part => ({ part, width: bodyShare(part) * 100, band: band(part) }));
+
+/* The headline the strips are drawn to prove, computed from the same table so
+   the numbers can never drift from the bars. */
+const sum = (keys: string[], share: (p: (typeof PARTS)[number]) => number): number =>
+  PARTS.filter(p => keys.includes(p.key)).reduce((n, p) => n + share(p), 0) * 100;
+
+const acute = ['hand', 'fingers', 'thumb', 'lips', 'tongue'];
+const bulk = ['trunk', 'leg'];
+const acuteCortex = sum(acute, cortexShare);
+const acuteSkin = sum(acute, bodyShare);
+const bulkCortex = sum(bulk, cortexShare);
+const bulkSkin = sum(bulk, bodyShare);
 
 /* The figure. Regions carry `data-region` rather than `data-part`: the strip
    holds the buttons, and this says where the patient felt it. */
@@ -37,105 +65,161 @@ const regions: Array<{ key: string; shapes: string }> = [
 ];
 ---
 
-<homunculus-sim class="sim">
+<homunculus-sim class="sim" data-mode="stimulate">
   <div class="sim-chrome">
     <span class="sim-chrome-dot" aria-hidden="true"></span>
     <span class="sim-chrome-label">{label}</span>
     <span class="sim-chrome-status" data-sim-status aria-live="polite">strip exposed</span>
   </div>
 
+  <div class="sim-modes" role="group" aria-label="Choose what to do">
+    <button type="button" class="sim-mode-tab" data-sim-mode="stimulate" aria-pressed="true">Stimulate the strip</button>
+    <button type="button" class="sim-mode-tab" data-sim-mode="insight" aria-pressed="false">The distortion</button>
+  </div>
+
   <div class="sim-panels">
     <section class="sim-panel">
-      <div class="sim-panel-head">
-        <h3 class="sim-panel-title">The strip</h3>
-        <p class="sim-readout">points found <b data-sim-found>0 of 13</b></p>
-      </div>
-
-      <div class="hom-strip" role="group" aria-label="The postcentral strip, medial to lateral. Each segment is as wide as the cortex that body part occupies.">
-        {segments.map(({ part, width }) => (
-          <button
-            type="button"
-            class="hom-seg"
-            style={`flex: 0 0 ${width.toFixed(2)}%`}
-            data-part={part.key}
-            data-mapped={part.key}
-            title={`${part.name} — ${width.toFixed(1)}% of the strip`}
-          >
-            <span class="visually-hidden">Stimulate the {part.name} point</span>
-            <span aria-hidden="true">{part.name}</span>
-          </button>
-        ))}
-      </div>
-
-      <p class="hom-strip-ends">
-        <span>medial · top of the head</span>
-        <span>lateral · down the side</span>
+      <p class="sim-lead" data-sim-lead aria-live="polite">
+        Put a current on a point of the strip in an awake patient. They report a sensation in one body part.
+        Do it point by point and an orderly body map appears along the strip.
       </p>
 
-      <p class="sim-note">
-        The segments are as wide as the cortex each part actually occupies. Click along the strip and
-        notice which parts you keep landing on.
-      </p>
-    </section>
-
-    <section class="sim-panel">
-      <div class="sim-panel-head">
-        <h3 class="sim-panel-title">What the patient said</h3>
-      </div>
-
-      <div class="hom-body">
-        <div class="hom-figure" data-sim-figure>
-          <svg viewBox="0 0 120 176" aria-hidden="true">
-            {regions.map(r => (
-              <g class="hom-region" data-region={r.key} set:html={r.shapes} />
-            ))}
-          </svg>
+      {/* ── the experiment: stimulate a point, hear the report, weigh it ── */}
+      <div data-sim-experiment>
+        <div class="sim-panel-head">
+          <h3 class="sim-panel-title">The strip</h3>
+          <p class="sim-readout">points found <b data-sim-found>0 of 13</b></p>
         </div>
 
-        <div class="hom-said">
-          <p class="hom-quote" data-sim-report aria-live="polite">
-            Touch a point on the strip and the patient will tell you where they felt it.
-          </p>
-          <p class="hom-attrib">local anaesthetic · awake · unprompted</p>
+        <div class="hom-strip" role="group" aria-label="The postcentral strip, medial to lateral. Each segment is as wide as the cortex that body part occupies." data-sim-stage-strip>
+          {segments.map(({ part, width }) => (
+            <button
+              type="button"
+              class="hom-seg"
+              style={`flex: 0 0 ${width.toFixed(2)}%`}
+              data-part={part.key}
+              data-mapped={part.key}
+              title={`${part.name} — ${width.toFixed(1)}% of the strip`}
+            >
+              <span class="visually-hidden">Stimulate the {part.name} point</span>
+              <span aria-hidden="true">{part.name}</span>
+            </button>
+          ))}
         </div>
+
+        <p class="hom-strip-ends">
+          <span>medial · top of the head</span>
+          <span>lateral · down the side</span>
+        </p>
+
+        <div class="hom-body">
+          <div class="hom-figure" data-sim-figure>
+            <svg viewBox="0 0 120 176" aria-hidden="true">
+              {regions.map(r => (
+                <g class="hom-region" data-region={r.key} set:html={r.shapes} />
+              ))}
+            </svg>
+          </div>
+
+          <div class="hom-said">
+            <p class="hom-quote" data-sim-report aria-live="polite">
+              Touch a point on the strip and the patient will tell you where they felt it.
+            </p>
+            <p class="hom-attrib">local anaesthetic · awake · unprompted</p>
+          </div>
+        </div>
+
+        <div class="hom-compare" data-sim-compare hidden>
+          <p class="sim-readout" data-sim-part-name></p>
+          <div class="hom-row">
+            <span class="hom-row-label">Share of strip</span>
+            <span class="hom-track hom-track-cortex"><i data-sim-cortex-bar></i></span>
+            <span class="hom-row-value" data-sim-cortex>0%</span>
+          </div>
+          <div class="hom-row">
+            <span class="hom-row-label">Share of skin</span>
+            <span class="hom-track hom-track-body"><i data-sim-body-bar></i></span>
+            <span class="hom-row-value" data-sim-body>0%</span>
+          </div>
+        </div>
+
+        <p class="sim-note">
+          Asking is the entire labelling method. The cortex has no sensation of its own, so the map exists
+          only because the person under it was awake and could say what they felt.
+        </p>
       </div>
 
-      <p class="sim-note">
-        Asking is the entire labelling method. The cortex has no sensation of its own, so the map
-        exists only because the person under it was awake and could say what they felt.
-      </p>
-    </section>
-
-    <section class="sim-panel">
-      <div class="sim-panel-head">
-        <h3 class="sim-panel-title">Cortex against skin</h3>
-        <p class="sim-readout" data-sim-part-name></p>
-      </div>
-
-      <div class="hom-compare" data-sim-compare hidden>
-        <div class="hom-row">
-          <span class="hom-row-label">Share of strip</span>
-          <span class="hom-track hom-track-cortex"><i data-sim-cortex-bar></i></span>
-          <span class="hom-row-value" data-sim-cortex>0%</span>
+      {/* ── the insight: two maps of one body, drawn to the same scale ── */}
+      <div data-sim-insight hidden>
+        <div class="hom-mirror">
+          <div class="hom-mirror-row">
+            <span class="hom-mirror-label">Cortex — share of the strip</span>
+            <div class="hom-mirror-bar" data-sim-ins-cortex role="group" aria-label="Each body part's share of the cortical strip">
+              {cortexRow.map(({ part, width, band }) => (
+                <button
+                  type="button"
+                  class={`hom-cell hom-cell-${band}`}
+                  style={`flex: 0 0 ${width.toFixed(2)}%`}
+                  data-ins-part={part.key}
+                  title={`${part.name} — ${width.toFixed(1)}% of the strip`}
+                >
+                  <span class="visually-hidden">{part.name}, {width.toFixed(1)} percent of the strip</span>
+                </button>
+              ))}
+            </div>
+          </div>
+          <div class="hom-mirror-row">
+            <span class="hom-mirror-label">Skin — share of the body</span>
+            <div class="hom-mirror-bar" data-sim-ins-skin role="group" aria-label="The same body parts, sized by their share of the skin">
+              {skinRow.map(({ part, width, band }) => (
+                <button
+                  type="button"
+                  class={`hom-cell hom-cell-${band}`}
+                  style={`flex: 0 0 ${width.toFixed(2)}%`}
+                  data-ins-part={part.key}
+                  title={`${part.name} — ${width.toFixed(1)}% of the skin`}
+                >
+                  <span class="visually-hidden">{part.name}, {width.toFixed(1)} percent of the skin</span>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
-        <div class="hom-row">
-          <span class="hom-row-label">Share of skin</span>
-          <span class="hom-track hom-track-body"><i data-sim-body-bar></i></span>
-          <span class="hom-row-value" data-sim-body>0%</span>
-        </div>
-      </div>
 
-      <p class="sim-verdict" data-sim-verdict>
-        The segments are sized by the cortex each part actually gets. Click around and see which ones
-        you keep landing on.
-      </p>
+        <p class="hom-mirror-key">
+          <span><i class="hom-key-swatch hom-cell-high"></i> high acuity</span>
+          <span><i class="hom-key-swatch hom-cell-even"></i> about even</span>
+          <span><i class="hom-key-swatch hom-cell-low"></i> low acuity</span>
+        </p>
+
+        <div class="hom-headline">
+          <div class="hom-headline-fig">
+            <b>{acuteCortex.toFixed(0)}%</b>
+            <span>of the strip</span>
+            <em>hand, fingers, thumb, lips &amp; tongue</em>
+            <b>{acuteSkin.toFixed(0)}%</b>
+            <span>of the skin</span>
+          </div>
+          <div class="hom-headline-fig">
+            <b>{bulkCortex.toFixed(0)}%</b>
+            <span>of the strip</span>
+            <em>trunk &amp; both legs</em>
+            <b>{bulkSkin.toFixed(0)}%</b>
+            <span>of the skin</span>
+          </div>
+        </div>
+
+        <p class="sim-verdict" data-sim-ins-verdict>
+          The hand, lips and tongue take more of the strip than the trunk and both legs together. Cortical
+          territory scales with sensitivity — with how finely a part can tell two touches apart — not with
+          its size. The brain spends its surface where the information is. Tap either strip to weigh one part.
+        </p>
+      </div>
     </section>
   </div>
 
-  <div class="sim-controls">
-    <button type="button" class="sim-btn sim-btn-primary" data-sim-survey>Walk the whole strip</button>
-    <button type="button" class="sim-btn sim-btn-quiet" data-sim-reset>Reset</button>
-  </div>
+  {/* the action bar changes with the mode; the insight mode runs itself */}
+  <div class="sim-controls" data-sim-controls></div>
 </homunculus-sim>
 
 <script>
