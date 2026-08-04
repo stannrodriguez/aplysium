@@ -1,6 +1,9 @@
 /* ── Wilson & McNaughton · replay ─────────────────────────────────────────
-   A linear track above two rasters on different time scales — four seconds of
-   running, and two seconds of sleep with the same order inside it. */
+   A linear track above rasters on different time scales — four seconds of
+   running, and two seconds of sleep with the same order inside it. Three mode
+   tabs (Run the track / Sleep after / The control) drive it; the control mode
+   stacks the before-run and after-run epochs with the ~20× compression figure.
+   Shell: `src/styles/sim.css`. */
 
 .rep-track-stage {
   height: auto;
@@ -54,9 +57,64 @@
 .rep-tick { stroke-width: 1.5; }
 .rep-tick-run { stroke: var(--sim-signal); }
 .rep-tick-sleep { stroke: var(--sim-kept); }
+/* the before-run control carries no order — draw it as ordinary, meaningless
+   activity rather than a matched sequence. */
+.rep-tick-null { stroke: var(--meta); }
 
-.rep-scales {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+/* the experiment blocks stack with the shell's own panel gap */
+[data-sim-trackblock],
+[data-sim-runblock],
+[data-sim-sleepblock] {
+  display: flex;
+  flex-direction: column;
   gap: 10px;
 }
+
+/* ── the control mode: before vs after, and the compression ─────────────── */
+.rep-epoch {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rep-epoch-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.rep-tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border: 1px solid var(--sim-border);
+  white-space: nowrap;
+}
+
+.rep-tag-absent { color: var(--meta); }
+
+.rep-tag-present {
+  color: var(--sim-kept);
+  border-color: var(--sim-kept);
+}
+
+.rep-comp-stage {
+  height: auto;
+  aspect-ratio: 320 / 96;
+}
+
+.rep-comp-axis {
+  stroke: var(--sim-tissue);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.rep-comp-link {
+  stroke: var(--meta-faint);
+  stroke-width: 1;
+}
+
+.rep-comp-tick { fill: var(--sim-signal); }

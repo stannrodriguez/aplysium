@@ -9,60 +9,92 @@ interface Props {
 const { label = 'Eight cells at once · track and sleep' } = Astro.props;
 ---
 
-<replay-sim class="sim">
+<replay-sim class="sim" data-mode="run">
   <div class="sim-chrome">
     <span class="sim-chrome-dot" aria-hidden="true"></span>
     <span class="sim-chrome-label">{label}</span>
     <span class="sim-chrome-status" data-sim-status aria-live="polite">idle</span>
   </div>
 
+  <div class="sim-modes" role="group" aria-label="Choose what to watch">
+    <button type="button" class="sim-mode-tab" data-sim-mode="run" aria-pressed="true">Run the track</button>
+    <button type="button" class="sim-mode-tab" data-sim-mode="sleep" aria-pressed="false">Sleep after</button>
+    <button type="button" class="sim-mode-tab" data-sim-mode="insight" aria-pressed="false">The control</button>
+  </div>
+
   <div class="sim-panels">
     <section class="sim-panel">
-      <div class="sim-panel-head">
-        <h3 class="sim-panel-title">The track</h3>
-        <p class="sim-readout">compression <b data-sim-compression>—</b></p>
-      </div>
-
-      <div class="sim-stage rep-track-stage" data-sim-track></div>
-
-      <p class="sim-note" data-sim-track-note>
-        Run the track. Eight cells, eight patches of track, one after another.
+      <p class="sim-lead" data-sim-lead aria-live="polite">
+        Run the track. Eight place cells, each with its own patch of track — they fire one after
+        another as the animal passes through, and that order is the thing worth remembering.
       </p>
-    </section>
 
-    <section class="sim-panel">
-      <div class="sim-panel-head">
-        <h3 class="sim-panel-title">Running — four seconds</h3>
+      {/* ── the experiment: the track, the run, the sleep ── */}
+      <div data-sim-experiment>
+        <div data-sim-trackblock>
+          <div class="sim-panel-head">
+            <h3 class="sim-panel-title">The track</h3>
+          </div>
+          <div class="sim-stage rep-track-stage" data-sim-track></div>
+        </div>
+
+        <div data-sim-runblock>
+          <div class="sim-panel-head">
+            <h3 class="sim-panel-title">Running · four seconds</h3>
+          </div>
+          <div class="sim-stage rep-raster-stage" data-sim-runraster></div>
+        </div>
+
+        <div data-sim-sleepblock hidden>
+          <div class="sim-panel-head">
+            <h3 class="sim-panel-title">Sleeping · two seconds</h3>
+            <p class="sim-readout">compression <b data-sim-compression>—</b></p>
+          </div>
+          <div class="sim-stage rep-raster-stage" data-sim-sleepraster></div>
+        </div>
+
+        <p class="sim-note" data-sim-note>
+          Eight cells, eight patches of track, one after another.
+        </p>
       </div>
 
-      <div class="sim-stage rep-raster-stage" data-sim-runraster></div>
-    </section>
+      {/* ── the insight: the before-run control, and the compression ── */}
+      <div data-sim-insight hidden>
+        <div class="rep-epoch">
+          <div class="rep-epoch-head">
+            <h3 class="sim-panel-title">Sleep before the run</h3>
+            <span class="rep-tag rep-tag-absent" data-sim-before-tag>sequence absent</span>
+          </div>
+          <div class="sim-stage rep-raster-stage" data-sim-beforeraster></div>
+          <p class="sim-note" data-sim-before-score></p>
+        </div>
 
-    <section class="sim-panel">
-      <div class="sim-panel-head">
-        <h3 class="sim-panel-title">Sleeping — two seconds</h3>
+        <div class="rep-epoch">
+          <div class="rep-epoch-head">
+            <h3 class="sim-panel-title">Sleep after the run</h3>
+            <span class="rep-tag rep-tag-present" data-sim-after-tag>sequence present</span>
+          </div>
+          <div class="sim-stage rep-raster-stage" data-sim-afterraster></div>
+          <p class="sim-note" data-sim-after-score></p>
+        </div>
+
+        <div class="rep-epoch">
+          <div class="rep-epoch-head">
+            <h3 class="sim-panel-title">Same order, roughly 20× faster</h3>
+          </div>
+          <div class="sim-stage rep-comp-stage" data-sim-comp></div>
+        </div>
+
+        <p class="sim-verdict" data-sim-insight-verdict>
+          The pattern is absent before the run and present after it — so it is the day’s experience
+          being replayed, not a standing habit of the tissue. Consolidation caught in the act.
+        </p>
       </div>
-
-      <div class="sim-stage rep-raster-stage" data-sim-sleepraster></div>
-
-      <div class="sim-toggle">
-        <span class="sim-toggle-label">Which sleep epoch you record</span>
-        <button type="button" class="sim-pill" data-sim-epoch="after" aria-pressed="true">after the run</button>
-        <button type="button" class="sim-pill" data-sim-epoch="before" aria-pressed="false">before it — the control</button>
-      </div>
-
-      <p class="sim-verdict" data-sim-verdict>
-        The run has to come first — there is nothing to look for a replay of until there is a
-        sequence to replay.
-      </p>
     </section>
   </div>
 
-  <div class="sim-controls">
-    <button type="button" class="sim-btn sim-btn-primary" data-sim-run>Run the track</button>
-    <button type="button" class="sim-btn sim-btn-outline" data-sim-sleep disabled>Record sleep</button>
-    <button type="button" class="sim-btn sim-btn-quiet" data-sim-reset>Reset</button>
-  </div>
+  {/* the action bar changes with the mode; the insight mode runs itself */}
+  <div class="sim-controls" data-sim-controls></div>
 </replay-sim>
 
 <script>

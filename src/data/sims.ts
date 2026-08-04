@@ -26,7 +26,7 @@ export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
   rotation:
     'Your own reaction times are the data here. Answer as fast as you are sure, across a dozen angles, and see whether the line through them comes out straight.',
   replay:
-    'Run the track, then record a sleep epoch and look for the same order in it. The epoch before the run is the control, and it is what makes the other one mean anything.',
+    'Three tabs, one recording. Run the track to lay down an eight-cell sequence, record the sleep after it to find that same order compressed roughly twentyfold — then open “The control” for the insight: the sequence is absent in the sleep before the run, which is what makes the after-epoch mean anything.',
   dopamine:
     'Give it a reward out of nowhere, then train the cue until the burst moves onto it, then withhold the reward. The third trial is the one that decides what the cell is reporting.',
   gorilla:
