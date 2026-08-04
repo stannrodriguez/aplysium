@@ -18,7 +18,7 @@ export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
   iconic:
     'This one runs on you. Twelve letters for fifty milliseconds, then either report the lot or report the one row the cue names. Compare the two scores, then push the cue later.',
   orientation:
-    'Hunt for the angle this cell wants, one bar at a time, and watch the tuning curve fill in. Try the spot of light too: months of spots was what had been failing to move these cells at all.',
+    'Three tabs, one cell. Hunt for the angle it wants one bar at a time and watch the tuning curve fill in; flash a spot to see the stimulus that failed for months — then open “How it’s built” for the insight the curve was hiding: the cell is just a row of spot-detectors wired in a line.',
   splitbrain:
     'Flash the pair, then ask it both ways — out loud, and with the left hand. When the two answers disagree, ask why: the explanation you get back is a confident reason for a choice the talking half never made.',
   placefield:
