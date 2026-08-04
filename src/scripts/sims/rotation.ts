@@ -1,6 +1,17 @@
 /**
  * <rotation-sim> — Shepard and Metzler's task, run on the reader.
  *
+ * The markup is server-rendered by RotationSim.astro; this class attaches to it
+ * and drives the readouts. Two mode tabs, one continuous experiment:
+ *
+ *   Do the trials — same/different judgements on pairs of block figures at set
+ *                   angular offsets. You answer as fast as you are sure, and the
+ *                   time is what gets recorded, not the verdict.
+ *   Your line     — the insight: those very reaction times plotted against
+ *                   angle. They fall on a straight rising line, ~60°/s, which is
+ *                   what says you turned the shape continuously through every
+ *                   orientation in between rather than looking it up.
+ *
  * The figures are genuinely three-dimensional: ten unit cubes, rotated about
  * the vertical axis and projected isometrically, with every face sorted back
  * to front and shaded by its own normal. They have to be really rotated,
@@ -9,10 +20,13 @@
  *
  * The result is not the reader's accuracy. It is the slope of their reaction
  * times against angle — a straight line, which is what makes the claim that
- * something is being turned at a rate rather than looked up.
+ * something is being turned at a rate rather than looked up. Nothing here is
+ * faked: the dots are the reader's own trials.
  */
 
 import { SimElement, clamp, defineSim } from './base';
+
+type Mode = 'experiment' | 'insight';
 
 interface Trial {
   angle: number;
@@ -123,6 +137,7 @@ function slope(trials: Trial[]): number | null {
 }
 
 class RotationSim extends SimElement {
+  private mode: Mode = 'experiment';
   private angle = 0;
   private same = true;
   private shown = 0;
@@ -132,9 +147,23 @@ class RotationSim extends SimElement {
   private lastMs = 0;
 
   protected setup(): void {
-    this.onClick('[data-sim-next]', () => this.newTrial());
-    this.onClick('[data-sim-reset]', () => this.reset());
+    this.onClick('[data-sim-mode]', el => this.setMode(el.dataset.simMode as Mode));
     this.onClick('[data-sim-answer]', el => this.answer(el.dataset.simAnswer === 'same'));
+    this.buildControls();
+  }
+
+  /* ── modes ── */
+
+  private setMode(mode: Mode): void {
+    if (this.mode === mode) return;
+    this.mode = mode;
+    // Leaving the trials abandons any un-answered pair — you cannot time a
+    // stimulus you can no longer see. The recorded trials stay: they are the
+    // insight's data.
+    this.live = false;
+    this.buildControls();
+    this.render();
+    this.emit(`mode-${mode}`, { trials: this.trials.length });
   }
 
   /* ── the trial ── */
@@ -171,43 +200,96 @@ class RotationSim extends SimElement {
     this.emit('reset');
   }
 
+  /* ── controls, per mode ── */
+
+  private buildControls(): void {
+    const bar = this.q('[data-sim-controls]');
+    if (!bar) return;
+    bar.innerHTML = '';
+
+    // The insight view runs itself off the trials already recorded.
+    if (this.mode === 'insight') {
+      bar.hidden = true;
+      return;
+    }
+    bar.hidden = false;
+
+    this.addBtn(bar, this.live ? 'Skip this pair' : 'Next pair', 'sim-btn-primary', () => this.newTrial());
+    this.addBtn(bar, 'Reset', 'sim-btn-quiet', () => this.reset());
+  }
+
+  private addBtn(bar: HTMLElement, label: string, cls: string, fn: () => void): void {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = `sim-btn ${cls}`;
+    b.textContent = label;
+    b.addEventListener('click', fn);
+    bar.appendChild(b);
+  }
+
   /* ── view ── */
 
   protected render(): void {
+    const isInsight = this.mode === 'insight';
+
+    this.pressed('[data-sim-mode]', 'simMode', this.mode);
+    this.text('[data-sim-lead]', this.caption());
+    this.text('[data-sim-status]', this.statusText());
+    this.show('[data-sim-experiment]', !isInsight);
+    this.show('[data-sim-insight]', isInsight);
+
     const started = this.trials.length > 0 || this.live;
 
-    this.text('[data-sim-status]', this.live ? 'same or mirrored?' : `${this.trials.length} trials`);
+    if (isInsight) {
+      this.html('[data-sim-plot]', this.plotSvg());
+      this.text('[data-sim-verdict]', this.verdict());
+      return;
+    }
+
+    // The primary button's label follows whether a pair is live.
+    const primary = this.q('[data-sim-controls] .sim-btn-primary');
+    if (primary) primary.textContent = this.live ? 'Skip this pair' : 'Next pair';
+
     this.text('[data-sim-angle]', this.live || started ? `${this.angle}°` : '—');
-
+    this.text('[data-sim-count]', String(this.trials.length));
     this.html('[data-sim-pair]', this.pairSvg(started));
-    this.disable('[data-sim-answer][data-sim-answer="same"]', !this.live);
     this.qa<HTMLButtonElement>('[data-sim-answer]').forEach(el => (el.disabled = !this.live));
+  }
 
-    this.text('[data-sim-feedback]', this.feedback());
-    this.html('[data-sim-plot]', this.plotSvg());
-    this.text('[data-sim-verdict]', this.verdict());
+  /** The one sentence under the tabs, matched to what you are looking at now. */
+  private caption(): string {
+    if (this.mode === 'insight') {
+      if (this.trials.filter(t => t.correct).length < 4)
+        return 'This is your line: reaction time against angle. It needs a few correct trials across different angles first — do some in “Do the trials”, then come back to see the shape.';
+      return 'Every dot is one of your own trials — how long you took, against how far the figure was turned. They rise along a straight line, which means you were turning the shape continuously through every orientation in between, not looking it up.';
+    }
+
+    if (this.live)
+      return 'The clock is running. Same object, or its mirror image? Answer the moment you are sure — the time is the measurement, not the verdict.';
+    if (this.lastCorrect !== null)
+      return `${this.lastCorrect ? 'Right' : 'Wrong'} — ${(this.lastMs / 1000).toFixed(2)} s at ${this.angle}°. That is one point on your line. Show the next pair.`;
+    return 'Two block figures, one of them turned. Judge whether they are the same object or mirror images — as fast as you can be sure. Your reaction time is what gets recorded.';
+  }
+
+  private statusText(): string {
+    if (this.mode === 'insight') return `${this.trials.length} trials`;
+    return this.live ? 'same or mirrored?' : `${this.trials.length} trials`;
   }
 
   private pairSvg(started: boolean): string {
     if (!started)
-      return '<p class="rot-blank">Two figures, one turned. Decide whether they are the same object or mirror images — as fast as you can be sure.</p>';
+      return '<p class="rot-blank">Two figures, one turned. Decide whether they are the same object or mirror images — as fast as you can be sure. Press “Next pair” to begin.</p>';
 
     const left = figureSvg(0, false);
     const right = figureSvg(this.angle, !this.same);
 
     return (
-      `<svg class="rot-svg" viewBox="0 0 320 168" role="img" aria-label="Two block figures. The right one is turned ${this.angle} degrees from the left one.">` +
+      `<svg class="rot-svg" viewBox="0 0 320 168" role="img" aria-label="Two block figures. The right one is turned ${this.angle} degrees from the left one. Same object or mirror image?">` +
       `<g transform="translate(84 84)">${left}</g>` +
       `<g transform="translate(232 84)">${right}</g>` +
       `<line class="rot-divide" x1="160" y1="16" x2="160" y2="152"/>` +
       `</svg>`
     );
-  }
-
-  private feedback(): string {
-    if (this.live) return 'Answer as soon as you are sure. The time is what is being measured, not the answer.';
-    if (this.lastCorrect === null) return 'Run a trial.';
-    return `${this.lastCorrect ? 'Right' : 'Wrong'} — ${(this.lastMs / 1000).toFixed(2)} s at ${this.angle}°.`;
   }
 
   private plotSvg(): string {

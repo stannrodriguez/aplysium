@@ -43,6 +43,16 @@
   text-wrap: pretty;
 }
 
+/* the count under the pair ------------------------------------------------- */
+.rot-metrics {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.rot-metrics b { font-weight: 600; color: var(--sim-signal); }
+
 /* answering ---------------------------------------------------------------- */
 .rot-answers {
   display: flex;
@@ -62,13 +72,6 @@
 
 .rot-answer:hover:not(:disabled) { background: var(--sim-signal-wash); }
 .rot-answer:disabled { border-color: var(--sim-rest); color: var(--meta); cursor: default; }
-
-.rot-feedback {
-  font-size: 12.5px;
-  line-height: 1.5;
-  color: var(--muted);
-  min-height: 1.5em;
-}
 
 /* the reader's data -------------------------------------------------------- */
 .rot-grid { stroke: var(--sim-border); stroke-width: 1; }
