@@ -64,6 +64,11 @@
 }
 
 /* interneuron and serotonin (sensitization) ------------------------------- */
+/* Hidden by default (baseline/habituation), shown only in sensitization. A
+   class rather than the `hidden` attribute, which Astro's SVG types reject. */
+.apl-inter { display: none; }
+.apl-inter.is-visible { display: inline; }
+
 .apl-sero-path {
   stroke: var(--sim-sens);
   stroke-width: 1.6;

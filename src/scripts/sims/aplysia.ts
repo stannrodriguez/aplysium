@@ -303,10 +303,10 @@ class AplysiaSim extends SimElement {
     const releasePct = Math.round((q / 15) * 100);
     const gillResp = clamp(Math.round(a * 64), 6, 100);
 
-    // `hidden` as an IDL property only exists on HTMLElement; the interneuron
-    // is an SVG <g>, so toggle the attribute so the CSS rule can act on it.
+    // The interneuron is an SVG <g>: toggle a class (not the `hidden`
+    // attribute, which Astro's SVG types reject at check time).
     const inter = this.q('[data-sim-inter]');
-    if (inter) inter.toggleAttribute('hidden', mode !== 'sens');
+    if (inter) inter.classList.toggle('is-visible', mode === 'sens');
     this.paintVesicles(q);
     this.css('[data-sim-respbar]', 'width', `${Math.round((gillResp / 100) * 210)}px`);
 
