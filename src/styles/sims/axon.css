@@ -1,7 +1,8 @@
 /* ── Hodgkin & Huxley · the action potential ──────────────────────────────
-   Two plots on a shared time axis: membrane potential, and the two
-   conductances underneath it. Everything is computed at runtime, so all of it
-   is written by the script. */
+   One voltage plot, driven by three mode tabs (sub-threshold, fire a spike,
+   the two currents). The insight mode drops the conductance plot in underneath
+   on the same time axis. Everything is computed at runtime, so all of it is
+   written by the script. Shell: `src/styles/sim.css`. */
 
 .hh-stage {
   height: auto;

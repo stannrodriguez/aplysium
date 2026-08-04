@@ -10,7 +10,7 @@ export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
   cajal:
     'Stain a section, then follow a stained axon to the marked terminal at its end. The toggle draws the rival theory over the same contact, so you can see the two predictions differ.',
   axon:
-    'Push the stimulus up until it fires, then keep pushing — every spike lands on the last. The blockers at the bottom take one ion channel out at a time.',
+    'Three tabs, one axon. Push the stimulus toward threshold, then cross it and watch every spike land on the last however hard you push — the blockers take one ion channel out at a time. Then open “The two currents” for the insight: the spike is sodium and potassium on different timers, not one event.',
   retina:
     'Click anywhere on the retina to flash the spot there and read the rate. Then flood the whole patch evenly, and map the field to see the shape that explains it.',
   homunculus:
