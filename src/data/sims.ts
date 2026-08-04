@@ -16,7 +16,7 @@ export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
   homunculus:
     'Two tabs. Stimulate the strip point by point — each segment as wide as the cortex that part really occupies, so where your clicks keep landing is the result — then open “The distortion” for the idea it was hiding: the same body drawn twice, and territory bought with sensitivity, not size.',
   iconic:
-    'This one runs on you. Twelve letters for fifty milliseconds, then either report the lot or report the one row the cue names. Compare the two scores, then push the cue later.',
+    'Three tabs, one grid — and it runs on you. Flash twelve letters for fifty milliseconds and report the lot (about four); flash again and report just the row the cue names (nearly all of it). Then open “Delay the cue” for the insight: multiply the cued row up to what was really there, then push the cue later and watch that store decay back to four.',
   orientation:
     'Hunt for the angle this cell wants, one bar at a time, and watch the tuning curve fill in. Try the spot of light too: months of spots was what had been failing to move these cells at all.',
   splitbrain:
