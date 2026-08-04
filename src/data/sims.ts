@@ -10,7 +10,7 @@ export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
   cajal:
     'Three tabs. Stain a section to see the sparse whole neurons, then trace an axon to its terminal — a free ending against the next cell, never fused. Then open “The gap” for the insight: because the terminal ends free there is a synapse, and a single junction you can turn up or down.',
   axon:
-    'Push the stimulus up until it fires, then keep pushing — every spike lands on the last. The blockers at the bottom take one ion channel out at a time.',
+    'Three tabs, one axon. Push the stimulus toward threshold, then cross it and watch every spike land on the last however hard you push — the blockers take one ion channel out at a time. Then open “The two currents” for the insight: the spike is sodium and potassium on different timers, not one event.',
   retina:
     'Click anywhere on the retina to flash the spot there and read the rate. Then flood the whole patch evenly, and map the field to see the shape that explains it.',
   homunculus:
