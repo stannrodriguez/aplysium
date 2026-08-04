@@ -12,7 +12,7 @@ export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
   axon:
     'Push the stimulus up until it fires, then keep pushing — every spike lands on the last. The blockers at the bottom take one ion channel out at a time.',
   retina:
-    'Click anywhere on the retina to flash the spot there and read the rate. Then flood the whole patch evenly, and map the field to see the shape that explains it.',
+    'Four tabs, one cell. Flash a spot on the centre and it fires, move it to the surround and it goes quiet, then map the field to see it is a ring, not a patch — then open "Even flood" for the insight: the two halves cancel, so the eye reports contrast, not brightness.',
   homunculus:
     'Click along the strip. Each segment is as wide as the cortex that body part really occupies, so where your clicks keep landing tells you the result before you read a word of it.',
   iconic:
