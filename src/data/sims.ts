@@ -14,7 +14,7 @@ export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
   retina:
     'Four tabs, one cell. Flash a spot on the centre and it fires, move it to the surround and it goes quiet, then map the field to see it is a ring, not a patch — then open "Even flood" for the insight: the two halves cancel, so the eye reports contrast, not brightness.',
   homunculus:
-    'Click along the strip. Each segment is as wide as the cortex that body part really occupies, so where your clicks keep landing tells you the result before you read a word of it.',
+    'Two tabs. Stimulate the strip point by point — each segment as wide as the cortex that part really occupies, so where your clicks keep landing is the result — then open “The distortion” for the idea it was hiding: the same body drawn twice, and territory bought with sensitivity, not size.',
   iconic:
     'This one runs on you. Twelve letters for fifty milliseconds, then either report the lot or report the one row the cue names. Compare the two scores, then push the cue later.',
   orientation:
