@@ -6,31 +6,43 @@ interface Props {
   label?: string;
 }
 
-const { label = 'Whole report against partial report' } = Astro.props;
+const { label = 'Sperling · whole against partial report' } = Astro.props;
 ---
 
-<iconic-sim class="sim">
+<iconic-sim class="sim" data-mode="whole">
   <div class="sim-chrome">
     <span class="sim-chrome-dot" aria-hidden="true"></span>
     <span class="sim-chrome-label">{label}</span>
-    <span class="sim-chrome-status" data-sim-status aria-live="polite">partial report</span>
+    <span class="sim-chrome-status" data-sim-status aria-live="polite">whole report</span>
+  </div>
+
+  <div class="sim-modes" role="group" aria-label="Choose how you are asked">
+    <button type="button" class="sim-mode-tab" data-sim-mode="whole" aria-pressed="true">Whole report</button>
+    <button type="button" class="sim-mode-tab" data-sim-mode="partial" aria-pressed="false">Partial report</button>
+    <button type="button" class="sim-mode-tab" data-sim-mode="insight" aria-pressed="false">Delay the cue</button>
   </div>
 
   <div class="sim-panels">
     <section class="sim-panel">
-      <div class="sim-panel-head">
-        <h3 class="sim-panel-title">The display</h3>
-        <p class="sim-readout" data-sim-count>0 trials</p>
-      </div>
+      <p class="sim-lead" data-sim-lead aria-live="polite">
+        Whole report. A grid of twelve letters flashes for fifty milliseconds. Then type every letter
+        you can still see — all twelve, in any order. Almost everyone lands around four.
+      </p>
 
-      <div class="sim-stage ico-stage" data-sim-display>
+      {/* the instrument every mode drives: one grid, in one place */}
+      <div
+        class="sim-stage ico-stage"
+        data-sim-display
+        role="img"
+        aria-label="A blank display, waiting for you to flash the grid."
+      >
         <p class="ico-centre">
-          Twelve letters, fifty milliseconds. Run a trial when you are looking at the panel.
+          Twelve letters, fifty milliseconds. Flash the grid when you are looking at the panel.
         </p>
       </div>
 
       <p class="sim-note" data-sim-prompt>
-        You will be asked for one row, and you will not know which one until the grid has gone.
+        You will be asked for everything you saw.
       </p>
 
       <div class="ico-answer-row" data-sim-answer-row hidden>
@@ -49,60 +61,41 @@ const { label = 'Whole report against partial report' } = Astro.props;
       </div>
 
       <p class="ico-result" data-sim-trial-result aria-live="polite"></p>
-    </section>
 
-    <section class="sim-panel">
-      <div class="sim-panel-head">
-        <h3 class="sim-panel-title">How you are asked</h3>
+      {/* insight mode only: the multiply-up, the cue delay, and the decay */}
+      <div class="ico-insight" data-sim-insight hidden>
+        <div class="ico-multiply" data-sim-multiply>
+          <p class="sim-note">Flash the grid a few times in this mode to build the estimate.</p>
+        </div>
+
+        <div class="sim-field" data-sim-delay-field>
+          <span class="sim-field-label" id="ico-delay-label">When the cue arrives</span>
+          <input
+            class="sim-slider"
+            type="range"
+            min="0"
+            max="1000"
+            value="0"
+            step="100"
+            data-sim-delay
+            aria-labelledby="ico-delay-label"
+          />
+          <span class="sim-value" data-sim-delay-value>immediately</span>
+        </div>
+
+        <div class="sim-stage ico-plot-stage" data-sim-plot></div>
+
+        <p class="sim-verdict" data-sim-verdict>
+          Flash the grid with the cue immediate, then drag it later and later. Watch the
+          letters-available estimate fall back toward four — that fall is the store decaying.
+        </p>
       </div>
-
-      <div class="sim-choices">
-        <button type="button" class="sim-choice" data-sim-mode="partial" aria-pressed="true">
-          <b>Partial report</b><em>one row, named after the grid has gone</em>
-        </button>
-        <button type="button" class="sim-choice" data-sim-mode="whole" aria-pressed="false">
-          <b>Whole report</b><em>everything you saw</em>
-        </button>
-      </div>
-
-      <div class="sim-field" data-sim-delay-field>
-        <span class="sim-field-label" id="ico-delay-label">When the cue arrives</span>
-        <input
-          class="sim-slider"
-          type="range"
-          min="0"
-          max="1000"
-          value="0"
-          step="100"
-          data-sim-delay
-          aria-labelledby="ico-delay-label"
-        />
-        <span class="sim-value" data-sim-delay-value>immediately</span>
-      </div>
-
-      <p class="sim-note">
-        Sperling used a tone for the cue, so it could not be seen. Here it is a marker beside the
-        row — the part that matters is that it comes after the grid has already gone.
-      </p>
-    </section>
-
-    <section class="sim-panel">
-      <div class="sim-panel-head">
-        <h3 class="sim-panel-title">Your results</h3>
-        <p class="sim-readout">letters available</p>
-      </div>
-
-      <div class="sim-stage ico-plot-stage" data-sim-plot></div>
-
-      <p class="sim-verdict" data-sim-verdict>
-        Run a few trials of each kind. The point is not what you score — it is the difference between
-        the two scores.
-      </p>
     </section>
   </div>
 
-  <div class="sim-controls">
-    <button type="button" class="sim-btn sim-btn-primary" data-sim-run>Run a trial</button>
+  {/* the action bar is rebuilt per mode; here so the panel reads before JS */}
+  <div class="sim-controls" data-sim-controls>
+    <button type="button" class="sim-btn sim-btn-primary" data-sim-run>Flash the grid</button>
     <button type="button" class="sim-btn sim-btn-quiet" data-sim-reset>Reset</button>
   </div>
 </iconic-sim>
