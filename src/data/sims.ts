@@ -32,7 +32,7 @@ export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
   gorilla:
     'One viewing, and the counting task is real. Do it properly before you read anything below it — the panel is spent after a single go, exactly as the original was.',
   grid:
-    'Forage the large box until the pattern shows, then put the same cell in the small one. What looked like a fact about the cell turns out to be a fact about the size of the box.',
+    'Forage the large box until the pattern shows, then put the same cell in the small one — what looked like a fact about the cell turns out to be a fact about the size of the box. The last tab reads the lattice for what it is: a coordinate grid the animal carries with it.',
 };
 
 export const simCaption = (kind: SimulatorKey): string => SIM_CAPTIONS[kind];
