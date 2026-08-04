@@ -41,8 +41,33 @@
   stroke-width: 1.6;
 }
 
+/* insight overlay: the field's centre, tethered to the cue card, so that
+   turning the card visibly swings the whole rigid assembly round together. */
+.pf-field {
+  fill: var(--sim-signal-wash);
+  stroke: var(--sim-signal);
+  stroke-width: 1.2;
+  stroke-dasharray: 3 3;
+  opacity: .8;
+}
+
+.pf-tether {
+  stroke: var(--sim-signal);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+  opacity: .55;
+}
+
 .pf-legend {
   display: flex;
   flex-wrap: wrap;
   gap: 4px 14px;
+}
+
+/* cell / spike count beside the floor-coverage readout */
+.pf-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  justify-content: space-between;
 }

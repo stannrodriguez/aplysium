@@ -22,7 +22,7 @@ export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
   splitbrain:
     'Flash the pair, then ask it both ways — out loud, and with the left hand. When the two answers disagree, ask why: the explanation you get back is a confident reason for a choice the talking half never made.',
   placefield:
-    'Let the animal forage until the spikes pile up somewhere. Take another cell and it cares about somewhere else. Then turn the cue card and watch the field go with it.',
+    'Three tabs, one box. Forage until the spikes pile up in one patch — the place field — then switch cells to watch the room tile itself. “Codes place” is the insight: turn the one cue card and the whole field swings round with it, because the map is pinned to the landmark, not the room.',
   rotation:
     'Your own reaction times are the data here. Answer as fast as you are sure, across a dozen angles, and see whether the line through them comes out straight.',
   replay:
