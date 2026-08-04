@@ -9,81 +9,112 @@ interface Props {
 const { label = 'One cell in V1 · cat, anaesthetised' } = Astro.props;
 ---
 
-<orientation-sim class="sim">
+<orientation-sim class="sim" data-mode="find">
   <div class="sim-chrome">
     <span class="sim-chrome-dot" aria-hidden="true"></span>
     <span class="sim-chrome-label">{label}</span>
     <span class="sim-chrome-status" data-sim-status aria-live="polite">cell 1 · 0 angles tried</span>
   </div>
 
+  <div class="sim-modes" role="group" aria-label="Choose what to do with the cell">
+    <button type="button" class="sim-mode-tab" data-sim-mode="find" aria-pressed="true">Find the angle</button>
+    <button type="button" class="sim-mode-tab" data-sim-mode="spot" aria-pressed="false">Spot vs bar</button>
+    <button type="button" class="sim-mode-tab" data-sim-mode="built" aria-pressed="false">How it&#8217;s built</button>
+  </div>
+
   <div class="sim-panels">
     <section class="sim-panel">
-      <div class="sim-panel-head">
-        <h3 class="sim-panel-title">The screen</h3>
-        <p class="sim-readout">firing <b data-sim-rate aria-live="polite">—</b></p>
-      </div>
-
-      <div class="sim-stage ori-screen-stage" data-sim-screen></div>
-
-      <div class="sim-field">
-        <span class="sim-field-label" id="ori-angle-label">Bar angle</span>
-        <input
-          class="sim-slider"
-          type="range"
-          min="0"
-          max="170"
-          value="0"
-          step="5"
-          data-sim-angle
-          aria-labelledby="ori-angle-label"
-        />
-        <span class="sim-value" data-sim-angle-value>0°</span>
-      </div>
-
-      <div class="sim-toggle">
-        <span class="sim-toggle-label">What you put on the screen</span>
-        <button type="button" class="sim-pill" data-sim-stimulus="bar" aria-pressed="true">a bar of light</button>
-        <button type="button" class="sim-pill" data-sim-stimulus="dot" aria-pressed="false">a spot of light</button>
-      </div>
-
-      <p class="sim-note" data-sim-screen-note>
-        Set an angle and present the bar. The cell has a preference; it will not tell you what it is.
+      <p class="sim-lead" data-sim-lead aria-live="polite">
+        Sweep a bar of light across the cell&#8217;s receptive field and present it. The cell has a preferred
+        angle; a few degrees off it and the firing collapses. Build the tuning curve one angle at a time.
       </p>
-    </section>
 
-    <section class="sim-panel">
-      <div class="sim-panel-head">
-        <h3 class="sim-panel-title">What the electrode heard</h3>
-        <p class="sim-readout">3 repeats</p>
+      {/* ── the experiment: the screen, the electrode, the curve ── */}
+      <div data-sim-experiment>
+        <div class="sim-panel-head">
+          <h3 class="sim-panel-title">The screen</h3>
+          <p class="sim-readout">firing <b data-sim-rate aria-live="polite">&#8212;</b></p>
+        </div>
+
+        <div class="sim-stage ori-screen-stage" data-sim-screen></div>
+
+        <div class="sim-field" data-sim-anglefield>
+          <span class="sim-field-label" id="ori-angle-label">Bar angle</span>
+          <input
+            class="sim-slider"
+            type="range"
+            min="0"
+            max="170"
+            value="0"
+            step="5"
+            data-sim-angle
+            aria-labelledby="ori-angle-label"
+          />
+          <span class="sim-value" data-sim-angle-value>0&#176;</span>
+        </div>
+
+        <div class="sim-panel-head">
+          <h3 class="sim-panel-title">What the electrode heard</h3>
+          <p class="sim-readout">3 repeats</p>
+        </div>
+
+        <div class="sim-stage ori-raster-stage" data-sim-raster></div>
+
+        <div data-sim-tuningwrap>
+          <div class="sim-panel-head">
+            <h3 class="sim-panel-title">Tuning curve</h3>
+            <p class="sim-readout">spikes / s</p>
+          </div>
+          <div class="sim-stage ori-tuning-stage" data-sim-tuning></div>
+        </div>
+
+        <p class="sim-verdict" data-sim-verdict>
+          Try a few angles. The cell answers to one of them and to almost nothing else.
+        </p>
       </div>
 
-      <div class="sim-stage ori-raster-stage" data-sim-raster></div>
+      {/* ── the insight: the cell is a row of spot-detectors wired in a line ── */}
+      <div data-sim-insight hidden>
+        <div class="sim-panel-head">
+          <h3 class="sim-panel-title">The wiring</h3>
+          <p class="sim-readout">cortical cell <b data-sim-cort>&#8212;</b></p>
+        </div>
 
-      <p class="sim-note">
-        Hubel and Wiesel worked with an audio monitor. A cell going from a click every half second to
-        a burst is unmistakable by ear, which is how the accident got noticed at all.
-      </p>
-    </section>
+        <div class="sim-stage ori-wiring-stage" data-sim-wiring></div>
 
-    <section class="sim-panel">
-      <div class="sim-panel-head">
-        <h3 class="sim-panel-title">Tuning curve</h3>
-        <p class="sim-readout">spikes / s</p>
+        <div class="sim-field">
+          <span class="sim-field-label" id="ori-build-label">Test bar angle</span>
+          <input
+            class="sim-slider"
+            type="range"
+            min="0"
+            max="170"
+            value="0"
+            step="5"
+            data-sim-build-angle
+            aria-labelledby="ori-build-label"
+          />
+          <span class="sim-value" data-sim-build-value>0&#176;</span>
+        </div>
+
+        <div class="ori-build-readout">
+          <span class="ori-build-count"><b data-sim-covered>0</b> of 5 spot-detectors lit</span>
+          <div class="sim-meter"><i data-sim-cort-meter></i></div>
+        </div>
+
+        <p class="sim-verdict" data-sim-build-verdict></p>
+
+        <p class="sim-note">
+          Stack the trick: a complex cell pools several simple cells that prefer the same angle at
+          slightly different spots, so it keeps the angle but stops caring exactly where the bar falls.
+          Selectivity is assembled in stages, each cell from the ones below.
+        </p>
       </div>
-
-      <div class="sim-stage ori-tuning-stage" data-sim-tuning></div>
-
-      <p class="sim-verdict" data-sim-verdict>
-        Try a few angles. The cell answers to one of them and to almost nothing else.
-      </p>
     </section>
   </div>
 
-  <div class="sim-controls">
-    <button type="button" class="sim-btn sim-btn-primary" data-sim-present>Present it</button>
-    <button type="button" class="sim-btn sim-btn-outline" data-sim-sweep>Sweep every angle</button>
-    <button type="button" class="sim-btn sim-btn-quiet" data-sim-next-cell>Next cell</button>
-  </div>
+  {/* the action bar is rebuilt per mode; the insight mode runs itself */}
+  <div class="sim-controls" data-sim-controls></div>
 </orientation-sim>
 
 <script>

@@ -17,6 +17,11 @@
   aspect-ratio: 320 / 128;
 }
 
+.ori-wiring-stage {
+  height: auto;
+  aspect-ratio: 320 / 176;
+}
+
 .ori-svg {
   display: block;
   width: 100%;
@@ -56,3 +61,82 @@
 
 .ori-point { fill: var(--sim-signal); }
 .ori-point.is-current { stroke: var(--ink); stroke-width: 1.4; }
+
+/* the wiring — how the cell is built (insight mode) ----------------------- */
+
+/* the test bar over the row reads as light, but a shade paler so the
+   spot-detectors beneath it stay legible */
+.ori-testbar { opacity: .7; }
+
+/* a centre-surround spot-detector: an off surround ring, an on centre disc */
+.ori-sur {
+  fill: none;
+  stroke: var(--sim-tissue-ink);
+  stroke-width: 1.2;
+  opacity: .5;
+}
+
+.ori-cen {
+  fill: var(--sim-track);
+  stroke: var(--sim-tissue-ink);
+  stroke-width: 1;
+  transition: fill .3s ease;
+}
+
+.ori-cen.is-lit { fill: var(--sim-signal); stroke: var(--sim-signal); }
+
+/* the wire from each detector to the cortical cell; lit when its centre fires */
+.ori-wire {
+  stroke: var(--sim-rest);
+  stroke-width: 1.2;
+  transition: stroke .3s ease;
+}
+
+.ori-wire.is-lit { stroke: var(--sim-signal); stroke-width: 1.6; }
+
+/* the cortical cell that sums them — fill-opacity is set inline from output */
+.ori-cort {
+  fill: var(--sim-signal);
+  stroke: var(--sim-signal);
+  stroke-width: 1.2;
+  transition: fill-opacity .3s ease;
+}
+
+.ori-cort-label {
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: .08em;
+  fill: var(--muted);
+}
+
+/* the readout under the wiring: count on the left, output meter on the right */
+.ori-build-readout {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.ori-build-count {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .06em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.ori-build-count b { color: var(--sim-signal); font-weight: 600; }
+
+.ori-build-readout .sim-meter {
+  flex: 1 1 120px;
+  margin-top: 0;
+}
+
+.ori-build-readout .sim-meter i { transition: width .3s ease, background .3s ease; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ori-cen,
+  .ori-wire,
+  .ori-cort,
+  .ori-build-readout .sim-meter i { transition: none; }
+}

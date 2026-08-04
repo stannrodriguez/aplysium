@@ -18,7 +18,7 @@ export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
   iconic:
     'Three tabs, one grid — and it runs on you. Flash twelve letters for fifty milliseconds and report the lot (about four); flash again and report just the row the cue names (nearly all of it). Then open “Delay the cue” for the insight: multiply the cued row up to what was really there, then push the cue later and watch that store decay back to four.',
   orientation:
-    'Hunt for the angle this cell wants, one bar at a time, and watch the tuning curve fill in. Try the spot of light too: months of spots was what had been failing to move these cells at all.',
+    'Three tabs, one cell. Hunt for the angle it wants one bar at a time and watch the tuning curve fill in; flash a spot to see the stimulus that failed for months — then open “How it’s built” for the insight the curve was hiding: the cell is just a row of spot-detectors wired in a line.',
   splitbrain:
     'Flash the pair, then ask it both ways — out loud, and with the left hand. When the two answers disagree, ask why: the explanation you get back is a confident reason for a choice the talking half never made.',
   placefield:
