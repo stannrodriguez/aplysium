@@ -20,7 +20,7 @@ export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
   orientation:
     'Three tabs, one cell. Hunt for the angle it wants one bar at a time and watch the tuning curve fill in; flash a spot to see the stimulus that failed for months — then open “How it’s built” for the insight the curve was hiding: the cell is just a row of spot-detectors wired in a line.',
   splitbrain:
-    'Flash the pair, then ask it both ways — out loud, and with the left hand. When the two answers disagree, ask why: the explanation you get back is a confident reason for a choice the talking half never made.',
+    'Three tabs, one flash. Ask the talking half out loud and it names only the right hemifield; ask the left hand and it takes the left. Then open “Why did you do that?” — the insight — and the talking half invents a confident reason for a choice it never saw.',
   placefield:
     'Let the animal forage until the spikes pile up somewhere. Take another cell and it cares about somewhere else. Then turn the cue card and watch the field go with it.',
   rotation:

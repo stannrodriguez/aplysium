@@ -9,21 +9,32 @@ interface Props {
 const { label = 'Tachistoscope · one item to each hemifield' } = Astro.props;
 ---
 
-<splitbrain-sim class="sim">
+<splitbrain-sim class="sim" data-mode="verbal">
   <div class="sim-chrome">
     <span class="sim-chrome-dot" aria-hidden="true"></span>
     <span class="sim-chrome-label">{label}</span>
     <span class="sim-chrome-status" data-sim-status aria-live="polite">callosum sectioned</span>
   </div>
 
+  <div class="sim-modes" role="group" aria-label="Choose who to ask">
+    <button type="button" class="sim-mode-tab" data-sim-mode="verbal" aria-pressed="true">Ask out loud</button>
+    <button type="button" class="sim-mode-tab" data-sim-mode="hand" aria-pressed="false">Ask the left hand</button>
+    <button type="button" class="sim-mode-tab" data-sim-mode="why" aria-pressed="false">Why did you do that?</button>
+  </div>
+
   <div class="sim-panels">
     <section class="sim-panel">
-      <div class="sim-panel-head">
-        <h3 class="sim-panel-title">The screen</h3>
-        <p class="sim-readout">100 ms</p>
-      </div>
+      <p class="sim-lead" data-sim-lead aria-live="polite">
+        Flash the pair, then ask them to say what they saw. The half of the brain that talks is the
+        left — and with the callosum cut it only ever received the right hemifield.
+      </p>
 
-      <div class="sim-stage spl-screen" data-sim-screen>
+      <div
+        class="sim-stage spl-screen"
+        data-sim-screen
+        role="img"
+        aria-label="A screen split at a fixation cross, one item flashed to each visual hemifield"
+      >
         <div class="spl-fix">+</div>
         <p class="spl-hint">
           Eyes on the cross. The flash lasts a tenth of a second — less than it takes to look away.
@@ -50,21 +61,6 @@ const { label = 'Tachistoscope · one item to each hemifield' } = Astro.props;
 
       <div class="spl-cards" data-sim-cards></div>
 
-      <div class="sim-choices">
-        <button type="button" class="sim-choice" data-sim-say disabled>
-          <b>Ask them to say it</b><em>the left hemisphere answers</em>
-        </button>
-        <button type="button" class="sim-choice" data-sim-point disabled>
-          <b>Ask the left hand</b><em>the right hemisphere answers</em>
-        </button>
-      </div>
-    </section>
-
-    <section class="sim-panel">
-      <div class="sim-panel-head">
-        <h3 class="sim-panel-title">The two answers</h3>
-      </div>
-
       <div class="spl-answer" data-sim-said hidden>
         <span class="spl-answer-who">What they say<br />left hemisphere</span>
         <span class="spl-answer-what" data-sim-said-text></span>
@@ -75,12 +71,8 @@ const { label = 'Tachistoscope · one item to each hemifield' } = Astro.props;
         <span class="spl-answer-what" data-sim-did-text></span>
       </div>
 
-      <div data-sim-why-row hidden>
-        <button type="button" class="sim-run" data-sim-why>Ask them why they did that</button>
-      </div>
-
       <div class="spl-answer spl-why" data-sim-why-answer hidden>
-        <span class="spl-answer-who">Their answer<br />immediate, unhesitating</span>
+        <span class="spl-answer-who">Why they say they did it<br />immediate, unhesitating</span>
         <span class="spl-answer-what" data-sim-why-text></span>
       </div>
 
@@ -91,8 +83,9 @@ const { label = 'Tachistoscope · one item to each hemifield' } = Astro.props;
     </section>
   </div>
 
-  <div class="sim-controls">
-    <button type="button" class="sim-btn sim-btn-primary" data-sim-flash>Flash the pair</button>
+  {/* the action bar is rebuilt per mode by the script; these are the pre-JS defaults */}
+  <div class="sim-controls" data-sim-controls>
+    <button type="button" class="sim-btn sim-btn-primary" data-sim-flash>Flash, then ask out loud</button>
     <button type="button" class="sim-btn sim-btn-quiet" data-sim-next>New pair</button>
   </div>
 </splitbrain-sim>

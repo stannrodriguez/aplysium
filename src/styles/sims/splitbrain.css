@@ -33,6 +33,16 @@
   text-wrap: balance;
 }
 
+/* the item is only on screen for the length of the flash — a quick fade in and
+   out, so the "shorter than an eye movement" claim is something you see. */
+.spl-item.is-flash { animation: spl-flash .12s ease-in; }
+
+@keyframes spl-flash {
+  0% { opacity: 0; }
+  30% { opacity: 1; }
+  100% { opacity: 1; }
+}
+
 .spl-gone {
   font-family: var(--mono);
   font-size: 9px;
@@ -126,3 +136,7 @@
 }
 
 .spl-why .spl-answer-what { font-size: 17px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .spl-item.is-flash { animation: none; opacity: 1; }
+}
