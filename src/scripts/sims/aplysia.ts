@@ -1,33 +1,33 @@
 /**
- * <aplysia-sim> — the gill-withdrawal reflex as an instrument.
+ * <aplysia-sim> — the gill-withdrawal reflex as a guided instrument.
  *
  * The markup is server-rendered by AplysiaSim.astro; this class attaches to it
- * and drives the readouts. Panels are chosen server-side via the `show` prop,
- * so a page that only wants the animal ships only the animal.
+ * and drives the readouts. Rather than one free-play instrument, the panel is a
+ * guided path: four mode tabs, one obvious action apiece, and a caption that
+ * always describes what you are looking at now.
  *
- * Behaviour model (from the handoff):
- *   a      = min(1.55, max(0.16, e^(-0.27·habTaps)) · (1 + 1.9·sensitization))
- *   tap    → log a trial, habTaps + 1, sensitization × 0.78
- *   shock  → sensitization = 1, habituation partly cleared, log a shock
- *   rest   → habituation and sensitization back to zero
- *   quanta = round(2 + a·13); transmitter vesicles follow quanta
+ *   Baseline       — one touch, one withdrawal, at full strength.
+ *   Habituation    — repeat the touch; transmitter depletes, the gill gives up.
+ *   Sensitization  — a tail shock sprays serotonin; the same touch overreacts.
+ *   Short vs long  — the insight: one session fades, spaced sessions grow new
+ *                    connections and need new protein. Two mechanisms, one synapse.
+ *
+ * Behaviour model (unchanged from the recorded values):
+ *   a      = min(1.55, max(0.16, e^(-0.27·habTaps)) · (1 + 1.9·sens))
+ *   quanta = round(2 + a·13); transmitter and gill response follow it.
  */
 
-import { SimElement, clamp, defineSim } from './base';
+import { SimElement, clamp, defineSim, prefersReducedMotion } from './base';
 
-type TrialKind = 'base' | 'sens' | 'shock' | 'rest';
+type Mode = 'baseline' | 'hab' | 'sens' | 'insight';
 type Schedule = 'massed' | 'spaced';
 type Protein = 'intact' | 'blocked';
 
-interface Trial {
-  kind: TrialKind;
-  a: number;
-}
-
 interface SimState {
+  mode: Mode;
+  taps: number;
   habTaps: number;
-  sensitization: number;
-  trials: Trial[];
+  sens: number;
   schedule: Schedule | null;
   protein: Protein;
   trained: boolean;
@@ -44,7 +44,25 @@ interface TrainingResult {
 }
 
 const MAX_AMP = 1.55;
-const MAX_TRIALS = 40;
+const VESICLES = 9;
+
+const LEAD: Record<Mode, string> = {
+  baseline:
+    'A harmless touch fires the sensory neuron, which releases transmitter onto the motor neuron. The gill withdraws. This is the untrained baseline.',
+  hab:
+    'Keep delivering gentle, harmless touches. Watch the transmitter deplete — the sensory neuron releases less each time, and the gill stops bothering. The animal has learned the touch is safe.',
+  sens:
+    'Pair the touch with a noxious tail shock. An interneuron sprays serotonin onto the sensory neuron, so it releases more transmitter. The same gentle touch now snaps the gill back harder than it ever did untrained.',
+  insight:
+    'The insight, not the experiment: one crammed session strengthens synapses you already have and fades within hours. The same training spaced out grows new connections — and that needs new protein. Two mechanisms sharing one synapse.',
+};
+
+const STATUS: Record<Mode, string> = {
+  baseline: 'untrained',
+  hab: 'habituating',
+  sens: 'sensitized',
+  insight: 'short vs long-term',
+};
 
 const TRAINING: Record<string, TrainingResult> = {
   massed: {
@@ -63,7 +81,7 @@ const TRAINING: Record<string, TrainingResult> = {
     newSynapses: 3,
     h1Word: 'strong',
     h24Word: 'still strong',
-    connNote: 'Three new connections grew (amber). There is physically more synapse than there was.',
+    connNote: 'Three new connections grew (green). There is physically more synapse than there was.',
     verdict:
       'The same amount of training, spread out, grows new connections between the same two neurons. That is why it is still there a day later — a long-term memory.',
   },
@@ -81,91 +99,79 @@ const TRAINING: Record<string, TrainingResult> = {
 
 class AplysiaSim extends SimElement {
   private state: SimState = {
+    mode: 'baseline',
+    taps: 0,
     habTaps: 0,
-    sensitization: 0,
-    trials: [],
+    sens: 0,
     schedule: null,
     protein: 'intact',
     trained: false,
   };
 
   private relaxTimer = 0;
-  /** How far the gill is pulled in right now, 0–1. Relaxes back after a tap. */
-  private retraction = 0;
-  /** Amplitude of the withdrawal just delivered; null until one is. */
-  private lastResponse: number | null = null;
 
   protected setup(): void {
-    this.onClick('[data-sim-tap]', () => this.tap());
-    this.onClick('[data-sim-shock]', () => this.shock());
-    this.onClick('[data-sim-rest]', () => this.rest());
+    this.onClick('[data-sim-mode]', el => this.setMode(el.dataset.simMode as Mode));
     this.onClick('[data-sim-run]', () => this.train());
     this.onClick('[data-sim-schedule]', el => this.pickSchedule(el.dataset.simSchedule as Schedule));
     this.onClick('[data-sim-protein]', el => this.pickProtein(el.dataset.simProtein as Protein));
+    this.buildControls();
   }
 
   /* ── model ── */
 
   private amp(): number {
     const habituated = Math.max(0.16, Math.exp(-0.27 * this.state.habTaps));
-    return Math.min(MAX_AMP, habituated * (1 + 1.9 * this.state.sensitization));
+    return Math.min(MAX_AMP, habituated * (1 + 1.9 * this.state.sens));
   }
 
   private quanta(a = this.amp()): number {
     return Math.round(2 + a * 13);
   }
 
-  private log(kind: TrialKind, a: number): void {
-    this.state.trials = [...this.state.trials, { kind, a }].slice(-MAX_TRIALS);
+  private setMode(mode: Mode): void {
+    this.state.mode = mode;
+    // Each mode starts its own story from rest.
+    this.state.taps = 0;
+    this.state.habTaps = 0;
+    this.state.sens = 0;
+    this.state.trained = false;
+    this.buildControls();
+    this.render();
+    this.report(`mode-${mode}`);
   }
 
-  private tap(): void {
+  /** Baseline / habituation: a gentle touch. */
+  private touch(): void {
+    if (this.state.mode === 'hab') this.state.habTaps += 1;
+    this.state.taps += 1;
     const a = this.amp();
-    this.log(this.state.sensitization > 0.05 ? 'sens' : 'base', a);
-    this.state.habTaps += 1;
-    this.state.sensitization *= 0.78;
-    this.lastResponse = a;
-    this.pulse('[data-sim-siphon]');
+    this.fireNts(clamp(Math.round(this.quanta(a) / 3), 1, 8));
     this.withdraw(clamp(a / MAX_AMP, 0, 1));
     this.render();
-    this.report(this.state.habTaps >= 6 ? 'habituated' : 'tapped');
+    this.report(this.state.mode === 'hab' && this.state.habTaps >= 5 ? 'habituated' : 'touched');
   }
 
-  /** Pull the gill in, then let it back out — one withdrawal. */
-  private withdraw(depth: number): void {
-    this.retraction = depth;
-    this.paintGill();
-    this.cancel(this.relaxTimer);
-    this.relaxTimer = this.delay(900, () => {
-      this.retraction = 0;
-      this.paintGill();
-    });
-  }
-
-  private paintGill(): void {
-    const gill = this.q('[data-sim-gill]');
-    if (!gill) return;
-    const r = this.retraction;
-    gill.style.transform = `translateX(-${Math.round(r * 42)}px) scaleX(${(1 - 0.55 * r).toFixed(3)})`;
-  }
-
+  /** Sensitization: shock the tail, which sprays serotonin, then re-test. */
   private shock(): void {
-    this.state.sensitization = 1;
-    this.lastResponse = null;
-    this.state.habTaps = Math.floor(this.state.habTaps / 2);
-    this.log('shock', 0);
+    this.state.sens = Math.min(0.3, this.state.sens + 0.1);
+    this.state.taps += 1;
+    this.fireSero();
+    const a = this.amp();
+    this.delay(prefersReducedMotion() ? 0 : 320, () => {
+      this.fireNts(clamp(Math.round(this.quanta(a) / 3), 1, 8));
+      this.withdraw(clamp(a / MAX_AMP, 0, 1));
+    });
     this.render();
-    this.report('shocked');
+    this.report('sensitized');
   }
 
-  private rest(): void {
+  private resetSlug(): void {
+    this.state.taps = 0;
     this.state.habTaps = 0;
-    this.state.sensitization = 0;
-    this.retraction = 0;
-    this.lastResponse = null;
-    this.log('rest', 0);
+    this.state.sens = 0;
     this.render();
-    this.report('rested');
+    this.report('reset');
   }
 
   private pickSchedule(schedule: Schedule): void {
@@ -195,39 +201,128 @@ class AplysiaSim extends SimElement {
   }
 
   private report(name: string): void {
-    this.emit(name, { ...this.state, trials: [...this.state.trials] });
+    this.emit(name, { ...this.state });
+  }
+
+  /* ── the moving picture ── */
+
+  private withdraw(depth: number): void {
+    const gill = this.q('[data-sim-gill]');
+    if (!gill) return;
+    const px = Math.round(depth * 30);
+    if (prefersReducedMotion()) {
+      gill.setAttribute('transform', `translate(-${px} 0)`);
+      return;
+    }
+    gill.setAttribute('transform', `translate(-${px} 0)`);
+    this.cancel(this.relaxTimer);
+    this.relaxTimer = this.delay(900, () => gill.setAttribute('transform', 'translate(0 0)'));
+  }
+
+  private fireNts(count: number): void {
+    const nts = this.qa('[data-sim-nts] .apl-nt');
+    nts.forEach((n, i) => {
+      n.classList.remove('is-fire');
+      if (i < count) {
+        // Reflow so the animation restarts even on a rapid second press.
+        void n.getBoundingClientRect();
+        this.delay(prefersReducedMotion() ? 0 : i * 30, () => n.classList.add('is-fire'));
+      }
+    });
+  }
+
+  private fireSero(): void {
+    const glyph = this.q('[data-sim-shockglyph]');
+    if (glyph) {
+      glyph.classList.remove('go');
+      void glyph.getBoundingClientRect();
+      glyph.classList.add('go');
+    }
+    this.qa('[data-sim-sero] .apl-sero').forEach((s, i) => {
+      s.classList.remove('is-fire');
+      void s.getBoundingClientRect();
+      this.delay(prefersReducedMotion() ? 0 : i * 70, () => s.classList.add('is-fire'));
+    });
+  }
+
+  /* ── controls, per mode ── */
+
+  private buildControls(): void {
+    const bar = this.q('[data-sim-controls]');
+    if (!bar) return;
+    bar.innerHTML = '';
+
+    if (this.state.mode === 'insight') {
+      bar.hidden = true;
+      return;
+    }
+    bar.hidden = false;
+
+    if (this.state.mode === 'baseline') {
+      this.addBtn(bar, 'Touch the siphon', 'sim-btn-primary', () => this.touch());
+    } else if (this.state.mode === 'hab') {
+      this.addBtn(bar, 'Gentle touch', 'sim-btn-primary', () => this.touch());
+      this.addBtn(bar, 'Reset slug', 'sim-btn-quiet', () => this.resetSlug());
+    } else {
+      this.addBtn(bar, 'Shock the tail', 'sim-btn-outline', () => this.shock());
+      this.addBtn(bar, 'Reset slug', 'sim-btn-quiet', () => this.resetSlug());
+    }
+  }
+
+  private addBtn(bar: HTMLElement, label: string, cls: string, fn: () => void): void {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = `sim-btn ${cls}`;
+    b.textContent = label;
+    b.addEventListener('click', fn);
+    bar.appendChild(b);
   }
 
   /* ── view ── */
 
   protected render(): void {
-    const { habTaps, sensitization, trials } = this.state;
-    // What the readouts report: the withdrawal just delivered, or — before any
-    // tap, and straight after a shock or a rest — the one now primed.
-    const a = this.lastResponse ?? this.amp();
+    const { mode } = this.state;
 
-    /* chrome */
-    this.text(
-      '[data-sim-status]',
-      sensitization > 0.05 ? 'sensitized' : habTaps > 0 ? `${habTaps} taps` : 'untrained',
-    );
+    /* mode chrome */
+    this.pressed('[data-sim-mode]', 'simMode', mode);
+    this.text('[data-sim-lead]', LEAD[mode]);
+    this.text('[data-sim-status]', STATUS[mode]);
 
-    /* the animal */
-    this.paintGill();
-    this.text('[data-sim-withdrawal]', `${Math.round(a * 100)}%`);
-    this.text('[data-sim-animal-note]', this.animalNote());
+    const isInsight = mode === 'insight';
+    this.show('[data-sim-experiment]', !isInsight);
+    this.show('[data-sim-insight]', isInsight);
 
-    /* the synapse */
+    if (isInsight) {
+      this.renderInsight();
+      return;
+    }
+
+    /* the synapse cross-section */
+    const a = this.amp();
     const q = this.quanta(a);
-    this.text('[data-sim-quanta]', String(q));
-    this.text('[data-sim-synapse-note]', this.synapseNote(q));
-    this.renderVesicles(q);
+    const releasePct = Math.round((q / 15) * 100);
+    const gillResp = clamp(Math.round(a * 64), 6, 100);
 
-    /* the record */
-    this.renderTrace(trials);
-    this.text('[data-sim-trace-count]', trials.length === 1 ? '1 trial' : `${trials.length} trials`);
+    // `hidden` as an IDL property only exists on HTMLElement; the interneuron
+    // is an SVG <g>, so toggle the attribute so the CSS rule can act on it.
+    const inter = this.q('[data-sim-inter]');
+    if (inter) inter.toggleAttribute('hidden', mode !== 'sens');
+    this.paintVesicles(q);
+    this.css('[data-sim-respbar]', 'width', `${Math.round((gillResp / 100) * 210)}px`);
 
-    /* training */
+    this.text('[data-sim-mStimuli]', String(this.state.taps));
+    this.text('[data-sim-mRelease]', `${releasePct}%`);
+    this.text('[data-sim-mResp]', `${gillResp}%`);
+  }
+
+  private paintVesicles(q: number): void {
+    const full = clamp(Math.round((q / 15) * VESICLES), 1, VESICLES);
+    this.qa('[data-sim-vesicles] .apl-vesicle').forEach((v, i) => {
+      v.style.opacity = i < full ? '1' : '0.14';
+    });
+  }
+
+  private renderInsight(): void {
     this.pressed('[data-sim-schedule]', 'simSchedule', this.state.schedule);
     this.pressed('[data-sim-protein]', 'simProtein', this.state.protein);
 
@@ -238,65 +333,9 @@ class AplysiaSim extends SimElement {
         ? `▶ run 4 ${this.state.schedule} sessions`
         : 'pick a schedule first';
     }
-    this.renderTraining();
-  }
 
-  private animalNote(): string {
-    const { habTaps, sensitization } = this.state;
-    if (sensitization > 0.05)
-      return 'After a tail shock, the same touch makes the gill snap back harder than it ever did untrained.';
-    if (habTaps === 0) return 'Touch the siphon and the gill pulls in. Do it a few times and watch what happens.';
-    if (habTaps >= 4)
-      return 'The pull-in keeps shrinking. The animal has learned this touch is harmless — habituation, not a tired muscle.';
-    return 'Each touch makes the gill pull in a little less than the last.';
-  }
-
-  private synapseNote(q: number): string {
-    if (q >= 15)
-      return 'Each dot is transmitter crossing the gap. Plenty of signal — the gill pulls in hard.';
-    if (q <= 6)
-      return 'The sensory neuron still fires the same impulses; it just releases less per impulse. Less signal reaches the muscle.';
-    return 'The behaviour and the synapse are the same event, measured twice.';
-  }
-
-  private renderVesicles(q: number): void {
-    const cleft = this.q('[data-sim-cleft]');
-    if (!cleft) return;
-    const n = clamp(Math.round(q / 3), 1, 7);
-    if (cleft.childElementCount === n) return;
-    cleft.innerHTML = Array.from({ length: n }, (_, i) => {
-      const left = 6 + i * (86 / n);
-      return `<span class="apl-vesicle" style="left:${left.toFixed(1)}%;animation-delay:${(i * 0.12).toFixed(2)}s"></span>`;
-    }).join('');
-  }
-
-  private renderTrace(trials: Trial[]): void {
-    const trace = this.q('[data-sim-trace]');
-    if (!trace) return;
-
-    if (!trials.length) {
-      trace.innerHTML = '<span class="sim-trace-empty">tap the siphon to begin →</span>';
-      return;
-    }
-
-    trace.innerHTML = trials
-      .map((t, i) => {
-        if (t.kind === 'shock')
-          return `<div class="sim-bar sim-bar-shock" style="height:100%" title="trial ${i + 1}: tail shock"></div>`;
-        if (t.kind === 'rest')
-          return `<div class="sim-bar sim-bar-rest" style="height:12%" title="trial ${i + 1}: rest"></div>`;
-        const h = clamp(Math.round((t.a / MAX_AMP) * 100), 6, 100);
-        const label = t.kind === 'sens' ? 'after tail shock' : 'untrained response';
-        return `<div class="sim-bar sim-bar-${t.kind}" style="height:${h}%" title="trial ${i + 1}: ${label}, ${Math.round(t.a * 100)}%"></div>`;
-      })
-      .join('');
-    trace.scrollLeft = trace.scrollWidth;
-  }
-
-  private renderTraining(): void {
     const results = this.q('[data-sim-results]');
     if (!results) return;
-
     const r = this.result();
     if (!r || !this.state.trained) {
       results.hidden = true;
@@ -311,7 +350,6 @@ class AplysiaSim extends SimElement {
     this.text('[data-sim-h24-word]', `${r.h24}% — ${r.h24Word}`);
     this.text('[data-sim-conn-note]', r.connNote);
     this.text('[data-sim-verdict]', r.verdict);
-
     this.html(
       '[data-sim-conn]',
       '<i style="height:34px"></i>' +

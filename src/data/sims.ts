@@ -6,7 +6,7 @@ import type { SimulatorKey } from './types';
  */
 export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
   aplysia:
-    'Tap the siphon a few times, then shock the tail. Try the two training schedules at the bottom. The reading on the left explains whatever you just did.',
+    'Four tabs, one synapse. Run baseline, habituation and sensitization to watch the same junction change strength — then open “Short vs long-term” for the insight the reflex was hiding: why one memory fades and another grows new wiring.',
   cajal:
     'Stain a section, then follow a stained axon to the marked terminal at its end. The toggle draws the rival theory over the same contact, so you can see the two predictions differ.',
   axon:

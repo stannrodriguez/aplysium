@@ -10,7 +10,7 @@ export const kandelAplysia: DeepDive = {
     'The short version: Kandel picked a sea slug simple enough to find the single cell behind a reflex, trained the animal until that reflex got weaker and then stronger, and recorded the one synapse responsible while it changed. The layers below go in order — why that animal, what the reflex is, the two ways training changed it, where the change actually sits, and what makes it last a day instead of an hour.',
 
   simCaption:
-    'Tap the siphon a few times, then shock the tail. Try the two training schedules at the bottom. The reading on the left explains whatever you just did.',
+    'Four tabs, one synapse. Run baseline, habituation and sensitization to watch the same junction change strength — then open “Short vs long-term” for the insight the reflex was hiding: why one memory fades and another grows new wiring.',
 
   layers: [
     {

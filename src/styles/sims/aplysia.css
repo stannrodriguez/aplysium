@@ -1,107 +1,160 @@
 /* ── Kandel · the gill-withdrawal reflex ──────────────────────────────────
-   The animal, the recorded synapse, and the connections that grow with spaced
-   training. The shell around it is `src/styles/sim.css`. */
+   One continuous synapse cross-section — sensory neuron, the gap, the motor
+   neuron and the gill — driven by the four mode tabs. The insight mode swaps
+   in the short-vs-long-term training block. Shell: `src/styles/sim.css`. */
 
-.apl-stage { height: 154px; }
-
-.apl-mantle {
-  position: absolute;
-  left: 16px;
-  top: 46px;
-  width: 118px;
-  height: 66px;
-  border-radius: 40px 20px 20px 40px;
-  background: var(--sim-tissue);
+.apl-stage {
+  padding: 6px;
+  height: auto;
 }
 
-.apl-gill {
-  position: absolute;
-  left: 116px;
-  top: 42px;
-  transform-origin: left center;
-  display: flex;
-  gap: 6px;
-  align-items: flex-start;
-  transition: transform .38s ease;
-}
-
-.apl-gill span {
+.apl-svg {
   display: block;
-  width: 10px;
-  border-radius: 6px;
-  background: var(--sim-signal);
+  width: 100%;
+  height: auto;
+}
+
+/* neuron bodies ----------------------------------------------------------- */
+.apl-cell {
+  fill: var(--sim-tissue);
+  stroke: var(--sim-tissue-ink);
+  stroke-width: 1.2;
+}
+
+.apl-cell-warm {
+  fill: var(--sim-shock);
+  stroke: var(--sim-signal);
+}
+
+.apl-cell-name {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: .04em;
+  fill: var(--sim-tissue-ink);
+}
+
+.apl-cell-role {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14px;
+  fill: var(--muted);
+}
+
+.apl-warm-ink { fill: var(--sim-signal-hover); }
+
+.apl-axon { stroke: var(--sim-tissue-ink); stroke-width: 2; }
+
+/* transmitter ------------------------------------------------------------- */
+.apl-vesicle {
+  fill: var(--sim-signal);
+  transition: opacity .3s ease;
+}
+
+.apl-nt {
+  fill: var(--sim-signal);
+  opacity: 0;
+}
+
+.apl-nt.is-fire { animation: apl-drift 1s ease-in; }
+
+@keyframes apl-drift {
+  0% { opacity: 0; transform: translateY(0); }
+  25% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(52px); }
+}
+
+/* interneuron and serotonin (sensitization) ------------------------------- */
+.apl-sero-path {
+  stroke: var(--sim-sens);
+  stroke-width: 1.6;
+  stroke-dasharray: 4 4;
+}
+
+.apl-sero {
+  fill: var(--sim-sens);
+  opacity: 0;
+}
+
+.apl-sero.is-fire { animation: apl-spritz 1s ease-in; }
+
+@keyframes apl-spritz {
+  0% { opacity: 0; }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-30px, 22px); }
+}
+
+.apl-sero-label {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 12px;
+  fill: var(--sim-sens);
+}
+
+.apl-shock {
+  stroke: var(--sim-signal);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: .35;
+}
+
+.apl-shock.go { animation: apl-zap .45s 2; }
+
+@keyframes apl-zap {
+  0%, 100% { opacity: .3; }
+  50% { opacity: 1; }
+}
+
+.apl-shock-label {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 11px;
+  fill: var(--muted);
+}
+
+/* labels and the gill ----------------------------------------------------- */
+.apl-gap-label {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 12px;
+  fill: var(--muted);
+}
+
+.apl-gauge-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .06em;
+  fill: var(--muted);
+}
+
+.apl-gauge-track {
+  fill: var(--sim-track);
+  stroke: var(--sim-border);
+  stroke-width: 1;
+}
+
+.apl-gauge-fill {
+  fill: var(--sim-signal);
+  transition: width .45s ease;
+}
+
+.apl-gill-g { transition: transform .4s ease; }
+
+.apl-gill-bar {
+  fill: var(--sim-signal);
   opacity: .85;
 }
 
-.apl-label-gill { left: 112px; top: 120px; }
-.apl-label-body { left: 40px; top: 72px; }
-
-.apl-siphon {
-  position: absolute;
-  right: 16px;
-  top: 50px;
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  cursor: pointer;
-  border: 1.5px solid var(--sim-signal);
-  background: var(--sim-paper);
-  color: var(--sim-signal);
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-
-.apl-siphon:hover { background: var(--sim-signal-wash); }
-.apl-siphon.is-flash { background: var(--sim-signal); color: var(--sim-paper); }
-
-/* the synapse, recorded --------------------------------------------------- */
-.apl-synapse {
-  position: relative;
-  height: 132px;
-  background: var(--sim-well);
-  border: 1px solid var(--sim-border);
+/* the metric row under the stage ------------------------------------------ */
+.apl-metrics {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 12px 14px;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 2px;
 }
 
-.apl-neuron {
-  height: 26px;
-  background: var(--sim-tissue);
-  display: flex;
-  align-items: center;
-  padding: 0 10px;
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: .08em;
-  color: var(--sim-tissue-ink);
-}
-
-.apl-cleft {
-  position: relative;
-  height: 38px;
-  margin: 0 6px;
-}
-
-.apl-vesicle {
-  position: absolute;
-  top: 2px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--sim-signal);
-  animation: apl-drift 1.3s linear infinite;
-}
-
-@keyframes apl-drift {
-  0% { transform: translateY(0); opacity: 0 }
-  20% { opacity: 1 }
-  80% { opacity: 1 }
-  100% { transform: translateY(26px); opacity: 0 }
-}
+.apl-metric b { font-size: 13px; }
 
 /* protein synthesis reads as kept / lost rather than plain on / off ------- */
 .sim-pill[data-sim-protein='intact'][aria-pressed='true'] {
@@ -109,7 +162,7 @@
   color: var(--sim-kept);
 }
 
-/* connections that grew --------------------------------------------------- */
+/* connections that grew (insight mode) ------------------------------------ */
 .apl-conn {
   display: flex;
   align-items: center;
@@ -137,7 +190,12 @@
 .apl-conn-bars i.is-new { background: var(--sim-kept); }
 
 @media (prefers-reduced-motion: reduce) {
-  .apl-gill,
+  .apl-vesicle,
+  .apl-gauge-fill,
+  .apl-gill-g,
   .apl-conn-bars i { transition: none; }
-  .apl-vesicle { animation: none; opacity: 1; }
+  .apl-nt.is-fire,
+  .apl-sero.is-fire,
+  .apl-shock.go { animation: none; }
+  .apl-nt.is-fire { opacity: 1; }
 }
