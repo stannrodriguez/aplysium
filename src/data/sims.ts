@@ -24,7 +24,7 @@ export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
   placefield:
     'Three tabs, one box. Forage until the spikes pile up in one patch — the place field — then switch cells to watch the room tile itself. “Codes place” is the insight: turn the one cue card and the whole field swings round with it, because the map is pinned to the landmark, not the room.',
   rotation:
-    'Your own reaction times are the data here. Answer as fast as you are sure, across a dozen angles, and see whether the line through them comes out straight.',
+    'Two tabs, one task run on you. In “Do the trials”, judge same object or mirror image as fast as you are sure, across a dozen angles — your reaction times are the data. Open “Your line” to plot them against angle and watch whether the fit comes out a straight rising slope.',
   replay:
     'Run the track, then record a sleep epoch and look for the same order in it. The epoch before the run is the control, and it is what makes the other one mean anything.',
   dopamine:
