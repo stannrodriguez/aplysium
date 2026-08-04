@@ -3,100 +3,128 @@ import '../../styles/sim.css';
 import '../../styles/sims/aplysia.css';
 
 interface Props {
-  /** Comma list of panels: animal, synapse, trace, longterm. */
-  show?: string;
   label?: string;
 }
 
-const { show = 'animal,synapse,trace,longterm', label = 'Aplysia · the gill-withdrawal reflex' } = Astro.props;
+const { label = 'Aplysia · the gill-withdrawal reflex' } = Astro.props;
 
-const panels = show.split(',').map(p => p.trim());
-const showAnimal = panels.includes('animal');
-const showSynapse = panels.includes('synapse');
-const showTrace = panels.includes('trace');
-const showLong = panels.includes('longterm');
-
-const gillBars = [30, 40, 46, 40, 30];
-// Resting state: quanta 15 → five vesicles. The script takes over from here.
-const restingVesicles = 5;
+// The transmitter cluster and the neurotransmitters in flight are both static
+// in the markup — the script sets how many of each show, so the panel already
+// reads as a synapse before any script runs.
+const vesicleSeed = Array.from({ length: 9 });
+const ntSeed = Array.from({ length: 8 });
 ---
 
-<aplysia-sim class="sim" data-show={show}>
+<aplysia-sim class="sim" data-mode="baseline">
   <div class="sim-chrome">
     <span class="sim-chrome-dot" aria-hidden="true"></span>
     <span class="sim-chrome-label">{label}</span>
     <span class="sim-chrome-status" data-sim-status aria-live="polite">untrained</span>
   </div>
 
+  <div class="sim-modes" role="group" aria-label="Choose what to watch">
+    <button type="button" class="sim-mode-tab" data-sim-mode="baseline" aria-pressed="true">Baseline</button>
+    <button type="button" class="sim-mode-tab" data-sim-mode="hab" aria-pressed="false">Habituation</button>
+    <button type="button" class="sim-mode-tab" data-sim-mode="sens" aria-pressed="false">Sensitization</button>
+    <button type="button" class="sim-mode-tab" data-sim-mode="insight" aria-pressed="false">Short vs long&#8209;term</button>
+  </div>
+
   <div class="sim-panels">
-    {showAnimal && (
-      <section class="sim-panel">
-        <div class="sim-panel-head">
-          <h3 class="sim-panel-title">The animal</h3>
-          <p class="sim-readout">withdrawal <b data-sim-withdrawal aria-live="polite">100%</b></p>
-        </div>
+    <section class="sim-panel">
+      <p class="sim-lead" data-sim-lead aria-live="polite">
+        A harmless touch fires the sensory neuron, which releases transmitter onto the motor neuron. The gill withdraws. This is the untrained baseline.
+      </p>
+
+      {/* ── the experiment: one continuous synapse cross-section ── */}
+      <div data-sim-experiment>
         <div class="sim-stage apl-stage">
-          <div class="apl-mantle" aria-hidden="true"></div>
-          <div class="apl-gill" data-sim-gill aria-hidden="true">
-            {gillBars.map(h => <span style={`height:${h}px`}></span>)}
-          </div>
-          <span class="sim-stage-label apl-label-gill" aria-hidden="true">GILL</span>
-          <span class="sim-stage-label apl-label-body" aria-hidden="true">BODY</span>
-          <button type="button" class="apl-siphon" data-sim-siphon data-sim-tap>siphon</button>
-        </div>
-        <p class="sim-note" data-sim-animal-note>
-          Touch the siphon and the gill pulls in. Do it a few times and watch what happens.
-        </p>
-      </section>
-    )}
+          <svg
+            class="apl-svg"
+            viewBox="0 0 600 300"
+            xmlns="http://www.w3.org/2000/svg"
+            role="img"
+            aria-label="A sensory neuron releasing transmitter across a gap onto the motor neuron that pulls the gill in"
+            data-sim-svg
+          >
+            {/* sensory neuron */}
+            <rect class="apl-cell" x="38" y="22" width="212" height="52" rx="9"/>
+            <text class="apl-cell-name" x="144" y="45" text-anchor="middle">SENSORY NEURON</text>
+            <text class="apl-cell-role" x="144" y="63" text-anchor="middle">feels the touch</text>
 
-    {showSynapse && (
-      <section class="sim-panel">
-        <div class="sim-panel-head">
-          <h3 class="sim-panel-title">The synapse, recorded</h3>
-          <p class="sim-readout">quanta / impulse <b data-sim-quanta aria-live="polite">15</b></p>
-        </div>
-        <div class="apl-synapse">
-          <div class="apl-neuron">SENSORY NEURON</div>
-          <div class="apl-cleft" data-sim-cleft aria-hidden="true">
-            {Array.from({ length: restingVesicles }, (_, i) => (
-              <span
-                class="apl-vesicle"
-                style={`left:${(6 + i * (86 / restingVesicles)).toFixed(1)}%;animation-delay:${(i * 0.12).toFixed(2)}s`}
-              ></span>
-            ))}
-          </div>
-          <div class="apl-neuron">MOTOR NEURON → GILL</div>
-        </div>
-        <p class="sim-note" data-sim-synapse-note>
-          The behaviour and the synapse are the same event, measured twice.
-        </p>
-      </section>
-    )}
+            {/* interneuron — sensitization only */}
+            <g data-sim-inter class="apl-inter" hidden>
+              <rect class="apl-cell apl-cell-warm" x="352" y="22" width="212" height="52" rx="9"/>
+              <text class="apl-cell-name apl-warm-ink" x="458" y="45" text-anchor="middle">INTERNEURON</text>
+              <text class="apl-cell-role apl-warm-ink" x="458" y="63" text-anchor="middle">fires on tail shock</text>
+              <path class="apl-sero-path" d="M352 66 Q270 96 232 116" fill="none"/>
+              <g data-sim-sero>
+                {[0, 1, 2].map(i => (
+                  <circle class="apl-sero" cx={288 - i * 16} cy={104 + i * 5} r="4"/>
+                ))}
+              </g>
+              <text class="apl-sero-label" x="300" y="128" text-anchor="middle">serotonin</text>
+              <path class="apl-shock" data-sim-shockglyph d="M556 92 l-11 21 l9 0 l-9 21" fill="none"/>
+              <text class="apl-shock-label" x="552" y="84" text-anchor="middle">tail shock</text>
+            </g>
 
-    {showTrace && (
-      <section class="sim-panel">
-        <div class="sim-panel-head">
-          <h3 class="sim-panel-title">Record — every trial, in order</h3>
-          <p class="sim-readout" data-sim-trace-count>0 trials</p>
-        </div>
-        <div class="sim-trace" data-sim-trace>
-          <span class="sim-trace-empty">tap the siphon to begin →</span>
-        </div>
-        <p class="sim-key">
-          <span><i style="background:var(--sim-signal)"></i> untrained</span>
-          <span><i style="background:var(--sim-sens)"></i> after shock</span>
-          <span><i style="background:var(--sim-shock)"></i> shock</span>
-          <span><i style="background:var(--sim-rest)"></i> rest</span>
-        </p>
-      </section>
-    )}
+            {/* axon down to the terminal */}
+            <line class="apl-axon" x1="144" y1="74" x2="144" y2="126"/>
 
-    {showLong && (
-      <section class="sim-panel">
-        <div class="sim-panel-head">
-          <h3 class="sim-panel-title">Training schedule — short vs long term</h3>
+            {/* transmitter waiting in the terminal */}
+            <g data-sim-vesicles>
+              {vesicleSeed.map((_, i) => (
+                <circle
+                  class="apl-vesicle"
+                  cx={112 + (i % 3) * 22}
+                  cy={104 + Math.floor(i / 3) * 15}
+                  r="6"
+                />
+              ))}
+            </g>
+
+            <text class="apl-gap-label" x="250" y="150" text-anchor="start">synaptic gap</text>
+
+            {/* transmitter in flight */}
+            <g data-sim-nts>
+              {ntSeed.map((_, i) => (
+                <circle
+                  class="apl-nt"
+                  cx={116 + (i % 4) * 18}
+                  cy={162 + Math.floor(i / 4) * 12}
+                  r="4"
+                />
+              ))}
+            </g>
+
+            {/* motor neuron */}
+            <rect class="apl-cell" x="38" y="222" width="212" height="52" rx="9"/>
+            <text class="apl-cell-name" x="144" y="245" text-anchor="middle">MOTOR NEURON</text>
+            <text class="apl-cell-role" x="144" y="263" text-anchor="middle">pulls the gill in</text>
+
+            {/* the gill, retracting */}
+            <g data-sim-gill class="apl-gill-g">
+              {[0, 1, 2, 3].map(i => (
+                <rect class="apl-gill-bar" x={300 + i * 13} y={222} width="8" height="52" rx="4"/>
+              ))}
+            </g>
+            <text class="apl-gap-label" x="300" y="292" text-anchor="start">gill</text>
+
+            {/* gill-response gauge */}
+            <text class="apl-gauge-label" x="352" y="150" text-anchor="start">GILL RESPONSE</text>
+            <rect class="apl-gauge-track" x="352" y="160" width="210" height="20" rx="6"/>
+            <rect class="apl-gauge-fill" data-sim-respbar x="352" y="160" width="130" height="20" rx="6"/>
+          </svg>
         </div>
+
+        <div class="sim-readout apl-metrics">
+          <span class="apl-metric"><b data-sim-mStimuli>0</b> stimuli</span>
+          <span class="apl-metric"><b data-sim-mRelease>100%</b> transmitter</span>
+          <span class="apl-metric"><b data-sim-mResp>64%</b> gill response</span>
+        </div>
+      </div>
+
+      {/* ── the insight: short-term vs long-term ── */}
+      <div data-sim-insight hidden>
         <div class="sim-choices">
           <button type="button" class="sim-choice" data-sim-schedule="massed" aria-pressed="false">
             <b>Massed</b><em>4 sessions back to back</em>
@@ -131,15 +159,12 @@ const restingVesicles = 5;
           </div>
           <p class="sim-verdict" data-sim-verdict></p>
         </div>
-      </section>
-    )}
+      </div>
+    </section>
   </div>
 
-  <div class="sim-controls">
-    <button type="button" class="sim-btn sim-btn-primary" data-sim-tap>Tap the siphon</button>
-    <button type="button" class="sim-btn sim-btn-outline" data-sim-shock>Shock the tail</button>
-    <button type="button" class="sim-btn sim-btn-quiet" data-sim-rest>Rest</button>
-  </div>
+  {/* the action bar changes with the mode; the insight mode runs itself */}
+  <div class="sim-controls" data-sim-controls></div>
 </aplysia-sim>
 
 <script>

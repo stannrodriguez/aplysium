@@ -51,6 +51,52 @@
 .sim-chrome-label { color: var(--muted); }
 .sim-chrome-status { color: var(--muted); margin-left: auto; letter-spacing: .08em; }
 
+/* mode tabs — the guided path through an experiment -----------------------
+   A row of tabs directly under the chrome. Each tab is one self-contained
+   beat of the experiment, so the reader is never left wondering what to do.
+   The behaviour script marks the current tab with aria-pressed. */
+.sim-modes {
+  display: flex;
+  background: var(--sim-chrome);
+  border-bottom: 1px solid var(--sim-border);
+}
+
+.sim-mode-tab {
+  flex: 1 1 auto;
+  min-height: 46px;
+  padding: 7px 6px;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-right: 1px solid var(--sim-border);
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+
+.sim-mode-tab:last-child { border-right: 0; }
+.sim-mode-tab:hover { background: var(--sim-well); color: var(--ink); }
+
+.sim-mode-tab[aria-pressed='true'] {
+  background: var(--sim-signal);
+  color: var(--sim-paper);
+}
+
+/* the mode's own sentence — always describes what you are looking at now.
+   Set in the reading serif rather than the mono labels, so it reads as a
+   caption to the picture instead of a control label. */
+.sim-lead {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--body);
+  text-wrap: pretty;
+}
+
 /* panels ------------------------------------------------------------------ */
 .sim-panels {
   display: flex;
