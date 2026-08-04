@@ -1,6 +1,8 @@
 /* ── Hartline & Kuffler · the receptive field ─────────────────────────────
    A patch of retina you put a light on, the cell's own record underneath, and
-   the map that comes out of enough readings. */
+   the map that comes out of enough readings — driven by the four mode tabs.
+   The insight mode floods the whole field and shows the two halves cancelling.
+   Shell: `src/styles/sim.css`. */
 
 .rf-stage {
   height: auto;
@@ -76,4 +78,79 @@
   font-size: 10.5px;
   letter-spacing: .06em;
   color: var(--muted);
+}
+
+/* the insight — even flood and the two halves cancelling -------------------- */
+.rf-flood {
+  fill: #F6E7B8;
+  transition: fill .4s ease;
+}
+
+.rf-cancel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--sim-chrome);
+  border: 1px solid var(--sim-border);
+  padding: 12px;
+}
+
+.rf-cancel-row {
+  display: grid;
+  grid-template-columns: 8.5em 1fr 3.5em;
+  align-items: center;
+  gap: 10px;
+}
+
+.rf-cancel-tag {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.rf-cancel-bar {
+  height: 12px;
+  background: var(--sim-track);
+  overflow: hidden;
+}
+
+.rf-cancel-bar i {
+  display: block;
+  height: 100%;
+  width: 25%;
+  transition: width .4s ease;
+}
+
+.rf-cancel-up { background: var(--sim-signal); }
+.rf-cancel-down { background: var(--sim-kept); }
+
+.rf-cancel-num {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: right;
+}
+
+.rf-cancel-plus { color: var(--sim-signal); }
+.rf-cancel-minus { color: var(--sim-kept); }
+
+.rf-cancel-net {
+  border-top: 1px solid var(--sim-border);
+  padding-top: 8px;
+  margin-top: 2px;
+  font-size: 12.5px;
+  color: var(--body);
+}
+
+.rf-cancel-net b {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--sim-signal);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rf-flood,
+  .rf-cancel-bar i { transition: none; }
 }
