@@ -28,7 +28,7 @@ export const SIM_CAPTIONS: Record<SimulatorKey, string> = {
   replay:
     'Three tabs, one recording. Run the track to lay down an eight-cell sequence, record the sleep after it to find that same order compressed roughly twentyfold — then open “The control” for the insight: the sequence is absent in the sleep before the run, which is what makes the after-epoch mean anything.',
   dopamine:
-    'Give it a reward out of nowhere, then train the cue until the burst moves onto it, then withhold the reward. The third trial is the one that decides what the cell is reporting.',
+    'Four tabs, one beat each: a reward out of nowhere, a cue trained until the burst moves onto it, then the reward withheld — and the reading, that the cell is reporting prediction error. The omission is the trial that decides it: nothing happens, and the cell still responds.',
   gorilla:
     'One viewing, and the counting task is real. Do it properly before you read anything below it — the panel is spent after a single go, exactly as the original was.',
   grid:
