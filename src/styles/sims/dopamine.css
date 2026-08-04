@@ -85,6 +85,44 @@
   text-align: right;
 }
 
+/* the insight view — three canonical trials, side by side --------------- */
+.dop-ins-traces {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 560px) {
+  .dop-ins-traces { grid-template-columns: repeat(3, 1fr); }
+}
+
+.dop-ins {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dop-ins-cap {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.dop-ins-stage {
+  height: auto;
+  aspect-ratio: 240 / 96;
+}
+
+.dop-ins-delta {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .04em;
+  line-height: 1.5;
+  color: var(--body);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .dop-v-track i { transition: none; }
 }
