@@ -1,12 +1,12 @@
 # Twenty things we figured out about the mind
 
-A reading-first static site of twenty landmark neuroscience studies that hold up
-under replication. One deep-dive entry per study; every page stands alone — no
-backend, no login, no accounts.
+Aplysium is a reading-first static site of twenty landmark neuroscience studies
+that hold up under replication. One deep-dive entry per study; every page stands
+alone, with no backend, no login, and no accounts.
 
 Built with [Astro](https://astro.build). Ships zero JavaScript except the
-experiment on the entry that carries one — thirteen small custom elements, one
-per experiment, each loaded only by its own page — and ~20 lines for
+experiment on each entry that carries one (fourteen small custom elements, one
+per experiment, each loaded only by its own page) and ~20 lines for
 expand-all.
 
 ```bash
@@ -20,14 +20,14 @@ npm run preview
 
 | Route | What it is |
 |---|---|
-| `/` | The index — an idea-first grid of all twenty studies, earliest first |
+| `/` | The index: an idea-first grid of all twenty studies, earliest first |
 | `/studies/<slug>/` | The deep-dive entry for one study |
 
 ## Where things live
 
 ```
 src/data/types.ts              Study, DeepDive, Layer, status, motif and simulator keys
-src/data/studies.ts            all twenty studies — the single source
+src/data/studies.ts            all twenty studies, the single source
 src/data/sims.ts               simulator key → the caption under the panel
 src/data/homunculus.ts         the cortical strip, shared by markup and behaviour
 src/data/entries/<slug>.ts     authored deep dive for one study
@@ -46,7 +46,7 @@ src/styles/sims/<name>.css     one experiment's own stage
 ## Adding a study
 
 Append an object to `studies` in `src/data/studies.ts`. It appears on the index
-and gets its own entry page immediately — the entry template falls back to the
+and gets its own entry page immediately; the entry template falls back to the
 study's own `finding`, `method` and replication note.
 
 To write the full layered deep dive for it, add `src/data/entries/<slug>.ts`
@@ -61,7 +61,7 @@ so every panel is readable before (and without) JavaScript.
 
 Each element extends `SimElement` (`src/scripts/sims/base.ts`), which supplies
 the querying, text-writing, control wiring and timer bookkeeping they all
-repeat. They report what the reader did by firing a `sim:event` CustomEvent —
+repeat. They report what the reader did by firing a `sim:event` CustomEvent
 and calling an `onEvent(name, detail)` property if one is set.
 
 ### Adding one
@@ -73,7 +73,7 @@ and calling an `onEvent(name, detail)` property if one is set.
    in `src/data/sims.ts`.
 4. Set `simulator: '<key>'` on the study.
 
-All thirteen studies marked `hasDemo` have one. A study without a `simulator`
+All fourteen studies marked `hasDemo` have one. A study without a `simulator`
 key reads as a single column of prose.
 
 ## The experiments themselves
@@ -93,16 +93,17 @@ reader does actually determines what they see:
 | O'Keefe | spikes plotted where the animal was standing |
 | Shepard & Metzler | the reader's own reaction times against angle |
 | Wilson & McNaughton | a track sequence, and the same order in sleep |
-| Schultz | Rescorla–Wagner, with the error as the cell's response |
+| Schultz | Rescorla-Wagner, with the error as the cell's response |
 | Simons & Chabris | the counting task, once |
 | Moser & Moser | three plane waves at sixty degrees, thresholded |
+| Kandel | the gill-withdrawal reflex, habituation, sensitization, and protein synthesis |
 
 ## Accessibility
 
 - `prefers-reduced-motion` freezes the index motifs mid-cycle, drops the
   transmitter drift, and makes the gill and meters change state instantly. The
-  experiments that animate a run — foraging, the track, the pass-counting clip
-  — compute the same result without animating it.
+  experiments that animate a run (foraging, the track, the pass-counting clip)
+  compute the same result without animating it.
 - Every simulator control is at least a 44px target.
 - Replication dots carry their status word as an accessible label.
 - The simulator's mono labels sit at `--muted` rather than `--meta`, which

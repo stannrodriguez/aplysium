@@ -1,7 +1,7 @@
 {
-  "name": "Aplysium — Twenty Things About the Mind",
+  "name": "Aplysium: Twenty things we figured out about the mind",
   "short_name": "Aplysium",
-  "description": "Twenty landmark neuroscience studies, the idea first.",
+  "description": "Twenty landmark neuroscience studies that hold up under replication, led by the idea.",
   "start_url": "/aplysium/",
   "scope": "/aplysium/",
   "display": "standalone",
