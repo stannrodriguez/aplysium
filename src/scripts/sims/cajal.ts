@@ -69,7 +69,7 @@ const STATUS: Record<Mode, string> = {
 
 const LEAD: Record<Mode, string> = {
   stain:
-    'Golgi’s silver stain takes a sparse, random few cells and draws each one whole — soma, dendrites and axon — against blank tissue. Stain a section and a single neuron stands out entire, with nothing overlapping to confuse the picture.',
+    'Golgi’s silver stain takes a sparse, random few cells and draws each one whole (soma, dendrites and axon) against blank tissue. Stain a section and a single neuron stands out entire, with nothing overlapping to confuse the picture.',
   trace:
     'Follow a stained axon to where it ends. Every terminal stops short of the next cell — a free ending pressed against it, never fused into it. Trace as many as you like; not one of them turns out continuous.',
   insight:
@@ -351,7 +351,7 @@ class CajalSim extends SimElement {
     const n = this.examined.size;
     if (n === 0) return 'Trace an axon to its terminal to start the count.';
     if (n < 4)
-      return `${n} terminal${n === 1 ? '' : 's'} traced, ${n === 1 ? 'none' : 'none of them'} continuous with the next cell. Keep going — a negative result is only worth something once there are enough of them.`;
+      return `${n} terminal${n === 1 ? '' : 's'} traced, ${n === 1 ? 'not' : 'none of them'} continuous with the next cell. Keep going: a negative result counts only once there are enough of them.`;
     return `${n} terminals traced across ${this.section + 1} section${this.section ? 's' : ''}, not one of them continuous. Cajal drew hundreds of these and never found the exception the reticular theory needed: a single place where one cell ran into the next without a break.`;
   }
 
@@ -367,7 +367,7 @@ class CajalSim extends SimElement {
     const reticular = this.theory === 'reticular';
     if (wField) wField.classList.toggle('is-off', reticular);
     if (wInput) wInput.disabled = reticular;
-    this.text('[data-sim-weight-value]', reticular ? '—' : `${this.weight}%`);
+    this.text('[data-sim-weight-value]', reticular ? 'n/a' : `${this.weight}%`);
 
     this.html('[data-sim-insight-svg]', this.insightSvg());
     this.text('[data-sim-insight-verdict]', this.insightVerdict());

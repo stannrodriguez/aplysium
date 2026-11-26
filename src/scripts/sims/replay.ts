@@ -290,7 +290,7 @@ class ReplaySim extends SimElement {
     this.html('[data-sim-runraster]', this.rasterSvg(this.runSpikes, RUN_MS, 'run'));
     this.html('[data-sim-sleepraster]', this.rasterSvg(this.sleepSpikes, SLEEP_MS, 'sleep'));
 
-    this.text('[data-sim-compression]', this.slept ? `${COMPRESSION}×` : '—');
+    this.text('[data-sim-compression]', this.slept ? `${COMPRESSION}×` : '--');
     this.text('[data-sim-note]', this.note());
     this.updateControls();
   }
@@ -322,17 +322,17 @@ class ReplaySim extends SimElement {
         return 'The animal runs the track. Each cell fires as it passes through that cell’s patch of ground — a sequence, spread across about four seconds.';
       if (this.ran)
         return 'Four seconds of running, recorded as eight cells firing in order. That order is the memory. Now switch to Sleep after and look for it offline.';
-      return 'Run the track. Eight place cells, each with its own patch of track — they fire one after another as the animal passes through, and that order is the thing worth remembering.';
+      return 'Run the track. Eight place cells, each with its own patch of track, fire one after another as the animal passes through, and that order is the thing worth remembering.';
     }
     if (this.mode === 'sleep') {
       if (!this.ran)
-        return 'Nothing to look for a replay of yet — run the track first, so a sleep epoch has an order to be compared against.';
+        return 'No sequence to look for yet. Run the track first so the sleep recording has an order to match.';
       if (!this.slept)
-        return 'Record a later slow-wave sleep epoch and look inside its sharp-wave ripples for that same eight-cell order — it should be there, compressed roughly twenty times.';
+        return 'Record a later slow-wave sleep epoch and look inside its sharp-wave ripples for that same eight-cell order; it should be there, compressed roughly twenty times.';
       const s = this.sequenceScore(this.sleepSpikes) ?? 0;
       return `There it is: the track order, replayed inside the ripples at ${s.toFixed(2)} and packed into about ${(
         RUN_MS / COMPRESSION
-      ).toFixed(0)} ms — four seconds of running run back roughly twentyfold faster.`;
+      ).toFixed(0)} ms, four seconds of running played back roughly twenty times faster.`;
     }
     return 'The insight, not the experiment: the sequence is absent in sleep before the run and present in sleep after it. That before-epoch control is what proves it is the day’s experience being replayed, not a standing habit of the tissue.';
   }
@@ -344,7 +344,7 @@ class ReplaySim extends SimElement {
       return 'Eight cells, eight patches of track, one after another.';
     }
     if (!this.ran) return 'Use Run the track first; the run raster above is the reference this sleep epoch is matched against.';
-    if (!this.slept) return 'A ripple is a burst, not one spike per cell — look for the diagonal of first-spikes cell 1 through 8.';
+    if (!this.slept) return 'A ripple is a burst, not one spike per cell. Look for the diagonal of first spikes from cell 1 through 8.';
     return 'The order survives the compression: same diagonal as the run, four seconds squeezed into about two hundred milliseconds.';
   }
 

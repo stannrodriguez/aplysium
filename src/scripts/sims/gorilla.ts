@@ -243,7 +243,7 @@ class GorillaSim extends SimElement {
       const first = this.viewings === 0;
       this.addBtn(
         bar,
-        first ? 'Start the clip' : 'Watch again — ringed',
+        first ? 'Start the clip' : 'Replay (gorilla ringed)',
         first ? 'sim-btn-primary' : 'sim-btn-outline',
         'data-sim-start',
       );
@@ -268,7 +268,7 @@ class GorillaSim extends SimElement {
     }
 
     // done
-    this.addBtn(bar, 'Watch again — ringed', 'sim-btn-outline', 'data-sim-start');
+    this.addBtn(bar, 'Replay (gorilla ringed)', 'sim-btn-outline', 'data-sim-start');
     this.addBtn(bar, 'Reset', 'sim-btn-quiet', 'data-sim-reset');
     this.addNav(bar);
   }
@@ -353,7 +353,7 @@ class GorillaSim extends SimElement {
     tab.disabled = !this.revealed;
     tab.setAttribute('aria-disabled', String(!this.revealed));
     tab.textContent = this.revealed ? 'The insight' : 'The insight \u{1F512}';
-    tab.title = this.revealed ? 'Why half miss it' : 'Do the trial first — one naive viewing';
+    tab.title = this.revealed ? 'Why half miss it' : 'Finish the trial first (one naive viewing)';
   }
 
   private courtSvg(): string {
@@ -434,7 +434,7 @@ class GorillaSim extends SimElement {
     if (this.phase === 'idle')
       return this.viewings > 0
         ? 'That was your one viewing. You can run it again, but you cannot be naive twice — which is exactly why the original needed hundreds of people who had each seen it once.'
-        : 'One viewing, and the counting task is real. When you are ready, start the clip and count the white team’s passes — nothing else is being asked of you.';
+        : 'One viewing, and the counting task is real. When you are ready, start the clip and count the white team’s passes. Nothing else is being asked of you.';
     if (this.phase === 'playing')
       return 'Keep counting the passes made by the white team. Stay with the task — that is the whole point.';
     if (this.phase === 'counting')

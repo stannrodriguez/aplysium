@@ -44,7 +44,7 @@ const COVER_ROWS = 10;
 
 const LEAD: Record<Mode, string> = {
   forage:
-    'Drop the animal in a bare box and let it wander. Each time this one cell fires, mark where the animal was standing — nowhere else. The marks pile up in a single patch: that patch is the cell’s place field.',
+    'Drop the animal in a bare box and let it wander. Each time this one cell fires, mark where the animal was standing and nowhere else. The marks pile up in a single patch: that patch is the cell’s place field.',
   cell:
     'The same box, a different cell from the same hippocampus. It is silent where the first one fired and answers to a place of its own. Every cell has its patch; together the population tiles the whole room.',
   insight:
@@ -306,7 +306,7 @@ class PlaceFieldSim extends SimElement {
     this.text('[data-sim-lead]', LEAD[this.mode]);
     this.text('[data-sim-status]', STATUS[this.mode]);
     this.text('[data-sim-rate]', `${rate.toFixed(0)} /s`);
-    this.text('[data-sim-count]', `cell ${this.cell} · ${this.spikes.length} spikes`);
+    this.text('[data-sim-count]', `cell ${this.cell} · ${this.spikes.length} ${this.spikes.length === 1 ? 'spike' : 'spikes'}`);
     this.text(
       '[data-sim-coverage]',
       `${Math.round((this.visited.size / (COVER_COLS * COVER_ROWS)) * 100)}%`,
@@ -373,7 +373,7 @@ class PlaceFieldSim extends SimElement {
   }
 
   private arenaLabel(): string {
-    const base = `The arena from above. ${this.spikes.length} spikes marked where the animal was standing when cell ${this.cell} fired.`;
+    const base = `The arena from above. ${this.spikes.length} ${this.spikes.length === 1 ? 'spike' : 'spikes'} marked where the animal was standing when cell ${this.cell} fired.`;
     if (this.mode === 'insight')
       return `${base} The cue card has been turned ${this.cueAngle}°, and the field has turned with it.`;
     return base;
@@ -382,8 +382,8 @@ class PlaceFieldSim extends SimElement {
   private note(rate: number): string {
     if (!this.path.length)
       return 'Click anywhere in the box to walk the animal there, or let it forage and cover the floor on its own.';
-    if (rate > 20) return 'Firing hard. Somewhere about here is what this cell is for.';
-    if (rate > 5) return 'Something. You are on the edge of whatever it is that makes this cell go.';
+    if (rate > 20) return 'Firing hard. You are inside this cell’s place field.';
+    if (rate > 5) return 'Low firing. You are on the edge of this cell’s place field.';
     return 'Quiet. The cell is perfectly healthy and has nothing to say about this part of the room.';
   }
 
@@ -401,7 +401,7 @@ class PlaceFieldSim extends SimElement {
     }
 
     if (this.spikes.length < 6)
-      return 'A spike train alone is a list of times. Plotting each spike where the animal was standing is what turns it into a map — so cover some ground first.';
+      return 'A spike train alone is a list of times. Plotting each spike where the animal was standing is what turns it into a map, so cover some ground first.';
 
     if (this.spikes.length > 60)
       return `${this.spikes.length} spikes, all of them in one part of the floor, from a cell that is silent everywhere else. That patch is the place field. Now try another cell.`;

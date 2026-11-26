@@ -355,7 +355,7 @@ class AxonSim extends SimElement {
 
     // sub-threshold
     if (!live)
-      return 'A half-millisecond pulse charges the membrane a little, then it leaks straight back — nothing regenerative. Raise the stimulus and fire to see how close to threshold you can get.';
+      return 'A half-millisecond pulse charges the membrane a little, then it leaks straight back with nothing regenerative. Raise the stimulus and fire to see how close to threshold you can get.';
     if (live.fired)
       return 'That crossed threshold and the axon fired a full spike. Drop the stimulus back down: below the line the membrane just charges and leaks away, no matter how close you get.';
     return 'Below threshold. The membrane charges a little and leaks back — a passive bump, not a spike. Nothing regenerative happens until the stimulus crosses the line.';

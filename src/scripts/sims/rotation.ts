@@ -250,7 +250,7 @@ class RotationSim extends SimElement {
     const primary = this.q('[data-sim-controls] .sim-btn-primary');
     if (primary) primary.textContent = this.live ? 'Skip this pair' : 'Next pair';
 
-    this.text('[data-sim-angle]', this.live || started ? `${this.angle}°` : '—');
+    this.text('[data-sim-angle]', this.live || started ? `${this.angle}°` : '--');
     this.text('[data-sim-count]', String(this.trials.length));
     this.html('[data-sim-pair]', this.pairSvg(started));
     this.qa<HTMLButtonElement>('[data-sim-answer]').forEach(el => (el.disabled = !this.live));
@@ -268,17 +268,18 @@ class RotationSim extends SimElement {
       return 'The clock is running. Same object, or its mirror image? Answer the moment you are sure — the time is the measurement, not the verdict.';
     if (this.lastCorrect !== null)
       return `${this.lastCorrect ? 'Right' : 'Wrong'} — ${(this.lastMs / 1000).toFixed(2)} s at ${this.angle}°. That is one point on your line. Show the next pair.`;
-    return 'Two block figures, one of them turned. Judge whether they are the same object or mirror images — as fast as you can be sure. Your reaction time is what gets recorded.';
+    return 'Two block figures, one of them turned. Judge whether they are the same object or mirror images, as fast as you can be sure. Your reaction time is what gets recorded.';
   }
 
   private statusText(): string {
-    if (this.mode === 'insight') return `${this.trials.length} trials`;
-    return this.live ? 'same or mirrored?' : `${this.trials.length} trials`;
+    const count = `${this.trials.length} ${this.trials.length === 1 ? 'trial' : 'trials'}`;
+    if (this.mode === 'insight') return count;
+    return this.live ? 'same or mirrored?' : count;
   }
 
   private pairSvg(started: boolean): string {
     if (!started)
-      return '<p class="rot-blank">Two figures, one turned. Decide whether they are the same object or mirror images — as fast as you can be sure. Press “Next pair” to begin.</p>';
+      return '<p class="rot-blank">Two figures, one turned. Decide whether they are the same object or mirror images, as fast as you can be sure. Press “Next pair” to begin.</p>';
 
     const left = figureSvg(0, false);
     const right = figureSvg(this.angle, !this.same);
@@ -331,7 +332,7 @@ class RotationSim extends SimElement {
       ? ''
       : `<text class="rot-tick" x="160" y="${H / 2}" text-anchor="middle">your reaction times land here</text>`;
 
-    return `<svg class="rot-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Your reaction times plotted against the angle between the figures, over ${this.trials.length} trials.">${axis}${line}${dots}${empty}</svg>`;
+    return `<svg class="rot-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Your reaction times plotted against the angle between the figures, over ${this.trials.length} ${this.trials.length === 1 ? 'trial' : 'trials'}.">${axis}${line}${dots}${empty}</svg>`;
   }
 
   private verdict(): string {

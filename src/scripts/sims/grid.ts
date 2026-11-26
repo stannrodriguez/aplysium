@@ -73,7 +73,7 @@ const ORIGIN: Point = { x: W / 2, y: H / 2 };
 
 const LEAD: Record<Mode, string> = {
   large:
-    'Let the animal forage. The same recording method as a place cell — a dot wherever the cell fired — but in a box with room to spare. The firing fields come out as a repeating hexagonal lattice that tiles the whole floor.',
+    'Let the animal forage. The same recording method as a place cell (a dot wherever the cell fired), but in a box with room to spare. The firing fields come out as a repeating hexagonal lattice that tiles the whole floor.',
   small:
     'The very same cell, now in the small arena it was first recorded in. Only one firing field fits, and nothing tells it apart from a place cell — which is exactly what cells like this were taken for.',
   insight:
@@ -356,7 +356,7 @@ class GridSim extends SimElement {
       .join('');
 
     return (
-      `<svg class="grd-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="The arena from above, ${this.box()} box, with ${this.spikes.length} spikes marked where the animal was standing when the cell fired.">` +
+      `<svg class="grd-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="The arena from above, ${this.box()} box, with ${this.spikes.length} ${this.spikes.length === 1 ? 'spike' : 'spikes'} marked where the animal was standing when the cell fired.">` +
       `<rect class="grd-room" x="1" y="1" width="${W - 2}" height="${H - 2}"/>` +
       walls +
       trail +
@@ -383,7 +383,7 @@ class GridSim extends SimElement {
       }. Nothing here distinguishes this from a place cell, which is what cells like this were taken for. Now give it the large box.`;
 
     if (n <= 2)
-      return `Only ${n} vertic${n === 1 ? 'e' : 'es'} so far. Keep going — the lattice needs the animal to have been in several parts of the room, not just one.`;
+      return `Only ${n} ${n === 1 ? 'vertex' : 'vertices'} so far. Keep going: the lattice needs the animal to have been in several parts of the room, not just one.`;
 
     return `${n} separate patches, evenly spaced, in a repeating triangular arrangement that carries on to the walls. Not one place, and not a map of anything in this particular room: a fixed metric the animal takes with it. Try the small box and watch it collapse into what looks like a single place field.`;
   }
