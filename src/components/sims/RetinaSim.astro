@@ -31,7 +31,7 @@ const { label = 'One retinal ganglion cell · recorded' } = Astro.props;
     <section class="sim-panel">
       <p class="sim-lead" data-sim-lead aria-live="polite">
         A small spot of light on the receptive-field centre. The cell fires hard above its resting
-        rate — this is where light drives it.
+        rate: this is where light drives it.
       </p>
 
       {/* ── the experiment: a patch of retina, its record, and the map ── */}
@@ -73,7 +73,7 @@ const { label = 'One retinal ganglion cell · recorded' } = Astro.props;
           <div class="sim-stage rf-map">
             <div data-sim-mapplot></div>
             <p class="rf-map-empty" data-sim-map-empty>
-              sweep the small spot over the whole patch to see the shape →
+              Sweep the small spot over the whole patch to map its shape.
             </p>
           </div>
           <p class="sim-key">
@@ -84,7 +84,7 @@ const { label = 'One retinal ganglion cell · recorded' } = Astro.props;
         </div>
 
         <p class="sim-note" data-sim-retina-note>
-          The cell never goes silent — it has a resting rate to be pushed above or below, which is
+          The cell never goes silent: it has a resting rate to be pushed above or below, which is
           what makes suppression something you can measure.
         </p>
       </div>
@@ -135,8 +135,8 @@ const { label = 'One retinal ganglion cell · recorded' } = Astro.props;
         </div>
 
         <p class="sim-verdict" data-sim-verdict>
-          Double the light and both centre and surround double with it; their difference — everything
-          the cell sends on — stays put. So the eye reports contrast, where brightness changes, not
+          Double the light and both centre and surround double with it; their difference (everything
+          the cell sends on) stays put. So the eye reports contrast, where brightness changes, not
           brightness itself. That is the roughly hundred-to-one squeeze into the optic nerve, why a
           face reads the same in sun or lamplight, and why brightness illusions fool you.
         </p>

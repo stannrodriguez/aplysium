@@ -26,7 +26,7 @@ const { label = 'One midbrain dopamine cell · monkey' } = Astro.props;
   <div class="sim-panels">
     <section class="sim-panel">
       <p class="sim-lead" data-sim-lead aria-live="polite">
-        A reward out of nowhere. Deliver juice with no warning cue and watch the cell — an
+        A reward out of nowhere. Deliver juice with no warning cue and watch the cell: an
         unpredicted reward should produce a burst as big as the surprise.
       </p>
 
@@ -34,14 +34,14 @@ const { label = 'One midbrain dopamine cell · monkey' } = Astro.props;
       <div data-sim-experiment>
         <div class="sim-panel-head">
           <h3 class="sim-panel-title">One trial · the cell's firing</h3>
-          <p class="sim-readout">error at reward <b data-sim-delta aria-live="polite">—</b></p>
+          <p class="sim-readout">error at reward <b data-sim-delta aria-live="polite">--</b></p>
         </div>
 
         <div class="sim-stage dop-trace-stage" data-sim-trace>
           <svg class="dop-svg" viewBox="0 0 320 148" role="img" aria-label="The cell at its resting rate, with nothing presented yet.">
             <line class="dop-base" x1="30" y1="104" x2="308" y2="104"></line>
             <text class="dop-tick" x="25" y="107" text-anchor="end">base</text>
-            <text class="dop-tick" x="160" y="74" text-anchor="middle">run a trial and watch where the burst goes</text>
+            <text class="dop-tick" x="160" y="74" text-anchor="middle">Run a trial to see where the burst goes</text>
           </svg>
         </div>
 
@@ -66,8 +66,8 @@ const { label = 'One midbrain dopamine cell · monkey' } = Astro.props;
       {/* ── the insight: it is prediction error, and the dip is decisive ── */}
       <div data-sim-insight hidden>
         <p class="sim-note">
-          The three canonical trials side by side. Every response is the same one quantity — the
-          prediction error δ, what you got minus what you expected — computed by the model.
+          The three canonical trials side by side. Every response is the same quantity: the
+          prediction error δ (what you got minus what you expected), computed by the model.
         </p>
 
         <div class="dop-ins-traces">
