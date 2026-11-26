@@ -125,7 +125,7 @@ export const ENTRY_STATUS_LINE: Record<StatusKey, string> = {
 
 /** Legend wording on the index, which shortens the last two. */
 export const STATUS_LEGEND: Array<{ key: StatusKey; label: string }> = [
-  { key: 'settled', label: 'settled' },
+  { key: 'settled', label: 'holds up' },
   { key: 'debated', label: 'still debated' },
   { key: 'narrowed', label: 'scope narrowed' },
 ];

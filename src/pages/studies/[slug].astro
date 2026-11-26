@@ -29,7 +29,7 @@ const caption = sim ? dive.simCaption ?? simCaption(sim) : null;
 const twoColumn = Boolean(sim);
 ---
 
-<Base title={`${study.claim} — ${study.author}`} description={dive.bridge}>
+<Base title={`${study.claim} (${study.author})`} description={dive.bridge}>
   <main class="entry" data-two-column={twoColumn ? 'true' : 'false'}>
     <header class="hero">
       <p class="meta">
