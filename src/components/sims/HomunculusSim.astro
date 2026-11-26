@@ -99,7 +99,7 @@ const regions: Array<{ key: string; shapes: string }> = [
               style={`flex: 0 0 ${width.toFixed(2)}%`}
               data-part={part.key}
               data-mapped={part.key}
-              title={`${part.name} — ${width.toFixed(1)}% of the strip`}
+              title={`${part.name}: ${width.toFixed(1)}% of the strip`}
             >
               <span class="visually-hidden">Stimulate the {part.name} point</span>
               <span aria-hidden="true">{part.name}</span>
@@ -153,7 +153,7 @@ const regions: Array<{ key: string; shapes: string }> = [
       <div data-sim-insight hidden>
         <div class="hom-mirror">
           <div class="hom-mirror-row">
-            <span class="hom-mirror-label">Cortex — share of the strip</span>
+            <span class="hom-mirror-label">Cortex: share of the strip</span>
             <div class="hom-mirror-bar" data-sim-ins-cortex role="group" aria-label="Each body part's share of the cortical strip">
               {cortexRow.map(({ part, width, band }) => (
                 <button
@@ -161,7 +161,7 @@ const regions: Array<{ key: string; shapes: string }> = [
                   class={`hom-cell hom-cell-${band}`}
                   style={`flex: 0 0 ${width.toFixed(2)}%`}
                   data-ins-part={part.key}
-                  title={`${part.name} — ${width.toFixed(1)}% of the strip`}
+                  title={`${part.name}: ${width.toFixed(1)}% of the strip`}
                 >
                   <span class="visually-hidden">{part.name}, {width.toFixed(1)} percent of the strip</span>
                 </button>
@@ -169,7 +169,7 @@ const regions: Array<{ key: string; shapes: string }> = [
             </div>
           </div>
           <div class="hom-mirror-row">
-            <span class="hom-mirror-label">Skin — share of the body</span>
+            <span class="hom-mirror-label">Skin: share of the body</span>
             <div class="hom-mirror-bar" data-sim-ins-skin role="group" aria-label="The same body parts, sized by their share of the skin">
               {skinRow.map(({ part, width, band }) => (
                 <button
@@ -177,7 +177,7 @@ const regions: Array<{ key: string; shapes: string }> = [
                   class={`hom-cell hom-cell-${band}`}
                   style={`flex: 0 0 ${width.toFixed(2)}%`}
                   data-ins-part={part.key}
-                  title={`${part.name} — ${width.toFixed(1)}% of the skin`}
+                  title={`${part.name}: ${width.toFixed(1)}% of the skin`}
                 >
                   <span class="visually-hidden">{part.name}, {width.toFixed(1)} percent of the skin</span>
                 </button>
@@ -211,8 +211,8 @@ const regions: Array<{ key: string; shapes: string }> = [
 
         <p class="sim-verdict" data-sim-ins-verdict>
           The hand, lips and tongue take more of the strip than the trunk and both legs together. Cortical
-          territory scales with sensitivity — with how finely a part can tell two touches apart — not with
-          its size. The brain spends its surface where the information is. Tap either strip to weigh one part.
+          territory scales with sensitivity (how finely a part can tell two touches apart), not with
+          its size. The brain spends its surface where the information is. Tap either strip to compare one part.
         </p>
       </div>
     </section>

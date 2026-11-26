@@ -25,7 +25,7 @@ const { label = 'Squid giant axon · voltage recorded' } = Astro.props;
   <div class="sim-panels">
     <section class="sim-panel">
       <p class="sim-lead" data-sim-lead aria-live="polite">
-        A half-millisecond pulse charges the membrane a little, then it leaks straight back — nothing regenerative. Raise the stimulus and fire to see how close to threshold you can get.
+        A half-millisecond pulse charges the membrane a little, then it leaks straight back with nothing regenerative. Raise the stimulus and fire to see how close to threshold you can get.
       </p>
 
       <div class="sim-panel-head">
@@ -49,7 +49,7 @@ const { label = 'Squid giant axon · voltage recorded' } = Astro.props;
 
       {/* stimulus strength — sub-threshold and fire modes */}
       <div class="sim-field" data-sim-ampwrap>
-        <span class="sim-field-label" id="hh-amp-label">Stimulus — a half-millisecond pulse</span>
+        <span class="sim-field-label" id="hh-amp-label">Stimulus: a half-millisecond pulse</span>
         <input
           class="sim-slider"
           type="range"
@@ -66,9 +66,9 @@ const { label = 'Squid giant axon · voltage recorded' } = Astro.props;
       {/* channel blockers live in the experiment — fire mode only */}
       <div class="sim-toggle" data-sim-blockwrap hidden>
         <span class="sim-toggle-label">Applied to the bath</span>
-        <button type="button" class="sim-pill" data-sim-blocker="none" aria-pressed="true">nothing</button>
-        <button type="button" class="sim-pill" data-sim-blocker="ttx" aria-pressed="false">tetrodotoxin — blocks Na⁺</button>
-        <button type="button" class="sim-pill" data-sim-blocker="tea" aria-pressed="false">TEA — blocks K⁺</button>
+        <button type="button" class="sim-pill" data-sim-blocker="none" aria-pressed="true">None</button>
+        <button type="button" class="sim-pill" data-sim-blocker="ttx" aria-pressed="false">Tetrodotoxin (blocks Na⁺)</button>
+        <button type="button" class="sim-pill" data-sim-blocker="tea" aria-pressed="false">TEA (blocks K⁺)</button>
       </div>
 
       <p class="sim-verdict" data-sim-verdict hidden>

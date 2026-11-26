@@ -21,7 +21,7 @@ const color = variant === 'entry' ? meta.dotEntry : meta.dot;
   style={`--dot-color:${color};--dot-size:${size}px`}
   title={labelled ? meta.word : undefined}
   role={labelled ? 'img' : undefined}
-  aria-label={labelled ? `replication: ${meta.word}` : undefined}
+  aria-label={labelled ? `Replication status: ${meta.word}` : undefined}
   aria-hidden={labelled ? undefined : 'true'}
 ></span>
 
