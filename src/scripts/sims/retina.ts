@@ -88,7 +88,7 @@ const FLOOD = floodParts();
 
 const LEAD: Record<Mode, string> = {
   centre:
-    'A small spot of light on the receptive-field centre. The cell fires hard above its resting rate — this is where light drives it.',
+    'A small spot of light on the receptive-field centre. The cell fires hard above its resting rate: this is where light drives it.',
   surround:
     'Move the same spot out into the ring around the centre. Now the light silences the cell: it fires below its resting rate. Light here opposes the centre.',
   map:

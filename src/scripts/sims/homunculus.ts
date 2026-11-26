@@ -178,7 +178,7 @@ class HomunculusSim extends SimElement {
 
   private renderInsight(): void {
     const part = this.weighed;
-    this.text('[data-sim-status]', part ? `weighing ${part.name}` : 'the distortion');
+    this.text('[data-sim-status]', part ? `comparing ${part.name}` : 'the distortion');
 
     // Light the same part in both mirrored strips, so a segment fat on cortex
     // and thin on skin is visibly the one part.
@@ -192,7 +192,7 @@ class HomunculusSim extends SimElement {
   private insightVerdict(): string {
     const part = this.weighed;
     if (!part)
-      return 'The hand, lips and tongue take more of the strip than the trunk and both legs together. Cortical territory scales with sensitivity — with how finely a part can tell two touches apart — not with its size. The brain spends its surface where the information is. Tap either strip to weigh one part.';
+      return 'The hand, lips and tongue take more of the strip than the trunk and both legs together. Cortical territory scales with sensitivity (how finely a part can tell two touches apart), not with its size. The brain spends its surface where the information is. Tap either strip to compare one part.';
 
     const cortex = cortexShare(part) * 100;
     const body = bodyShare(part) * 100;

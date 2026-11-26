@@ -261,7 +261,7 @@ class SplitBrainSim extends SimElement {
     if (!this.flashed && !this.flashing)
       return (
         '<div class="spl-fix">+</div>' +
-        '<p class="spl-hint">Eyes on the cross. The flash lasts a tenth of a second — less than it takes to look away.</p>'
+        '<p class="spl-hint">Eyes on the cross. The flash lasts a tenth of a second, less than it takes to look away.</p>'
       );
 
     if (this.flashing)
@@ -306,7 +306,7 @@ class SplitBrainSim extends SimElement {
     if (this.mode === 'verbal') {
       if (!this.saidIt)
         return cut
-          ? 'Flash the pair, then ask them to say what they saw. The half of the brain that talks is the left — and with the callosum cut it only ever received the right hemifield.'
+          ? 'Flash the pair, then ask them to say what they saw. The half of the brain that talks is the left, and with the callosum cut it only ever received the right hemifield.'
           : 'With the callosum intact both halves share the whole screen. Ask out loud and the mouth can name everything — this is the control.';
       return cut
         ? `They name the ${pair.right} and nothing else. The talking half never received the left-field item, so as far as it knows that side of the screen was blank.`

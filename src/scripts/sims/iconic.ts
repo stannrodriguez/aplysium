@@ -364,7 +364,7 @@ class IconicSim extends SimElement {
   private multiplyUp(): string {
     const cued = this.meanCorrect('partial');
     if (cued === null)
-      return '<p class="sim-note">Flash the grid a few times here to build the estimate. Each cued row you read is stood in for the two you were not asked.</p>';
+      return '<p class="sim-note">Flash the grid a few times here to build the estimate. Each cued row you read stands in for the two you were not asked.</p>';
 
     const available = clamp(Math.round(cued * ROWS), 0, ROWS * COLS);
     const whole = this.meanCorrect('whole');
@@ -419,7 +419,7 @@ class IconicSim extends SimElement {
       whole === null
         ? ''
         : `<line class="ico-whole" x1="${L}" y1="${y(whole)}" x2="${R}" y2="${y(whole)}"/>` +
-          `<text class="ico-tick ico-tick-em" x="${R}" y="${y(whole) - 5}" text-anchor="end">whole report — ${whole.toFixed(
+          `<text class="ico-tick ico-tick-em" x="${R}" y="${y(whole) - 5}" text-anchor="end">whole report: ${whole.toFixed(
             1,
           )}</text>`;
 
@@ -451,7 +451,7 @@ class IconicSim extends SimElement {
     const late = partials.filter(t => t.delayMs >= 700);
 
     if (!partials.length)
-      return 'Flash the grid with the cue immediate, then drag it later and later. Watch the letters-available estimate fall back toward four — that fall is the store decaying.';
+      return 'Flash the grid with the cue immediate, then drag it later and later. Watch the letters-available estimate fall back toward four: that fall is the store decaying.';
 
     const earlyMean = early.length ? early.reduce((n, t) => n + t.estimate, 0) / early.length : null;
 

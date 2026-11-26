@@ -331,7 +331,7 @@ class AplysiaSim extends SimElement {
       run.disabled = !this.state.schedule;
       run.textContent = this.state.schedule
         ? `▶ run 4 ${this.state.schedule} sessions`
-        : 'pick a schedule first';
+        : 'Pick a schedule first';
     }
 
     const results = this.q('[data-sim-results]');
@@ -346,8 +346,8 @@ class AplysiaSim extends SimElement {
     this.css('[data-sim-h1]', 'width', `${r.h1}%`);
     this.css('[data-sim-h24]', 'width', `${r.h24}%`);
     this.css('[data-sim-h24]', 'background', r.h24 > 40 ? 'var(--sim-kept)' : 'var(--sim-lost)');
-    this.text('[data-sim-h1-word]', `${r.h1}% — ${r.h1Word}`);
-    this.text('[data-sim-h24-word]', `${r.h24}% — ${r.h24Word}`);
+    this.text('[data-sim-h1-word]', `${r.h1}% (${r.h1Word})`);
+    this.text('[data-sim-h24-word]', `${r.h24}% (${r.h24Word})`);
     this.text('[data-sim-conn-note]', r.connNote);
     this.text('[data-sim-verdict]', r.verdict);
     this.html(

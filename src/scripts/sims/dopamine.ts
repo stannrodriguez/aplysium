@@ -137,7 +137,7 @@ class DopamineSim extends SimElement {
     bar.hidden = false;
 
     if (this.mode === 'unexpected') {
-      this.addBtn(bar, 'Deliver juice — no cue', 'sim-btn-primary', () => this.run('surprise'));
+      this.addBtn(bar, 'Deliver juice (no cue)', 'sim-btn-primary', () => this.run('surprise'));
     } else if (this.mode === 'predicted') {
       this.addBtn(bar, 'Pair the cue with juice', 'sim-btn-primary', () => this.run('paired'));
       this.addBtn(bar, 'Reset cue', 'sim-btn-quiet', () => this.resetPredicted());
@@ -161,7 +161,7 @@ class DopamineSim extends SimElement {
   protected render(): void {
     this.text(
       '[data-sim-status]',
-      `V = ${this.v.toFixed(2)} · ${this.trials.length} trials · ${STATUS[this.mode]}`,
+      `V = ${this.v.toFixed(2)} · ${this.trials.length} ${this.trials.length === 1 ? 'trial' : 'trials'} · ${STATUS[this.mode]}`,
     );
     this.text('[data-sim-v]', this.v.toFixed(2));
     this.css('[data-sim-v-bar]', 'width', `${this.v * 100}%`);
@@ -181,7 +181,7 @@ class DopamineSim extends SimElement {
     const t = this.last;
     this.text(
       '[data-sim-delta]',
-      t ? `${t.rewardDelta >= 0 ? '+' : '−'}${Math.abs(t.rewardDelta).toFixed(2)}` : '—',
+      t ? `${t.rewardDelta >= 0 ? '+' : '−'}${Math.abs(t.rewardDelta).toFixed(2)}` : '--',
     );
     this.html('[data-sim-trace]', this.traceSvg(t, { seed: this.trials.length }));
     this.html('[data-sim-history]', this.historySvg());
@@ -246,7 +246,7 @@ class DopamineSim extends SimElement {
     const trace = t ? `<polyline class="dop-trace" points="${points.join(' ')}"/>` : '';
     const empty = t
       ? ''
-      : `<text class="dop-tick" x="${W / 2}" y="${H / 2}" text-anchor="middle">run a trial and watch where the burst goes</text>`;
+      : `<text class="dop-tick" x="${W / 2}" y="${H / 2}" text-anchor="middle">Run a trial to see where the burst goes</text>`;
 
     return `<svg class="dop-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${this.traceLabel(
       t,
@@ -304,7 +304,7 @@ class DopamineSim extends SimElement {
       .join('');
 
     return (
-      `<svg class="dop-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Prediction error at the moment of reward, over ${this.trials.length} trials.">` +
+      `<svg class="dop-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Prediction error at the moment of reward, over ${this.trials.length} ${this.trials.length === 1 ? 'trial' : 'trials'}.">` +
       bars +
       `<line class="dop-base" x1="8" y1="${mid}" x2="${W - 8}" y2="${mid}"/>` +
       `<text class="dop-tick" x="8" y="${H - 4}">first</text>` +
@@ -320,7 +320,7 @@ class DopamineSim extends SimElement {
 
     if (this.mode === 'unexpected') {
       if (!t)
-        return 'A reward out of nowhere. Deliver juice with no warning cue and watch the cell — an unpredicted reward should produce a burst as big as the surprise.';
+        return 'A reward out of nowhere. Deliver juice with no warning cue and watch the cell: an unpredicted reward should produce a burst as big as the surprise.';
       return 'An unpredicted reward: a burst at the juice itself. No cue predicted it, so the whole reward is news — error of one minus nothing. Repeat it and the burst never fades, because nothing ever comes to predict it.';
     }
 

@@ -237,8 +237,8 @@ class OrientationSim extends SimElement {
     this.show('[data-sim-tuningwrap]', isFind);
 
     const rate = this.lastRate;
-    this.text('[data-sim-status]', `cell ${this.cellNo} · ${this.tried.size} angles tried`);
-    this.text('[data-sim-rate]', rate === null ? '—' : `${rate.toFixed(0)} /s`);
+    this.text('[data-sim-status]', `cell ${this.cellNo} · ${this.tried.size} ${this.tried.size === 1 ? 'angle' : 'angles'} tried`);
+    this.text('[data-sim-rate]', rate === null ? '--' : `${rate.toFixed(0)} /s`);
     this.text('[data-sim-angle-value]', `${this.angle}°`);
 
     this.html('[data-sim-screen]', this.screenSvg());
@@ -300,7 +300,7 @@ class OrientationSim extends SimElement {
         live ? `The cell firing at about ${rate.toFixed(0)} per second.` : 'The cell, with nothing presented yet.'
       }">` +
       ticks.join('') +
-      (live ? '' : '<text class="ori-label" x="160" y="34" text-anchor="middle">PRESENT SOMETHING</text>') +
+      (live ? '' : '<text class="ori-label" x="160" y="34" text-anchor="middle">NO STIMULUS YET</text>') +
       `</svg>`
     );
   }
@@ -340,9 +340,9 @@ class OrientationSim extends SimElement {
 
     const empty = points.length
       ? ''
-      : `<text class="ori-tick-label" x="160" y="${H / 2}" text-anchor="middle">every angle you try lands here</text>`;
+      : `<text class="ori-tick-label" x="160" y="${H / 2}" text-anchor="middle">Each angle you test appears here</text>`;
 
-    return `<svg class="ori-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Firing rate against bar angle, from ${points.length} readings.">${axis}${curve}${dots}${empty}</svg>`;
+    return `<svg class="ori-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Firing rate against bar angle, from ${points.length} ${points.length === 1 ? 'reading' : 'readings'}.">${axis}${curve}${dots}${empty}</svg>`;
   }
 
   /** The wiring diagram: five centre-surround spot-detectors strung along the
